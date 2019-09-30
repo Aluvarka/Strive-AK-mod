@@ -409,7 +409,7 @@ basicsolutioning = {
 	effect = '',
 	recipe = 'recipebasicsolution',
 	cost = 40,
-	type = 'ingredient',
+	type = 'potion',
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
