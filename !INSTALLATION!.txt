@@ -1,0 +1,9 @@
+1.a First of run game and activate Constants mod and randomportrait. 
+1.b Since Constants mod didn't work with older then 5.23 version - you need to manually turn off mod by editing FileOrder.ini, just delete line with "Constants",
+2. Then make copy of Files folder in game directory, not neccesary if u keep instalation files.
+3. After step 1 just download fresh version from github and unpack in game directory.
+4. NEW GAME IS REQUIRED!
+5. ???
+6. Enjoy!
+Keep in mind that is mod change lot of files and with 146% chance other mods didnt work well(if work at all). 
+For this i`m gonna merge some of other mods with mine. Keep updates on news.
