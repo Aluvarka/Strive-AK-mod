@@ -407,7 +407,7 @@ basicsolutioning = {
 	icon = load("res://files/images/items/basicsolution.png"),
 	description = "Primal ingredient which is used as base for many potions.",
 	effect = '',
-	recipe = '',
+	recipe = 'recipebasicsolution',
 	cost = 40,
 	type = 'ingredient',
 	reqs = false,
@@ -1226,6 +1226,11 @@ var recipeaphrodisiac = {
 basicsolutioning = 1,
 taintedessenceing = 1,
 bestialessenceing = 1,
+}
+
+var recipebasicsolution = {
+supply = 1,
+remains = 1,
 }
 
 var recipehairgrowth = {

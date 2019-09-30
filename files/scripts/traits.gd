@@ -16,7 +16,7 @@ var traits = {
     "conflict": [
       "Mute",
       "Good Natured",
-      "Eloquence"
+      "Eloquent"
     ]
   },
   "Mute": {
@@ -32,7 +32,7 @@ var traits = {
     ],
     "conflict": [
       "Foul Mouth",
-      "Eloquence",
+      "Eloquent",
 	  "Pretty voice"
     ]
   },
@@ -1333,11 +1333,11 @@ var traits = {
       ""
     ]
   },
-  "Eloquence": {
-    "name": "Eloquence",
+  "Eloquent": {
+    "name": "Eloquent",
     "description": "You must say that $name has Silver Tongue, but that doesn't describe enough. \n\n[color=aqua]Charm+. [/color]",
     "effect": {
-      "code": "eloquence",
+      "code": "eloquent",
       "charm_max": 20,
       "charm_base": 25
     },
