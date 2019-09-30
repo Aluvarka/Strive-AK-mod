@@ -478,7 +478,7 @@ func _on_slavedescript_meta_clicked( meta ):
 		if person == globals.player:
 			globals.main._on_selfinspectlooks_pressed()
 		else:
-	slavetabopen()
+			slavetabopen()
 
 var relativesdata
 

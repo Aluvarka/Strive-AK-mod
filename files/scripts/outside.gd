@@ -1733,7 +1733,7 @@ func shopclose():
 	if currentshop.has('sprite') && currentshop.code != 'aydashop':
 		get_parent().nodefade($charactersprite, 0.3)
 
-	$shoppanel/exchange.visible = true
+func exchangeRefresh():
 	for i in $shoppanel/exchange/ScrollContainer/GridContainer.get_children():
 		if i.name != 'Button':
 			i.hide()
@@ -1784,14 +1784,14 @@ func exchangeitemsconfirm():
 		globals.state.unstackables.erase(i.id)
 	ItemsForExchange.clear()
 	for i in range(numNew):
-	var newitem = globals.items.createunstackable(globals.weightedrandom(treasurepool))
-	if newitem.enchant != 'unique':
-		if randf() >= 0.3:
-			globals.items.enchantrand(newitem, 2)
-		else:
-			globals.items.enchantrand(newitem)
-		#newitem.enchant = 'rare'
-	globals.state.unstackables[newitem.id] = newitem
+		var newitem = globals.items.createunstackable(globals.weightedrandom(treasurepool))
+		if newitem.enchant != 'unique':
+			if randf() >= 0.3:
+				globals.items.enchantrand(newitem, 2)
+			else:
+				globals.items.enchantrand(newitem)
+			#newitem.enchant = 'rare'
+		globals.state.unstackables[newitem.id] = newitem
 		if numNew < 6:
 			get_parent().infotext('Recieved '+ newitem.name + ' from exchange','green')
 	if numNew >= 6:

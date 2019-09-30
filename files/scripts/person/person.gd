@@ -298,13 +298,13 @@ func xp_get():
 
 func getessence():
 	var essence
-	if race in ['Demon', 'Arachna', 'Lamia']:
+	if race in ['Demon', 'Arachna', 'Lamia', 'Dark Elf']:
 		essence = 'taintedessenceing'
-	elif race in ['Fairy', 'Drow', 'Dragonkin']:
+	elif race in ['Fairy', 'Drow', 'Dragonkin', 'Seraph']:
 		essence = 'magicessenceing'
-	elif race == 'Dryad':
+	elif race == ['Dryad', 'Elf', 'Gnome']:
 		essence = 'natureessenceing'
-	elif race in ['Harpy', 'Centaur'] || race.find('Beastkin') >= 0 || race.find('Halfkin') >= 0:
+	elif race in ['Harpy', 'Centaur', 'Taurus'] || race.find('Beastkin') >= 0 || race.find('Halfkin') >= 0:
 		essence = 'bestialessenceing'
 	elif race in ['Slime','Nereid', "Scylla"]:
 		essence = 'fluidsubstanceing'

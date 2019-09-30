@@ -780,9 +780,18 @@ func _on_end_pressed():
 				consumption = max(3, consumption - (chef.sagi + (chef.wit/20))/2)
 				if chef.race == 'Scylla':
 					consumption = max(3, consumption - 1)
-			if person.traits.has("Small Eater"):
+			if person.traits.has("Small Eater") || person.race == 'Fairy':
 				consumption = consumption/3
-
+			if person.race == 'Gnome' || person.race == 'Goblin':
+				consumption = consumption/2
+			if person.race == 'Centaur' || person.race == 'Taurus':
+				consumption = consumption*1.25
+			if person.race == 'Lamia' || person.race == 'Arachna':
+				consumption = consumption*0.8
+			if person.race == 'Dragonkin':
+				consumption = consumption*1.5
+			if person.age == 'child':
+				consumption = consumption*0.8
 			if person.traits.has("Plump"):
 					consumption = round(consumption + consumption/2)
 			if person.traits.has("Obese"):
@@ -853,7 +862,7 @@ func _on_end_pressed():
 						if person.asssize != 'flat':
 							person.asssize = globals.sizearray[globals.sizearray.find(person.asssize)-1]
 						person.add_trait("Plump")
-						elif person.traits.find("Baker") <= 0:
+						if person.traits.find("Baker") <= 0:
 							person.stats.energy_max -= 10
 			if person.obed < 25 && person.cour >= 50 && person.rules.silence == false && person.traits.find('Mute') < 0 && person.traits.find('Good Natured') < 0 && person.sleep != 'jail' && person.sleep != 'farm' && person.brand != 'advanced'&& rand_range(0,1) > 0.5:
 				text0.set_bbcode(text0.get_bbcode()+person.dictionary('$name dares to openly show $his disrespect towards you and instigates other servants. \n'))

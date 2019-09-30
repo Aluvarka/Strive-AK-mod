@@ -332,8 +332,8 @@ func _on_confirm_pressed():
 	var price = selecteditem.get_meta('price')
 	var item = selecteditem.get_meta('item')
 	if isBuying:
-	if amount*price > globals.resources.gold:
-		globals.main.infotext("Not enough gold",'red')
+		if amount*price > globals.resources.gold:
+			globals.main.infotext("Not enough gold",'red')
 		return
 	if state == 'backpack' && item.has('weight') && globals.state.calculateweight().currentweight + amount*item.weight > globals.state.calculateweight().maxweight:
 		globals.main.infotext("Not enough carry capacity",'red')
