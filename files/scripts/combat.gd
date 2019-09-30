@@ -612,7 +612,7 @@ class combatant:
 					i.attack += 50
 					scene.combatlog += "\n[color=red]Cult leader absorbs the power of defeated ally and grows stronger![/color]"
 		if group == 'player':		
-			scene.playergroup.remove(scene.playergroup.find(person.id))
+			scene.playergroup.remove(scene.playergroup.find(self))
 			pgrp += 1
 			if person == globals.player:
 				if pgrp <= globals.state.playergroup.size():

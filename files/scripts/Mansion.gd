@@ -498,7 +498,7 @@ func rebuild_slave_list():
 				node.find_node('portait').set_texture(globals.loadimage(person.imageportait))
 #			else:
 #				node.find_node('portait').hide()
-		elif person.sleep == 'jail':
+		elif person.sleep == 'jail' && (person.away.duration == 0 || person.away.at in ['rest','lab','in labor']):
 			prison += 1
 		size += 1
 	if prison >= 1:
@@ -560,6 +560,8 @@ func rebuild_slave_list():
 				label.set_text(person.name_long() + ' will be undergoing modification for '+ str(person.away.duration))
 			elif person.away.at == 'rest':
 				label.set_text(person.name_long() + ' will be taking a rest for '+ str(person.away.duration))
+			elif person.away.at == 'vacation':
+				label.set_text(person.name_long() + ' will be on vacation for '+ str(person.away.duration))
 			else:
 				label.set_text(person.name_long() + ' will be unavailable for '+ str(person.away.duration))
 			if person.away.duration == 1:
@@ -884,18 +886,14 @@ func _on_end_pressed():
 					else:
 						text0.set_bbcode(text0.get_bbcode()+person.dictionary('[color=#ff4949]$name attempted to escape during the night but being handcuffed slowed them down and they were quickly discovered![/color]\n'))
 			#Races
-			if person.race == 'Elf':
-				person.asser = person.conf
 			elif person.race == 'Orc':
 				slavehealing += 0.15
 			elif person.race == 'Slime':
 				person.toxicity = 0
 			#Traits
-			if person.traits.has("Regeneration"):
-				person.health += person.stats.health_max/4
 			if person.traits.has("Uncivilized"):
 				for i in globals.slaves:
-					if i.spec == 'tamer' && (i.work == person.work || i.work in ['rest','headgirl','jailer']) && i.away.duration == 0 && i.obed > 60:
+					if i.spec == 'tamer'&& i.away.duration == 0 && i.obed > 60 && (i.work == person.work || i.work in ['rest','nurse','headgirl'] || (i.work == 'jailer' && person.sleep == 'jail') || (i.work == 'farmmanager' && person.work in ['cow','hen'])):
 						person.obed += 30
 						person.loyal += 5
 						if randf() < 0.1:
@@ -1087,7 +1085,7 @@ func _on_end_pressed():
 				person.loyal += rand_range(1,4)
 				person.energy += rand_range(25,45)+ person.send*6
 				for i in globals.slaves:
-					if i.sleep == 'your' && i != person:
+					if i.sleep == 'your' && i != person && i.away.duration == 0:
 						globals.addrelations(person, i, 0)
 						if (person.relations[i.id] <= 200 && !person.traits.has("Fickle")) || person.traits.has("Monogamous"):
 							globals.addrelations(person, i, -rand_range(50,100))
@@ -1203,13 +1201,43 @@ func _on_end_pressed():
 					text0.set_bbcode(text0.get_bbcode() + person.dictionary("[color=#ff4949]$name appears to be rather unhappy about quality of $his life and demands better living conditions from you. [/color]\n"))
 		elif person.away.duration > 0:
 			person.away.duration -= 1
-			if person.away.duration == 0 && person.away.at == 'lab' && person.health < 5:
+			if person.away.at == 'lab' && person.health < 5:
 				var temptext = "$name has not survived the laboratory operation due to poor health."
 				deads_array.append({number = count, reason = temptext})
 			else:
+				if person.away.at in ['rest','vacation']:
+					slavehealing += 0.15
+					person.stress -= 20
+				if person.race == 'Orc':
+					slavehealing += 0.15
+				if person.traits.has("Infirm"):
+					slavehealing = slavehealing/3
+				person.health += slavehealing * person.stats.health_max
+				if person.race == 'Fairy':
+					person.stress -= rand_range(10,20)
+				else:
+					person.stress -= rand_range(5,10)
+				person.energy += rand_range(20,30) + person.send*6
+
 				if person.away.duration == 0:
-					person.away.at = ''
 					text0.set_bbcode(text0.get_bbcode() + person.dictionary("$name returned to the mansion and went back to $his duty. \n"))
+					var sleepChange = false
+					if person.sleep != 'communal':
+						match person.sleep:
+							'personal':
+								sleepChange = globals.count_sleepers().personal > globals.state.mansionupgrades.mansionpersonal
+							'your':
+								sleepChange = globals.count_sleepers().your_bed > globals.state.mansionupgrades.mansionbed
+							'jail':
+								sleepChange = globals.count_sleepers().jail > globals.state.mansionupgrades.jailcapacity
+							'farm':
+								if globals.count_sleepers().farm > variables.resident_farm_limit[globals.state.mansionupgrades.farmcapacity]:
+									sleepChange = true
+									person.job = 'rest'
+					if sleepChange:
+						person.sleep = 'communal'
+						text0.set_bbcode(text0.get_bbcode() + person.dictionary("$name's sleeping place is no longer available so $he has moved to the communal area. \n"))
+					person.away.at = ''
 				for i in person.effects.values():
 					if i.has('duration') && i.code != 'captured':
 						if person.race != 'Dark Elf' || randf() > 0.5:
@@ -1230,7 +1258,7 @@ func _on_end_pressed():
 		if headgirl.spec == 'executor':
 			headgirlconf = max(100, headgirl.conf)
 		for i in globals.slaves:
-			if i != headgirl && i.traits.find('Lone wolf') <= 0 && i.away.duration < 1 && i.sleep != 'jail' && i.sleep != 'farm':
+			if i != headgirl && i.traits.find('Lone wolf') <= 0 && i.away.duration == 0 && i.sleep != 'jail' && i.sleep != 'farm':
 				headgirl.xp += 3
 				globals.addrelations(i, headgirl, 15)
 				if i.obed < 65 && globals.state.headgirlbehavior == 'strict':
@@ -1253,7 +1281,7 @@ func _on_end_pressed():
 		if jailer.spec == 'executor':
 			jailerconf = max(100, jailer.conf)
 		for person in globals.slaves:
-			if person.sleep == 'jail':
+			if person.sleep == 'jail' && person.away.duration == 0:
 				jailer.xp += 5
 				if person.obed < 80:
 					globals.addrelations(person, jailer, 25)
@@ -1266,7 +1294,7 @@ func _on_end_pressed():
 		if farmmanager.spec == 'executor':
 			farmconf = max(100, farmmanager.conf)
 		for person in globals.slaves:
-			if person.sleep == 'farm':
+			if person.sleep == 'farm' && person.away.duration == 0:
 				var production = 0
 				if person.obed < 75:
 					globals.addrelations(person, farmmanager, rand_range(-25,-40))
@@ -2209,19 +2237,23 @@ func build_mansion_info():
 	var jobdict = {headgirl = null, jailer = null, farmmanager = null, cooking = null, nurse = null, labassist = null}
 	
 	for i in globals.slaves:
-		if jobdict.has(i.work):
+		if jobdict.has(i.work) && i.away.at != 'hidden':
 			jobdict[i.work] = i
 	
 	if globals.slaves.size() >= 8:
 		text += "\nHeadgirl: "
 		if jobdict.headgirl == null:
 			text += unassigned
+		elif jobdict.headgirl.away.duration != 0:
+			text += "[color=aqua]" + jobdict.headgirl.name_short() + "[/color] [color=yellow](away)[/color]"
 		else:
 			text += "[color=aqua][url=id" + jobdict.headgirl.id + "]" + jobdict.headgirl.name_short() + "[/url][/color]"
 	
 	text += "\nJailer: "
 	if jobdict.jailer == null:
 		text += unassigned
+	elif jobdict.jailer.away.duration != 0:
+		text += "[color=aqua]" + jobdict.jailer.name_short() + "[/color] [color=yellow](away)[/color]"
 	else:
 		text += "[color=aqua][url=id" + jobdict.jailer.id + "]" + jobdict.jailer.name_short() + "[/url][/color]"
 	
@@ -2229,6 +2261,8 @@ func build_mansion_info():
 		text += "\nFarm Manager: "
 		if jobdict.farmmanager == null:
 			text += unassigned
+		elif jobdict.farmmanager.away.duration != 0:
+			text += "[color=aqua]" + jobdict.farmmanager.name_short() + "[/color] [color=yellow](away)[/color]"
 		else:
 			text += "[color=aqua][url=id" + jobdict.farmmanager.id + "]" + jobdict.farmmanager.name_short() + "[/url][/color]"
 	
@@ -2237,11 +2271,15 @@ func build_mansion_info():
 	text += "\nChef: "
 	if jobdict.cooking == null:
 		text += unassigned
+	elif jobdict.cooking.away.duration != 0:
+		text += "[color=aqua]" + jobdict.cooking.name_short() + "[/color] [color=yellow](away)[/color]"
 	else:
 		text += "[color=aqua][url=id" + jobdict.cooking.id + "]" + jobdict.cooking.name_short() + "[/url][/color]"
 	text += "\nNurse: "
 	if jobdict.nurse == null:
 		text += unassigned
+	elif jobdict.nurse.away.duration != 0:
+		text += "[color=aqua]" + jobdict.nurse.name_short() + "[/color] [color=yellow](away)[/color]"
 	else:
 		text += "[color=aqua][url=id" + jobdict.nurse.id + "]" + jobdict.nurse.name_short() + "[/url][/color]"
 	
@@ -2249,6 +2287,8 @@ func build_mansion_info():
 		text += "\nLab Assistant: "
 		if jobdict.labassist == null:
 			text += unassigned
+		elif jobdict.labassist.away.duration != 0:
+			text += "[color=aqua]" + jobdict.labassist.name_short() + "[/color] [color=yellow](away)[/color]"
 		else:
 			text += "[color=aqua][url=id" + jobdict.labassist.id + "]" + jobdict.labassist.name_short() + "[/url][/color]"
 	
@@ -2281,7 +2321,7 @@ func build_mansion_info():
 				
 				if person.stress < 50: 
 					value = 'high'
-				elif person.stress < 880:
+				elif person.stress < 80:
 					value = 'med'
 				else:
 					value = 'low'

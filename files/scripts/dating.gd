@@ -1064,6 +1064,7 @@ func stop(person, counter):
 func drunkness():
 	if drunkness > max(0, person.send*2) + 1:
 		person.away.duration = 1
+		person.away.at = 'rest'
 		endencounter()
 		$end/RichTextLabel.bbcode_text += decoder('\n\n[color=yellow][name2] has passed out from alcohol overdose. [/color]')
 
@@ -1115,4 +1116,5 @@ func _on_confirmsex_pressed():
 	get_parent()._on_startbutton_pressed()
 	yield(get_parent(),'animfinished')
 	get_parent().sexmode = 'meet'
+	get_parent().backgroundinstant('mansion')
 

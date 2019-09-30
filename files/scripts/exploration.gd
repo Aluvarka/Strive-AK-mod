@@ -585,6 +585,7 @@ func chestlockpick(person):
 	
 	text = person.dictionary(text)
 	if unlock == false:
+		outside.playergrouppanel()
 		treasurechestoptions(text)
 	else:
 		showlootscreen(text)
@@ -606,6 +607,7 @@ func chestbash(person):
 	
 	text = person.dictionary(text)
 	if unlock == false:
+		outside.playergrouppanel()
 		treasurechestoptions(text)
 	else:
 		showlootscreen(text)
@@ -1872,9 +1874,11 @@ func umbrashop():
 func umbrabuyslaves():
 	outside.mindread = false
 	outside.slavearray = globals.guildslaves.umbra
+	outside.get_node("playergrouppanel/VBoxContainer").visible = false
 	outside.slaveguildslaves()
 
 func umbrasellslaves():
+	outside.get_node("playergrouppanel/VBoxContainer").visible = false
 	outside.sellslavelist('umbra')
 	outside.sellslavelocation = 'umbra'
 

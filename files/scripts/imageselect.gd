@@ -62,14 +62,14 @@ func buildimagelist(type = mode):
 	for i in globals.dir_contents(currentpath):
 		if filecheck.file_exists(i) && (i.find('.png') >= 0 || i.find('.jpg') >= 0):
 			var node = get_node("ScrollContainer/GridContainer/Button").duplicate()
-			var iconpath = i.replace(currentpath, thumbnailpath + type)
+			var iconpath = i.replace(currentpath, thumbnailpath + type + '/')
 			node.set_meta('thumbnail', iconpath)
 			if !filecheck.file_exists(iconpath) && globals.rules.thumbnails == true:
 				createimagethumbnail(i, iconpath)
 			get_node("ScrollContainer/GridContainer").add_child(node)
 			#node.get_node("pic").set_texture(globals.loadimage(iconpath))
 			node.connect('pressed', self, 'setslaveimage', [i])
-			node.get_node("Label").set_text(i.replacen(currentpath + '/','').replacen('.jpg','').replacen('.png',''))
+			node.get_node("Label").set_text(i.replacen(currentpath,'').replacen('.jpg','').replacen('.png',''))
 			node.set_meta("type", i)
 			node.set_meta("loaded", false)
 	$ScrollContainer/GridContainer.move_child($ScrollContainer/GridContainer/Button, $ScrollContainer/GridContainer.get_children().size())

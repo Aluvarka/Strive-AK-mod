@@ -119,7 +119,7 @@ var beautytemp = 0
 var fear_mod = 1
 
 var lewdness = 0 setget lewdness_set
-var asser = 0
+var asser = 0 setget asser_set
 
 var stats = {
 	str_max = 0,
@@ -252,6 +252,9 @@ func levelupreqs_set(value):
 
 func lewdness_set(value):
 	lewdness = clamp(round(value), 0, 120)
+
+func asser_set(value):
+	asser = clamp(value, 0, 100)
 
 func fear_set(value):
 	var difference = value - fear

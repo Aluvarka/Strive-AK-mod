@@ -1,6 +1,7 @@
 extends Node
 
 var state
+var isBuying = true
 var location = 'mansion'
 var filter = ''
 
@@ -123,6 +124,8 @@ func itemsinventory():
 			array.append([])
 			array[array.size()-1].append(i)
 		
+	array.sort_custom(load("res://files/inventory.gd").new(), 'sortgear')
+
 	for i in array:
 		button = get_node("ScrollContainer/GridContainer/Button").duplicate()
 		button.visible = true
@@ -189,6 +192,8 @@ func itemsbackpack():
 			array.append([])
 			array[array.size()-1].append(i)
 	
+	array.sort_custom(load("res://files/inventory.gd").new(), 'sortgear')
+
 	for i in array:
 		var price = getcost(i[0], 'sell')
 		button = get_node("ScrollContainer/GridContainer/Button").duplicate()
@@ -299,43 +304,26 @@ func _on_inventoryclose_pressed():
 
 
 func sellitem(button):
+	isBuying = false
 	var item = button.get_meta('item')
-	var gold = button.get_meta('price')
-	globals.resources.gold += gold
-	if state == 'inventory' or (item.has('owner') && item.owner != null):
-		if item.has('id'):
-			var itemarray = button.get_meta('itemarray')
-			var tempitem = itemarray[itemarray.size()-1]
-			globals.state.unstackables.erase(tempitem.id)
-			itemarray.erase(tempitem)
-			button.get_node('number').set_text(str(itemarray.size()))
-			if itemarray.size() <= 0:
-				button.visible = false
-				button.queue_free()
-			calculateweight()
-		else:
-			item.amount -= 1
-			button.get_node('number').set_text(str(item.amount))
-			if item.amount <= 0:
-				button.visible = false
-				button.queue_free()
-	elif state == 'backpack':
-		globals.state.backpack.stackables[item.code] -= 1
-		if globals.state.backpack.stackables.has(item.code):
-			button.get_node('number').set_text(str(globals.state.backpack.stackables[item.code]))
-		else:
-			button.visible = false
-			button.queue_free()
-		calculateweight()
-	$gold.text = str(globals.resources.gold)
+	var cost = getcost(item, 'sell')
+	var text = "You will sell [color=green]" + item.name + "[/color] for " + str(cost) + " gold each. "
+	text += "\nOffer for [color=yellow]1[/color] is [color=yellow]" + str(cost) + "[/color] gold"
+	selecteditem = button
+	$amountselect/SpinBox.value = 1
+	$amountselect/RichTextLabel.bbcode_text = text
+	$amountselect.popup()
 
 func buyitem(button):
-	var text = ''
+	isBuying = true
 	var item = button.get_meta('item')
-	text += "You will purchase [color=green]" + item.name + "[/color] for " + str(getcost(item, 'buy')) + " gold per piece. "
+	var cost = getcost(item, 'buy')
+	var text = "You will purchase [color=green]" + item.name + "[/color] for " + str(cost) + " gold each. "
+	text += "\nCost for [color=yellow]1[/color] is [color=yellow]" + str(cost) + "[/color] gold"
 	selecteditem = button
-	$amountselect.popup()
+	$amountselect/SpinBox.value = 1
 	$amountselect/RichTextLabel.bbcode_text = text
+	$amountselect.popup()
 
 var selecteditem
 
@@ -343,6 +331,7 @@ func _on_confirm_pressed():
 	var amount = $amountselect/SpinBox.value
 	var price = selecteditem.get_meta('price')
 	var item = selecteditem.get_meta('item')
+	if isBuying:
 	if amount*price > globals.resources.gold:
 		globals.main.infotext("Not enough gold",'red')
 		return
@@ -384,6 +373,37 @@ func _on_confirm_pressed():
 	elif state == 'backpack':
 		calculateweight()
 		itemsbackpack()
+	else:
+		if amount > int(selecteditem.get_node('number').text):
+			globals.main.infotext("Not enough items",'red')
+			return
+		globals.resources.gold += price*amount
+		if state == 'inventory' or (item.has('owner') && item.owner != null):
+			if item.has('id'):
+				var itemarray = selecteditem.get_meta('itemarray')
+				for i in range(amount):
+					var tempitem = itemarray[itemarray.size()-1]
+					globals.state.unstackables.erase(tempitem.id)
+					itemarray.erase(tempitem)
+				selecteditem.get_node('number').set_text(str(itemarray.size()))
+				if itemarray.size() <= 0:
+					selecteditem.visible = false
+					selecteditem.queue_free()
+				calculateweight()
+			else:
+				item.amount -= amount
+				selecteditem.get_node('number').set_text(str(item.amount))
+				if item.amount <= 0:
+					selecteditem.visible = false
+					selecteditem.queue_free()
+		elif state == 'backpack':
+			globals.state.backpack.stackables[item.code] -= amount
+			if globals.state.backpack.stackables.has(item.code):
+				selecteditem.get_node('number').set_text(str(globals.state.backpack.stackables[item.code]))
+			else:
+				selecteditem.visible = false
+				selecteditem.queue_free()
+			calculateweight()
 	categoryitems()
 	$gold.text = str(globals.resources.gold)
 	$amountselect.visible = false
@@ -402,18 +422,30 @@ func _on_search_text_changed(new_text):
 	else:
 		itemsbackpack()
 
+func _on_SpinBox_value_changed(value):
+	var text = ""
+	var item = selecteditem.get_meta('item')
+	var amount = $amountselect/SpinBox.value
+	if isBuying:
+		var cost = getcost(item, 'buy')
+		text += "You will purchase [color=green]" + item.name + "[/color] for " + str(cost) + " gold each. "
+		text += "\nCost for [color=yellow]" + str(amount) + "[/color] is [color=yellow]" + str(cost*amount) + "[/color] gold"
+	else:
+		var cost = getcost(item, 'sell')
+		text += "You will sell [color=green]" + item.name + "[/color] for " + str(cost) + " gold each. "
+		text += "\nOffer for [color=yellow]" + str(amount) + "[/color] is [color=yellow]" + str(cost*amount) + "[/color] gold"
+	$amountselect/RichTextLabel.bbcode_text = text
 
 func _on_add5_pressed():
-	if $amountselect/SpinBox.value == 1:
-		$amountselect/SpinBox.value = 0
 	$amountselect/SpinBox.value += 5
 
 
 func _on_add10_pressed():
-	if $amountselect/SpinBox.value == 1:
-		$amountselect/SpinBox.value = 0
 	$amountselect/SpinBox.value += 10
 
 
 func _on_addmax_pressed():
-	$amountselect/SpinBox.value = 99
+	if isBuying:
+		$amountselect/SpinBox.value = floor(globals.resources.gold / selecteditem.get_meta('price'))
+	else:
+		$amountselect/SpinBox.value = int(selecteditem.get_node('number').text)

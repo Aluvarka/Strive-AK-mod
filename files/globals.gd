@@ -673,7 +673,7 @@ static func count_sleepers():
 	var communal = 0
 	var rval = {}
 	for i in globals.slaves:
-		if i.away.at != 'hidden':
+		if i.away.duration == 0 || i.away.at in ['rest','lab','in labor']:
 			if i.sleep == 'personal':
 				personal_room += 1
 			elif i.sleep == 'your':
@@ -1282,6 +1282,8 @@ func load_game(text):
 		Input.set_custom_mouse_cursor(null)
 	else:
 		state.customcursor = "res://files/buttons/kursor1.png"
+	if !state.mansionupgrades.has("farmmana"):
+		state.mansionupgrades.farmmana = 0
 	
 	
 	gameloaded = true
@@ -1306,6 +1308,8 @@ var showalisegreet = false
 func dir_contents(target = "user://saves"):
 	var dir = Directory.new()
 	var array = []
+	if target.ends_with('/'):
+		target.erase(target.length()-1,1)
 	if dir.open(target) == OK:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()

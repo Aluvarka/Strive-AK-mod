@@ -390,6 +390,7 @@ var ingredlist = ['bestialessenceing', 'natureessenceing','taintedessenceing','m
 
 func vacation(person):
 	person.away.duration = int(person.levelupreqs.value)
+	person.away.at = 'vacation'
 	globals.get_tree().get_current_scene()._on_mansion_pressed()
 	globals.get_tree().get_current_scene().popup(person.dictionary("You've sent $name on vacation, boosting $his mood with this sudden reward. "))
 	person.levelup()

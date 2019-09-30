@@ -660,6 +660,7 @@ func _on_slavelistcancel_pressed():
 		slaveguild(location)
 	else:
 		get_parent().get_node("explorationnode").zoneenter('umbra')
+		get_node("playergrouppanel/VBoxContainer").visible = true
 
 func _on_purchasebutton_pressed():
 	globals.resources.gold -= selectedslaveprice
@@ -760,6 +761,7 @@ func _on_slavesellcancel_pressed():
 		sebastian()
 	elif sellslavelocation == 'umbra':
 		get_parent().get_node("explorationnode").zoneenter('umbra')
+		get_node("playergrouppanel/VBoxContainer").visible = true
 
 func clearselection(temp = ''):
 	selectedslave = ''
@@ -1170,6 +1172,7 @@ func _on_serviceconfirm_pressed():
 			person.stats.obed_mod += 0.2
 		person.origins = globals.originsarray[globals.originsarray.find(person.origins)-1]
 		person.away.duration = 1
+		person.away.at = 'training'
 		globals.resources.gold -= operation.price
 	elif operation.code == 'uprise':
 		if person.origins == 'slave':
@@ -1181,6 +1184,7 @@ func _on_serviceconfirm_pressed():
 		if person.levelupreqs.has('code') && person.levelupreqs.code == 'improvegrade':
 			person.levelup()
 		person.away.duration = 1 + globals.originsarray.find(person.origins)
+		person.away.at = 'training'
 	elif operation.code == 'spec':
 		if person.levelupreqs.has('code') && person.levelupreqs.code == 'specialization':
 			person.levelup()
@@ -1189,6 +1193,7 @@ func _on_serviceconfirm_pressed():
 		person.spec = get_node("slaveservicepanel/serviceconfirm").get_meta('spec').code
 		if person.spec == 'bodyguard': person.add_effect(globals.effectdict.bodyguardeffect)
 		person.away.duration = 5
+		person.away.at = 'training'
 	slaveserviceselected = null
 	serviceoperation = null
 	slaveservice()
@@ -1714,6 +1719,7 @@ func shopinitiate(shopname):
 
 
 func shopbuy():
+	$shoppanel/exchange.visible = false
 	$shoppanel/inventory.merchantitems = currentshop.items
 	$shoppanel/inventory.open()
 	if currentshop.has('sprite') && currentshop.sprite != null:
@@ -1727,7 +1733,6 @@ func shopclose():
 	if currentshop.has('sprite') && currentshop.code != 'aydashop':
 		get_parent().nodefade($charactersprite, 0.3)
 
-func exchangeitems():
 	$shoppanel/exchange.visible = true
 	for i in $shoppanel/exchange/ScrollContainer/GridContainer.get_children():
 		if i.name != 'Button':
@@ -1744,6 +1749,14 @@ func exchangeitems():
 			newbutton.connect("mouse_exited", globals, 'itemtooltiphide')
 			newbutton.connect("pressed", self, 'calculateexchange')
 			newbutton.set_meta("item", i)
+
+func exchangeitems():
+	if $shoppanel/exchange.visible:
+		$shoppanel/exchange.visible = false
+		return
+	else:
+		$shoppanel/exchange.visible = true
+	exchangeRefresh()
 	calculateexchange()
 
 var ItemsForExchange = []
@@ -1755,7 +1768,7 @@ func calculateexchange():
 		if i.pressed == true:
 			itemarray.append(i.get_meta('item'))
 	ItemsForExchange = itemarray.duplicate()
-	$shoppanel/exchange/TradeButton.disabled = itemarray.size() < 3
+	$shoppanel/exchange/TradeButton.disabled = itemarray.size() % 3 != 0
 
 var treasurepool = [['armorninja',5],['armorplate',1],['armorleather',20],['armorchain',11],['armorelvenchain',3],['armorrobe',4],
 ['weapondagger',20], ['weaponsword',9], ['weaponclaymore',3], ['weaponhammer', 4], ['underwearlacy', 3], ['underwearboxers', 3],
@@ -1766,9 +1779,11 @@ var treasurepool = [['armorninja',5],['armorplate',1],['armorleather',20],['armo
 ]
 
 func exchangeitemsconfirm():
+	var numNew = ItemsForExchange.size() / 3
 	for i in ItemsForExchange:
 		globals.state.unstackables.erase(i.id)
 	ItemsForExchange.clear()
+	for i in range(numNew):
 	var newitem = globals.items.createunstackable(globals.weightedrandom(treasurepool))
 	if newitem.enchant != 'unique':
 		if randf() >= 0.3:
@@ -1777,7 +1792,11 @@ func exchangeitemsconfirm():
 			globals.items.enchantrand(newitem)
 		#newitem.enchant = 'rare'
 	globals.state.unstackables[newitem.id] = newitem
-	exchangeitems()
+		if numNew < 6:
+			get_parent().infotext('Recieved '+ newitem.name + ' from exchange','green')
+	if numNew >= 6:
+		get_parent().infotext('Recieved many items from exchange','green')
+	exchangeRefresh()
 
 ####QUESTS
 var cali
@@ -2261,7 +2280,9 @@ func useitem(item, person):
 		if person == globals.player:
 			get_parent().popup("After activating Teleportation Seal, you appear inside of your mansion, leaving your party behind. Hopefully they will find a way back in near time. ")
 			for i in globals.state.playergroup:
-				globals.state.findslave(i).away.duration = round(rand_range(1,3))
+				var temp = globals.state.findslave(i)
+				temp.away.duration = round(rand_range(1,3))
+				temp.away.at = 'travel back'
 			globals.main.sound("teleport")
 			mansion()
 		elif globals.slaves.find(person) >= 0:
@@ -2340,7 +2361,7 @@ func freecaptured(person):
 func freetrue():
 	get_node("playergroupdetails/capturedslave").visible = false
 	globals.state.capturedgroup.erase(partyselectedslave)
-	get_parent().infotext('You have released '+ partyselectedslave.name + 'yellow')
+	get_parent().infotext('You have released '+ partyselectedslave.name, 'yellow')
 	_on_details_pressed()
 
 func _on_capturedmindread_pressed():

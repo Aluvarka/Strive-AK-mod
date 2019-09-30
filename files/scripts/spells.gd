@@ -304,6 +304,7 @@ func dreameffect():
 	var spell = globals.spelldict.dream
 	globals.resources.mana -= spellcost(spell)
 	person.away.duration = 1
+	person.away.at = 'rest'
 	person.energy = person.stats.energy_max
 	person.stress -= rand_range(25,35) + caster.smaf*5
 	text = 'You cast sleep on $name, putting $him into deep rest until the next day. '
@@ -347,7 +348,7 @@ func feareffect():
 	var spell = globals.spelldict.fear
 	globals.resources.mana -= spellcost(spell)
 	person.fear += 20+caster.smaf*10
-	person.stress += 20-caster.smaf*3
+	person.stress += max(5, 20-caster.smaf*3)
 	if person.effects.has('captured') == true:
 		text += "\n[color=green]$name becomes less rebellious towards you.[/color]"
 		person.effects.captured.duration -= 1+globals.player.smaf
