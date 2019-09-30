@@ -20,7 +20,7 @@ static func randage():
 
 static func commonrace():
 	var text
-	text = ['Human','Elf','Dark Elf','Halfkin Cat','Halfkin Wolf','Halfkin Fox','Halfkin Bunny','Taurus','Demon','Goblin']
+	text = ['Human','Elf','Dark Elf','Halfkin Cat','Halfkin Wolf','Halfkin Fox','Halfkin Bunny','Taurus','Demon','Goblin','Ork']
 	if globals.rules.furry == true:
 		text.append('Beastkin Cat')
 		text.append('Beastkin Wolf')
@@ -59,7 +59,7 @@ static func rarerace():
 
 static func anyrace():
 	var text
-	text = ['Human','Elf','Dark Elf','Halfkin Cat','Halfkin Wolf','Halfkin Fox','Halfkin Bunny','Taurus','Demon','Goblin','Dragonkin','Harpy','Arachna','Lamia','Nereid','Scylla','Seraph','Drow','Slime','Fairy','Centaur','Gnome']
+	text = ['Human','Elf','Dark Elf','Halfkin Cat','Halfkin Wolf','Halfkin Fox','Halfkin Bunny','Taurus','Demon','Goblin','Ork','Dragonkin','Harpy','Arachna','Lamia','Nereid','Scylla','Seraph','Drow','Slime','Fairy','Centaur','Gnome']
 	if globals.rules.furry == true:
 		text.append('Beastkin Cat')
 		text.append('Beastkin Wolf')
@@ -79,6 +79,13 @@ func randsexspec():
 	text = ['nympho', 'geisha','housekeeper']
 	return text[randi()%text.size()]
 
+#Leonais and Rendrassa's Quests func start
+static func randbeastkin():
+	var text
+	text = ['Beastkin Wolf', 'Beastking Cat', 'Beastkin Fox', 'Beastkin Bunny', 'Beastkin Tanuki']
+	text = text[randi()%text.size()]
+	return text
+#Leonais and Rendrassa's Quests func end
 
 func questarray():
 	var questsarray = {
@@ -197,7 +204,7 @@ func questarray():
 	code = '011',
 	shortdescription = "A local nobleman is looking for a bride for his son.",
 	description = "The head of a noble house wants to arrange a marriage for his love-timid son. In order to preserve their aristocratic dynasty, a pure maiden of Noble descent is required. She must be knowledgeable in the management of an estate, and have an attractiveness befitting for nobility. ",
-	reqs = [['obed','gte', 90], ['sex','eq','female'],['origins','eq','noble'],['beauty','gte',round(rand_range(80,100))]],
+	reqs = [['obed','gte', 80], ['sex','eq','female'],['origins','eq','rich'],['beauty','gte',round(rand_range(80,100))]],
 	reqstemp = [],
 	time = round(rand_range(6,12)),
 	reward = round(rand_range(120,180))*10,
@@ -400,6 +407,77 @@ func questarray():
 	reward = round(rand_range(33,54))*10,
 	location = ['any'],
 	difficulty = 'easy'
+	},
+	####   Rendrassa's Quests
+	quest124 = {
+	code = '124',
+	questreq = globals.rules.furry == true,
+	shortdescription = 'An anti slavery advocate is rescuing his fellow beastkin. ',
+	description = 'A local beastkin is doing his part to buy enslaved beastkin of any type to restore them to freedom. His only requirement is they be pure breastkin. Taming is not required. ',
+	reqs = [['race','eq', randbeastkin()]],
+	reqstemp = [['sex', 'eq', randsex()]],
+	time = round(rand_range(3,5)),
+	reward = round(rand_range(30,40))*10,
+	location = ['frostford'],
+	difficulty = 'easy'
+	},
+	quest125 = {
+	code = '125',
+	shortdescription = 'Adventuring party needs dedicated healer. ',
+	description = 'A varied group of adventurers are in desperate need of a healer for their travels. The healer must have high skills in magic, the courage to not falter even in grim circumstances and be ever loyal to the party. ',
+	reqs = [['obed','gte', 80], ['smaf','gte', 3], ['cour','gte',40]],
+	reqstemp = [['sex', 'eq', randsex()]],
+	time = round(rand_range(6,8)),
+	reward = round(rand_range(80,110))*10,
+	location = ['any'],
+	difficulty = 'medium'
+	},
+	quest126 = {
+	code = '126',
+	questreq = globals.rules.children == true,
+	shortdescription = 'Older gentleman seeks young heir. ',
+	description = 'An aged man needs to name an heir for his estate. He requires a young human boy with similar physical features to himself and carry himself fairly well. The boy must be well behaved and quite smart for his age.',
+	reqs = [['race','eq','Human'], ['sex', 'eq', 'male'], ['obed','gte', 80], ['origins','gte','common'], ['wit','lte',40], ['haircolor','eq',randhaircolor()], ['eyecolor','eq',randanyeyecolor()], ['age','eq','child']],
+	reqstemp = [],
+	time = round(rand_range(4,7)),
+	reward = round(rand_range(90,120))*10,
+	location = ['wimborn'],
+	difficulty = 'hard'
+	},
+	quest127 = {
+	code = '127',
+	questreq = globals.rules.children == true,
+	shortdescription = 'Needing a young servant girl. ',
+	description = 'A call for a young girl to act as servant and playmate has been issued by a well off family for their growing daughter. The girl in need must be biddable, quick and submissive.',
+	reqs = [['sex', 'eq', 'female'], ['obed','gte', 80], ['sagi','lte',4], ['cour','lte',40], ['age','eq','child'], ['bodyshape','eq','humanoid']],
+	reqstemp = [],
+	time = round(rand_range(5,9)),
+	reward = round(rand_range(70,90))*10,
+	location = ['any'],
+	difficulty = 'medium'
+	},
+	quest128 = {
+	code = '128',
+	shortdescription = 'Looking for a suitable mate. ',
+	description = "A member of the $race desires a worthy mate for reproductive purposes. The slave must be at least average in appearance and open to commands. ",
+	reqs = [['obed','gte', 80],['beauty','gte',50]],
+	reqstemp = [['sex', 'eq', randsex()], ['race','eq',rarerace()]],
+	time = round(rand_range(6,10)),
+	reward = round(rand_range(80,110))*10,
+	location = ['any'],
+	difficulty = 'medium'
+	},
+	####   Leo's Quest
+	quest201 = {
+	code = '201',
+	shortdescription = "Mine workers needed.",
+	description = "Short slaves are needed to work in the mines. They must be strong, agile, and disciplined. ",
+	reqs = [['obed','gte', 80],['bodyshape','eq','shortstack'],['cour','gte',40], ['sagi','gte',2],['sstr','gte',2]],
+	reqstemp = [],
+	time = round(rand_range(6,8)),
+	reward = round(rand_range(60,90))*10,
+	location = ['gorn','frostford'],
+	difficulty = 'medium'
 	},
 	}
 	return questsarray

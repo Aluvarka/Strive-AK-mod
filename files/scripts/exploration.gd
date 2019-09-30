@@ -850,10 +850,10 @@ func mindreadcapturee(state = 'encounter'):
 func enemyleave():
 	progress += 1.0
 	var text = ''
-	globals.player.energy -= max(5-floor((globals.player.sagi+globals.player.send)/2),1)
+	globals.player.energy -= max(5-floor((globals.player.sagi+globals.player.send)/2),2)
 	for i in globals.state.playergroup:
 		var person = globals.state.findslave(i)
-		person.energy -= max(5-floor((person.sagi+person.send)/2),1)
+		person.energy -= max(5-floor((person.sagi+person.send)/2),2)
 	zoneenter(currentzone.code)
 	if text != '':
 		mansion.maintext = mansion.maintext +'\n[color=yellow]'+text+'[/color]'

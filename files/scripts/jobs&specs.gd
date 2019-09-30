@@ -884,7 +884,7 @@ func whorewimborn(person):
 		gold = gold*1.25
 	gold = round(gold)
 	person.xp += gold/5
-	text += "By the end of the day $he earned [color=yellow]"+ str(gold) + "[/color] gold.\n"
+	text += "By the end of the night shift $he earned [color=yellow]"+ str(gold) + "[/color] gold.\n"
 	
 	var dict = {text = text, gold = gold}
 	return dict
@@ -980,7 +980,7 @@ func fucktoywimborn(person):
 		gold = gold*1.25
 	gold = round(gold)
 	person.xp += gold/6
-	text += "By the end of the day $he earned [color=yellow]" + str(gold) + "[/color] gold.\n"
+	text += "By the end of the hot night $he earned [color=yellow]" + str(gold) + "[/color] gold.\n"
 	var dict = {text = text, gold = gold}
 	return dict
 

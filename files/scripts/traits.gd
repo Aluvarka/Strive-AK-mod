@@ -724,7 +724,7 @@ var traits = {
       "goodthing"
     ],
     "conflict": [
-      ""
+      "Kleptomania"
     ]    
   },
   "Nimble": {
@@ -831,7 +831,7 @@ var traits = {
 	  "lvlup"
     ],
     "conflict": [
-      ""
+      "Weak"
     ]
   },
   "Tough": {
@@ -849,7 +849,8 @@ var traits = {
 	  "lvlup"
     ],
     "conflict": [
-      "Frail"
+      "Frail",
+      "Weak"
     ]
   },
   "Thick skinned": {
@@ -925,8 +926,8 @@ var traits = {
       "Iron willed"
     ]
   },
-  "Lovable": {
-    "name": "Lovable",
+  "Elegant": {
+    "name": "Elegant",
     "description": "$name's eyes is big, $he has smooth and beautiful skin, almost like baby, everyone charmed by $him. \n\n[color=aqua]Beauty ++; Max charm +15 [/color]",
     "effect": {
       "code": "attractive",
@@ -940,8 +941,7 @@ var traits = {
       "goodthing"
     ],
     "conflict": [
-      "Scarred",
-      "Frail"
+      "Clumsy"
     ]
   },
   "Peaceful mind": {
@@ -1129,7 +1129,9 @@ var traits = {
       "goodthing"
     ],
     "conflict": [
-      ""
+      "Atlethe",
+      "Hunter",
+      "Warrior"
     ]    
   },
   "Warrior": {
@@ -1146,7 +1148,9 @@ var traits = {
       "goodthing"
     ],
     "conflict": [
-      ""
+      "Atlethe",
+      "Hunter",
+      "Magician"
     ]
   },
   "Hunter": {
@@ -1164,7 +1168,9 @@ var traits = {
       "goodthing"
     ],
     "conflict": [
-      ""
+      "Atlethe",
+      "Warrior",
+      "Magician"
     ]
   },
   "Atlethe": {
@@ -1181,7 +1187,9 @@ var traits = {
       "goodthing"
     ],
     "conflict": [
-      ""
+      "Hunter",
+      "Warrior",
+      "Magician"
     ]
   },
   "Happy-go-lucky": {
