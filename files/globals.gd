@@ -730,7 +730,34 @@ func impregnation(mother, father = null, anyfather = false):
 			babyrace = father.race.replace('Beastkin', 'Halfkin')
 		else:
 			babyrace = mother.race.replace('Beastkin', 'Halfkin')
-
+	if (mother.race.find('Bestkin') >= 0 && father.race.find('Halfkin') >= 0  || mother.race.find('Halfkin') >= 0 && father.race.find('Beastkin') >= 0):
+		if (rand_range(0,100) > 50):
+			if (mother.race.find('Bestkin') >= 0):
+				babyrace = mother.race
+			else:
+				babyrace = mother.race.replace('Halfkin', 'Beastkin')
+		else:
+			if (mother.race.find('Bestkin') >= 0):
+				babyrace = mother.race.replace('Beastkin', 'Halfkin')
+			else:
+				babyrace = mother.race
+		if (mother.race.find('Halfkin') >= 0 && father.race.find('Halfkin') >= 0):
+			var beastchance = rand_range(0,100)
+			if (beastchance > 75):
+				babyrace = mother.race.replace('Halfkin', 'Beastkin')
+			elif (beastchance < 25):
+				babyrace = 'Human'
+			else:
+				babyrace = mother.race
+		if (mother.race.find('Halfkin') >= 0 && father.race.find('Human') >= 0 || mother.race.find('Human') >= 0 && father.race.find('Halfkin') >= 0):
+			var beastchance = rand_range(0,100)
+			if (beastchance > 50):
+				if (mother.race.find('Halfkin') >= 0):
+					babyrace = mother.race
+				else:
+					babyrace = father.race
+			else:
+				babyrace = 'Human'
 		
 	var baby = globals.newslave(babyrace, age, 'random', mother.origins)
 	baby.state = 'fetus'
