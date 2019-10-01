@@ -3,3 +3,4 @@ You can download fresh standalone version of redle's mod in https://itch.io/t/54
 Compatible version include inside fresh branch of AKmod  https://github.com/Aluvarka/Strive-AK-mod/tree/Fresh-branch
 Instalation:
 Unpack archive/copy mod content in Strive4power game folder(like c:\games\strive4power\). Yes to rewrite.
+For any question welcome to Strive4Power discord server https://discord.gg/4cfnnsV Aluvarka#9723
