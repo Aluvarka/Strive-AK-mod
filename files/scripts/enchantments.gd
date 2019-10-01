@@ -35,8 +35,8 @@ cursebeauty = {name = "-&v Beauty", id = 'cursebeauty', effect = "cursedbeauty",
 curseobedmod = {name = "-&100v% Obedience", id = 'curseobedmod', effect = "cursedobedmod", mineffect = 0.10, maxeffect = 0.30, itemtypes = ['armor','costume','weapon','accessory'], type = 'onequip'},
 curseobed = {name = "-&v Obedience per day", id = 'curseobed', effect = "cursedobed", mineffect = 5, maxeffect = 15, itemtypes = ['armor','costume','weapon'], type = 'onendday'},
 curseenergy = {name = "-&v Energy", id = 'curseenergy', effect = "cursedenergy", mineffect = 10, maxeffect = 20, itemtypes = ['armor','costume','underwear'], type = 'onequip'},
-curselust = {name = "+&v Lust per day", id = 'curselust', effect = "lust", mineffect = 10, maxeffect = 20, itemtypes = ['armor','costume','underwear'], type = 'onendday'},
-curselustc = {name = "+&v Lust in combat", id = 'curselustc', effect = "lust", mineffect = 2, maxeffect = 6, itemtypes = ['armor','costume','underwear'], type = 'incombat'},
+curselust = {name = "+&v Lust per day", id = 'curselust', effect = "cursedlust", mineffect = 10, maxeffect = 20, itemtypes = ['armor','costume','underwear'], type = 'onendday'},
+curselustc = {name = "+&v Lust in combat", id = 'curselustc', effect = "cursedlustc", mineffect = 2, maxeffect = 6, itemtypes = ['armor','costume','underwear'], type = 'incombatturn'},
 curseluxury = {name = "&v Luxury", id = 'curseluxury', effect = "luxury", effectvalue = -10, itemtypes = ['armor','costume','underwear'], type = 'onequip'},
 }
 

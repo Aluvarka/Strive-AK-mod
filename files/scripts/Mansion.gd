@@ -844,7 +844,7 @@ func _on_end_pressed():
 				person.health -= rand_range(person.stats.health_max/6,person.stats.health_max/4)
 				person.obed -= max(35 - person.loyal/3,10)
 				if person.health < 1:
-					if person.traits.find("Baker") <= 0 && person.traits.find("Plump") <= 0:
+					if person.traits.find("Obese") <= 0 && person.traits.find("Plump") <= 0:
 						text = person.dictionary('[color=#ff4949]$name has died of starvation.[/color]\n')
 						deads_array.append({number = count, reason = text})
 					elif person.traits.find("Plump") > 0:
@@ -870,10 +870,10 @@ func _on_end_pressed():
 					if ii != person && ii.loyal < 30 && ii.traits.find('Lone wolf') <= 0:
 						ii.obed += -(person.charm/3)
 			if person.obed < 50 && person.loyal < 25 && person.sleep != 'jail'&& person.sleep != 'farm'&& person.brand != 'advanced':
-				if randf() < 0.3 && globals.resources.food > 34 || person.traits.find('Kleptomania') < 0 && person.brand != 'advanced' && rand_range(0,100) >= 50:
+				if randf() < 0.3 && globals.resources.food > 34 || person.traits.find('Kleptomania') > 0 && person.brand != 'advanced' && rand_range(0,100) >= 50:
 					text0.set_bbcode(text0.get_bbcode()+person.dictionary('You notice that some of your food is gone.\n'))
 					globals.resources.food -= rand_range(35,70)
-				elif randf() < 0.3 && globals.resources.gold > 19 || person.traits.find('Kleptomania') < 0 && person.brand != 'advanced' && rand_range(0,100) >= 50:
+				elif randf() < 0.3 && globals.resources.gold > 19 || person.traits.find('Kleptomania') > 0 && person.brand != 'advanced' && rand_range(0,100) >= 50:
 					text0.set_bbcode(text0.get_bbcode()+person.dictionary('You notice that some of your gold is missing.\n'))
 					globals.resources.gold -= rand_range(20,40)
 			if person.obed < 25 && person.sleep != 'jail' && person.sleep != 'farm' && person.tags.has('noescape') == false:
