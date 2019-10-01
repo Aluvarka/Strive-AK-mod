@@ -1410,16 +1410,7 @@ func cursedbeauty(value):
 	
 func cursedenergy(value):
 	person.stats.energy_max -= value
-	
-func cursedlust(value):
-	var text = ''
-	person.lust += value
-	return text
-	
-func cursedlustc(value):
-	var text = ''
-	person.lust += value
-	return text
+
 #cursed gear end
 	
 
