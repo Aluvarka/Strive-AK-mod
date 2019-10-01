@@ -1019,7 +1019,7 @@ func _on_end_pressed():
 			if person.stress >= 66 && rand_range(0,10) > 7.5 && person.traits.find("Peaceful mind") <=0 && person.traits.find("Melancholia") <=0:
 				person.add_trait("Melancholia")
 				text0.set_bbcode(text0.get_bbcode() + person.dictionary("[color=red]$name fall in deep depression and lost $his will for life.[/color] \n"))
-			if person.traits.find("Melancholia") > 0 && person.stress >= 99:
+			if person.traits.has("Melancholia") && person.stress >= 99:
 #				person.health -= rand_range(5,15)
 #				text0.set_bbcode(text0.get_bbcode() + person.dictionary("[color=red]$name try to end $his life![/color] \n"))
 				person.stress += rand_range(10,25)
@@ -1028,11 +1028,11 @@ func _on_end_pressed():
 					person.trait_remove("Melancholia")
 					person.add_trait("Broken mind")
 					text0.set_bbcode(text0.get_bbcode() + person.dictionary("[color=red]$name can't cope with heavy stress.![/color] \n"))
-			if person.traits.find("Melancholia") > 0 && person.stress <= 33:
+			if person.traits.has("Melancholia") && person.stress <= 33:
 				if rand_range(0,10) > 8:
 					person.trait_remove("Melancholia")
 					text0.set_bbcode(text0.get_bbcode() + person.dictionary("[color=green]$name return $his back to normal.[/color] \n"))
-			if person.traits.find("Broken mind") >= 0:
+			if person.traits.has("Broken mind"):
 				person.stress = 0
 				person.lust = 0
 			
@@ -1057,7 +1057,7 @@ func _on_end_pressed():
 				person.stress -= rand_range(10,20)
 			else:
 				person.stress -= rand_range(5,10)
-			if person.traits.find("Love childs") > 0:
+			if person.traits.has("Love childs"):
 				person.stress -= rand_range(10,15)
 			
 			#sleep conditions
@@ -1068,10 +1068,10 @@ func _on_end_pressed():
 					person.trait_remove('Sex-crazed')
 			if person.lust > 20 && person.sleep != 'your':
 				person.lust -= round(rand_range(5,10))
-			if person.traits.find('Lone wolf') > 0 && person.sleep != 'jail' && person.sleep != 'personal':
+			if person.traits.has('Lone wolf') && person.sleep != 'jail' && person.sleep != 'personal':
 				person.stress += rand_range(10,15)
 				person.energy -= 10
-			if person.traits.find('Lone wolf') > 0 && person.sleep != 'jail' && person.sleep != 'personal' && person.work in ['rest','nurse','storewimborn','artistwimborn','assistwimborn','whorewimborn','escortwimborn','fucktoywimborn','ffprostitution','guardian','slavecatcher','fucktoy']:
+			if person.traits.has('Lone wolf') && person.sleep != 'jail' && person.sleep != 'personal' && person.work in ['rest','nurse','storewimborn','artistwimborn','assistwimborn','whorewimborn','escortwimborn','fucktoywimborn','ffprostitution','guardian','slavecatcher','fucktoy']:
 				person.stress += rand_range(10,15)
 				text2.set_bbcode(text2.get_bbcode() + person.dictionary('$name sleeps in a private room, which helps $him heal faster and provides some stress relief.\n'))
 			if person.sleep == 'communal' && globals.count_sleepers()['communal'] > globals.state.mansionupgrades.mansioncommunal:
@@ -1160,7 +1160,7 @@ func _on_end_pressed():
 						person.trait_remove('Sickness')
 						text0.bbcode_text += person.dictionary("[color=green]$name now feeling well.[/color]\n")
 			
-			if person.traits.find('Vigorous') >= 0:
+			if person.traits.has('Vigorous'):
 				person.energy += rand_range(20,30)
 			
 			if person.skillpoints < 0:
@@ -1315,9 +1315,9 @@ func _on_end_pressed():
 						production = production + production * (0.33 * person.titsextra)
 					if person.race == 'Taurus':
 						production = production*1.2
-					if person.traits.find("Plump") >= 0:
+					if person.traits.has("Plump"):
 						production = production*1.1
-					if person.traits.find("Obese") >= 0:
+					if person.traits.has("Obese"):
 						production = production*1.2
 				elif person.work == 'hen':
 					production = rand_range(50,100)
@@ -1325,9 +1325,9 @@ func _on_end_pressed():
 						production = production + 50
 					if person.race == 'Harpy':
 						production = production*1.2
-					if person.traits.find("Plump") >= 0:
+					if person.traits.has("Plump"):
 						production = production*1.1
-					if person.traits.find("Obese") >= 0:
+					if person.traits.has("Obese"):
 						production = production*1.2
 				production = production * (0.4 + farmmanager.wit * 0.004 + farmconf * 0.002)
 				if globals.state.mansionupgrades.farmtreatment == 0:

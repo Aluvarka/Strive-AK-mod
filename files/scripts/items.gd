@@ -1361,9 +1361,8 @@ func beauty(value):
 	person.beautytemp += value
 
 func lust(value):
-	var text = ''
 	person.lust += value
-	return text
+	return ''
 
 func luxury(value):
 	person.luxury += value
@@ -1388,14 +1387,12 @@ func obedmod(value):
 #cursed gear start
 
 func cursedobedmod(value):
-	var text = ''
 	person.stats.obed_mod += value
-	return text
+	return ''
 	
 func cursedobed(value):
-	var text = ''
 	person.stats.obed_cur -= value
-	return text
+	return ''
 	
 func cursedhealthmod(value):
 	person.stats.health_bonus += value
