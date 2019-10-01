@@ -1,0 +1,79 @@
+v2.1
+================== Information Organizer ======================
+(for strive0.5.25 includes some fixes from Strive-Bugfix-V2 or V1a)
+
+This mod/patch is a combination of 2 unique sets of changes. The sets are:
+1. Improved Mansion Info
+2. Improved Day End Info
+
+
+Note: currently not setup to be installed by the "Mod-System".  Instead it is designed to be dropped into place over the game files, replacing the original game files with the versions included here.
+
+current release: v2.1
+Improved Day End Info: v2.0a
+Improved Mansion Info: v2.1
+
+current release: v2.0a
+Code integrated into latest available code for strive (v0.5.25).
+Improved Day End Info: v2.0a
+Improved Mansion Info: v2.0
+
+
+v1.0b
+Improved Day End Info: v1.0.2
+Improved Mansion Info: v1.2.1
+
+v1.0
+Improved Day End Info: v1.0
+Improved Mansion Info: v1.2
+
+
+================== Improved Day End Info ======================
+
+The goal of the mod is to improve readability of information displayed at End Day.  Currently it does not do anything with information that is originally provided in the third tab.
+
+v2.0a
+Fix bug from a copy/paste patching in bug-fix V1a
+
+v2.0
+Updated to use v0.5.25 of Strive code.
+
+v1.0.2
+Fixed Scoundrel trait error if trait owner works a non-gold generating job.
+
+v1.0.1
+Fixed housekeeper specialization not triggering if working as Headgirl, Jailer, or Farm Manager
+(although fix does not currently add housekeeper to the summary display in this instance)
+
+v1.0
+Creates a 4th tab of information to be displayed at end of day.
+Sorted list of jobs generating gold
+Sorted list of jobs generating food
+Names: Dead, People Returning to mansion, People ceasing Rebelliousness, Cleaners, Healers, Pregnancies, and those Resting
+
+================== Improved Mansion Info ======================
+v2.1
+Now rounding off cleaning numbers rather than truncating.
+Fix player-race popup.
+(include bugfix V2)
+
+v2.0
+Updated to use v0.5.25 of Strive code.
+Minor font changes.
+Shifted slave names to the right within combat team to allow for better visual alignment.
+
+v1.2.1
+Added Mage Title to Info Banner
+
+v1.2
+Prevent listing people at jobs who are away from the mansion
+
+v1.1
+Change hover-end to hide tooltips correctly that are not related to characters.
+Rearrange info slightly
+(move cleanliness to maid line, changed default setting for empty job positions
+
+v1.0
+Change character hover to use ID instead of temporary array and index
+Enhance information provided on Mansion Information screen
+(core jobs list, additional stats on combat party, camping status, sleeper list improvement, 
