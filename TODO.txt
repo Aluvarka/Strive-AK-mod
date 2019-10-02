@@ -1,0 +1,122 @@
+
+Add abduction branch if u select to keep Emily
+
+Stats degrading system
+
+more races? 
+
+moar traits +++
+
+add athletic trait +5% health, + end,str or agi +++
+
+gifts and "exited" trait\ changed to Happy-go-lucky ++=
+
+more racial features ===
+
+Cursed gear ++=
+
+SHAVED!
+
+Cleptomania ++=
+
+Moar quests! +==
+
+todo: bdsm costume
+
+more weapons/items ===
+
+need pics for ^ and ^ +==
+
+add chance to modify beauty by 1 and apply "beauty mix effect"(like bandage) +++
+
+add to every slave trigger which reflect their status like: in harem; selled; escaped; and then add chance to meet/buy them again by rnd.
+
+change slave generator to spawn more skin colors
+
+Well simple checking "is slave away/in jail" and change job to rest FIXED
+
+random enemies ++=
+
+more encounters: 
+
+include empty ++=
+
+include hunting+food ++=
+
+add: party/adventurers encounter with good items +++ need balance but looking good, delete from some places
+
+crabe +==
+
+randompotionencounter ===
+
+ambush encounter +==
+
+heavy work: +~50% gold from work but minus ~40 energy ===
+
+request: Can you bring back a portrait / body folder choise window?
+
+idea: autosort slaves sheet by "sleep in" you>personal>communal>farm>jail (mb autosort button)
+
+add +random mental points per lvl up(ready?) +++ REVERSED
+
+Allow child to be born without sexual traits ===?
+
+Add replacing slavers pic with slave body if exist --- no way, no no need at all
+
+Add description for dripping milk ++=
+
+Whipping and others can leave bruising(based on strenght&) and also -1hp
+
+Invigorate can be casted only once-per-day and refill 100% for person and (5)0% for u +++
+
+Work profit divide/multiply by worker left energy, also - energy for physical works +++
+
+Separate from main files mini mod(module), which allowed to send for “adventures” different girls. Sended has Away status, success calculate before sending. Remind to player about possibility of “adventure”(?). 
+
+Module “Three cards” expanding daily events up to 3. Can be built in Mansion. Amount of events and frequency can be changed through Constants. 
+
+Expand person origins to: 0 free will, 1 slave, 2 former slave, 3 hireling/paid employer, 4 player.
+
+Need to add new line in Person and changes in whole system =/
+
+As alternative: base Free person on new pseudobrand. thats more better bc leave stats unaffected.
+
+Add "personal pathronage" for nurture girl in to dom/sub by headgirl, through onendday(easy) or daily events(hard)? Can be done through separate work(new work), which avalible if headgirl exist. ===
+
+Rework grade system: stats now didn’t depend on grade, now they depend on startvalue+racebonus+rndvalue. Need changes in stat maximum. Can be heavily base on race and attributes, like strong=courageous magical=witted(more like attributes/stats combination)
+
+Caravans! +++ Add trading with caravans. ===
+
+High chance ambushes. +==
+
+Guild quests with more randomized requests.
+
+If parents not same race then kids or 50% same as parents or Mixed race. 
+
+^New race Mixed - childs of diff races
+
+Adventure mode module. Like went to wild for long journey, really long, need to change and create lot of things.
+
+Randomly generate number from 1 to X on which base Persons personality with own dialogue styles and backgrounds(little stories about). ===
+
+Change food buying system, every person check if autobuying enambled then buy food for himself. If cook exist then buying cost base on cooks skill, or just like 4/5 of cost. ===
+
+Fix autobuying supply system, if market seller exist and box checked then buy supply like 4xResident. === 
+
+Fix lamias legs.(?) ===
+
+Event for EVERY new char, what happened during first(two?) week(s), where they can recieve 23% - good 44% neutral 23% - bad trait,
+
+Allow check to go outside.(?) ===
+
+Add trait for experienced managing. Add professions??? === 
+
+I suggest that "forced" partners will not make any requests. They dont want whole thing at all, then why they want smth?
+
+Also maybe "low obedience" partners dont make impossible requests(eg. they want do smth but refuse to do anything).
+
+Provide more racial features in all ways. ===
+
+Add "mutate" related traits which can be obtained only through suffering. ===
+
+Add molesting punishment. With orgasms for lust >=80. ===
