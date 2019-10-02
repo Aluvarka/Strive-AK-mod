@@ -1129,7 +1129,7 @@ var traits = {
       "goodthing"
     ],
     "conflict": [
-      "Atlethe",
+      "Athlete",
       "Hunter",
       "Warrior"
     ]    
@@ -1148,7 +1148,7 @@ var traits = {
       "goodthing"
     ],
     "conflict": [
-      "Atlethe",
+      "Athlete",
       "Hunter",
       "Magician"
     ]
@@ -1168,16 +1168,16 @@ var traits = {
       "goodthing"
     ],
     "conflict": [
-      "Atlethe",
+      "Athlete",
       "Warrior",
       "Magician"
     ]
   },
-  "Atlethe": {
+  "Athlete": {
     "name": "Atlethe",
     "description": "In healthy body - health spirit. \n\n[color=aqua]Max Endurance +1. [/color]",
     "effect": {
-      "code": "atlethe",
+      "code": "athlete",
       "end_mod": 1,
       "energy_max": 10
     },

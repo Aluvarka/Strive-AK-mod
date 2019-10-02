@@ -1,10 +1,88 @@
 # Strive-AK-mod
-Last update 09.30.19
+Last update 10.02.19
 
 I like game, but for me it's too easy. So for improving game expirience i decide to make this mode. Its only beggining.
 
 
 What's done:
+
+Update from 0.441b to 0.441f
+
+Full merge with Ankmairdor Bugfix V2b.
+
+Added compatible version of redle’s Information OrganizerV2.1. For installation simple drop content of mod folder in game folder.
+
+Enchantments
+
+•	Lustincombat changed from incombat to incombatturn.
+
+Exploration
+
+•	Now minimal required energy for traveling changed from 1 to 2.
+
+Items
+
+•	Toxicity from most potions decreased.
+
+•	Basic solution now can be used for decreasing persons toxicity. Beware of bad aftermath. Don’t use too frequently.
+
+•	Basic solution now can be brewed in alchemical laboratory, required 1 supply and 1 creature remains.
+
+Jobs&Specs
+
+•	Little changes in description of “days” shift. For Wimborntoy and Wimbornwhore it is night.
+
+Mansion
+
+•	Changes in food consumption: Fairy eat 3 times less. Gnome/goblin 2 time less(dunno). Centaur/Taurus +25%. Lamia/Arachna -20%(first ‘coldblooded’ snake, second partly u know, spiders). Dragonkin +50%( woo boy, don't eat me!). Childs eat less -20% (or they eat, I’m not finished thinking)
+
+•	Now if u has Headgirl(HG) in Strict behavior – she/he gonna watch ladies food consumption to prevent gaining weight.
+
+•	Fixed some mistakes.
+
+•	Now if u have HG she will tell you who violates diet.
+
+Repetable_quests
+
+•	Now Orcs is common race. Also added in allraces array.
+
+•	Added Leonais and Rendrassa's Quests. https://itch.io/t/554260/help-custom-repeatable-quests#post-967408 
+
+•	Reward for some quests increased/decreased.
+
+•	Quest 011 "A local nobleman is looking for a bride for his son.", now its required 80+ obedience and Rich instead of 90+ and Noble person.
+
+•	Quest 020 "Wanted: dogs for breeding purposes." Changed, now its required “No bad traits”
+
+•	Quest 024, Finally, after almost year I finish it! Thx for added reqsfunc = [], now quest work as intended.
+
+•	Quest 025 Changed, now u can found this request only in Wimborn and Gorn.
+
+•	Quest 026 WiP. Changes: No random beauty, now need below 75.
+
+•	Quest 027 Strength changed for 1-2 to 1-3, no random beauty, now need below 50.
+
+•	Quest 028 Changed, from anyrace to commonrace.
+
+•	New Quest 029. "A local looking for young innocent slave"
+
+•	New Quest 030. "Rich man looking for good, cute and obedient pet"
+
+•	Added Rendrassa's Quests and Leo's Quest.
+
+•	New function: 'Intake virgin.' As it say.
+
+Traits
+
+•	Changes in names: Eloquence to Eloquent, Lovable to Elegant(I think, I need to keep both(?)), Atlethe to Athlete(shame on me)
+
+•	Scoundrel now conflict with Kleptomania, Vigorous, and Tough with Weak, Elegant with Clumsy, Magician, Hunter, Athlete, and Warrior with each other.
+
+Person
+
+•	Essence’s now “drop” from: Dark Elf – Tainted, Seraph – Magic, Elf and Gnome – nature, Taurus – bestial.
+
+0 to 0.441b:
 
 Traits
 •	Changes in exist traits: Clever, Ascetic and Small Eater now Personality and can be obtained through lvl up. Hard Worker and Scoundrel now Personality. Grateful now can be obtained through lvl up.

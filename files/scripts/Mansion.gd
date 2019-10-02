@@ -812,6 +812,8 @@ func _on_end_pressed():
 							person.titssize = globals.sizearray[globals.sizearray.find(person.titssize)+1]
 						if person.asssize != 'huge':
 							person.asssize = globals.sizearray[globals.sizearray.find(person.asssize)+1]
+						if headgirl != null:
+							text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=red]$name reports, that ') + person.dictionary('$name gaining weight. [/color]\n'))
 					elif rand_range(0,100) <= 3 && !person.traits.has("Plump") && !person.traits.has("Obese"):
 						person.add_trait("Plump")
 						if person.traits.find("Baker") <= 0:
@@ -820,8 +822,8 @@ func _on_end_pressed():
 							person.titssize = globals.sizearray[globals.sizearray.find(person.titssize)+1]
 						if person.asssize != 'huge':
 							person.asssize = globals.sizearray[globals.sizearray.find(person.asssize)+1]
-					if headgirl != null:
-						text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=yellow]$name reports, that ') + person.dictionary('$name gaining weight. [/color]\n'))
+						if headgirl != null:
+							text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=yellow]$name reports, that ') + person.dictionary('$name gaining weight. [/color]\n'))
 				elif person.rules.betterfood == false && person.sleep != 'farm' || person.energy < person.stats.energy_max/1.3 && person.sleep != 'farm' || headgirl != null && globals.state.headgirlbehavior == 'strict':
 					if person.traits.has("Plump") && rand_range(0,100) <= 10:
 						person.trait_remove("Plump")
@@ -881,10 +883,10 @@ func _on_end_pressed():
 					if ii != person && ii.loyal < 30 && ii.traits.find('Lone wolf') <= 0:
 						ii.obed += -(person.charm/3)
 			if person.obed < 50 && person.loyal < 25 && person.sleep != 'jail'&& person.sleep != 'farm'&& person.brand != 'advanced':
-				if randf() < 0.3 && globals.resources.food > 34 || person.traits.find('Kleptomania') > 0 && person.brand != 'advanced' && rand_range(0,100) >= 50:
+				if randf() < 0.3 && globals.resources.food > 34 || person.traits.has('Kleptomania') && person.brand != 'advanced' && rand_range(0,100) >= 50:
 					text0.set_bbcode(text0.get_bbcode()+person.dictionary('You notice that some of your food is gone.\n'))
 					globals.resources.food -= rand_range(35,70)
-				elif randf() < 0.3 && globals.resources.gold > 19 || person.traits.find('Kleptomania') > 0 && person.brand != 'advanced' && rand_range(0,100) >= 50:
+				elif randf() < 0.3 && globals.resources.gold > 19 || person.traits.has('Kleptomania') && person.brand != 'advanced' && rand_range(0,100) >= 50:
 					text0.set_bbcode(text0.get_bbcode()+person.dictionary('You notice that some of your gold is missing.\n'))
 					globals.resources.gold -= rand_range(20,40)
 			if person.obed < 25 && person.sleep != 'jail' && person.sleep != 'farm' && person.tags.has('noescape') == false:
@@ -2331,9 +2333,9 @@ func build_mansion_info():
 				else:
 					value = 'low'
 				text += colordict[value] + statedict.health[value] + "[/color], "
-				if float(person.stats.energy_cur)/person.stats.energy_max > 0.5: 
+				if float(person.stats.energy_cur)/person.stats.energy_base > 0.5: 
 					value = 'high'
-				elif float(person.stats.energy_cur)/person.stats.energy_max > 0.2:
+				elif float(person.stats.energy_cur)/person.stats.energy_base > 0.2:
 					value = 'med'
 				else:
 					value = 'low'
