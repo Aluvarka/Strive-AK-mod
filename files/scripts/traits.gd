@@ -1174,7 +1174,7 @@ var traits = {
     ]
   },
   "Athlete": {
-    "name": "Atlethe",
+    "name": "Athlete",
     "description": "In healthy body - health spirit. \n\n[color=aqua]Max Endurance +1. [/color]",
     "effect": {
       "code": "athlete",
