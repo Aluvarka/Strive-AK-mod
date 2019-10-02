@@ -173,7 +173,7 @@ aphrodisiac = {
 	recipe = 'recipeaphrodisiac',
 	cost = 150,
 	type = 'potion',
-	toxicity = 15,
+	toxicity = 10,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
@@ -201,7 +201,7 @@ hairgrowthpot = {
 	recipe = 'recipehairgrowth',
 	cost = 120,
 	type = 'potion',
-	toxicity = 15,
+	toxicity = 5,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
@@ -215,7 +215,7 @@ maturingpot = {
 	recipe = 'recipematuringpot',
 	cost = 200,
 	type = 'potion',
-	toxicity = 40,
+	toxicity = 20,
 	reqs = 'globals.state.mainquest >= 6',
 	weight = 1,
 	amount = 0
@@ -229,7 +229,7 @@ youthingpot = {
 	recipe = 'recipeyouthingpot',
 	cost = 200,
 	type = 'potion',
-	toxicity = 40,
+	toxicity = 20,
 	reqs = 'globals.state.mainquest >= 6',
 	weight = 1,
 	amount = 0
@@ -243,7 +243,7 @@ regressionpot = {
 	recipe = '',
 	cost = 400,
 	type = 'potion',
-	toxicity = 50,
+	toxicity = 35,
 	reqs = false,
 	weight = 1,
 	amount = 0
@@ -271,7 +271,7 @@ amnesiapot = {
 	recipe = 'recipeamnesiapot',
 	cost = 200,
 	type = 'potion',
-	toxicity = 25,
+	toxicity = 20,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
@@ -285,7 +285,7 @@ lactationpot = {
 	recipe = 'recipelactationpot',
 	cost = 100,
 	type = 'potion',
-	toxicity = 20,
+	toxicity = 10,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
@@ -299,7 +299,7 @@ oblivionpot = {
 	recipe = 'recipeoblivionpot',
 	cost = 300,
 	type = 'potion',
-	toxicity = 50,
+	toxicity = 30,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 2',
 	weight = 1,
 	amount = 0
@@ -327,7 +327,7 @@ stimulantpot = {
 	recipe = 'recipestimulantpot',
 	cost = 150,
 	type = 'potion',
-	toxicity = 20,
+	toxicity = 5,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
@@ -341,7 +341,7 @@ deterrentpot = {
 	recipe = 'recipedeterrentpot',
 	cost = 150,
 	type = 'potion',
-	toxicity = 20,
+	toxicity = 5,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
@@ -355,7 +355,7 @@ minoruspot = {
 	recipe = 'recipeminoruspot',
 	cost = 250,
 	type = 'potion',
-	toxicity = 30,
+	toxicity = 10,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
@@ -369,7 +369,7 @@ majoruspot = {
 	recipe = 'recipemajoruspot',
 	cost = 250,
 	type = 'potion',
-	toxicity = 30,
+	toxicity = 10,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
@@ -405,11 +405,12 @@ basicsolutioning = {
 	code = 'basicsolutioning',
 	name = 'Basic Solution',
 	icon = load("res://files/images/items/basicsolution.png"),
-	description = "Primal ingredient which is used as base for many potions.",
-	effect = '',
+	description = "Primal ingredient which is used as base for many potions. Can be used for clearing from high toxicity.",
+	effect = 'toxicclearance',
 	recipe = 'recipebasicsolution',
 	cost = 40,
 	type = 'potion',
+	toxicity = 0,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
@@ -579,7 +580,7 @@ energizerpot = {
 	recipe = 'recipeclaritypot',
 	cost = 1500,
 	type = 'potion',
-	toxicity = 25,
+	toxicity = 15,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 2',
 	weight = 1,
 	amount = 0
@@ -1719,6 +1720,18 @@ func energeticeffect():
 		return('After ingesting the potion, $name starts to act a lot more active and energetic. ')
 	else:
 		return("Apparently, $name isn't greatly affected by drinking the potion as the previous effect hasn't worn off yet.")
+
+func toxicclearance():
+	var text = ''
+	if person == globals.player:
+		return('You decide this potion is not going to benefit you at all.')
+	if person.toxicity >= 20:
+		person.health -= 5
+		person.energy -= 10	
+		person.toxicity -= 10
+		return('After ingesting the potion, $name turned green and rushed to the restroom holding her stomach. $name spent inside lot of time. ')
+	else:
+		return("Apparently, $name isn't greatly affected by drinking the potion.")
 
 #recipes
 func recipedecrypt(item):

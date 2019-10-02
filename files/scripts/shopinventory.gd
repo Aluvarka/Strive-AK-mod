@@ -123,7 +123,7 @@ func itemsinventory():
 		if entryexists == false:
 			array.append([])
 			array[array.size()-1].append(i)
-		
+	
 	array.sort_custom(load("res://files/inventory.gd").new(), 'sortgear')
 
 	for i in array:
@@ -313,7 +313,7 @@ func sellitem(button):
 	$amountselect/SpinBox.value = 1
 	$amountselect/RichTextLabel.bbcode_text = text
 	$amountselect.popup()
-
+	
 func buyitem(button):
 	isBuying = true
 	var item = button.get_meta('item')
@@ -334,45 +334,45 @@ func _on_confirm_pressed():
 	if isBuying:
 		if amount*price > globals.resources.gold:
 			globals.main.infotext("Not enough gold",'red')
-		return
-	if state == 'backpack' && item.has('weight') && globals.state.calculateweight().currentweight + amount*item.weight > globals.state.calculateweight().maxweight:
-		globals.main.infotext("Not enough carry capacity",'red')
-		return
-	elif state == 'backpack' && (item.code == 'food' || (item.code.find('teleport') >= 0 && item.code != 'teleportseal')):
-		globals.main.infotext("This item can't be purchased for backpack",'red')
-		return
-	if item.type != 'gear':
-		if state != 'backpack':
-			item.amount += amount
-		else:
-			if globals.state.backpack.stackables.has(item.code):
-				globals.state.backpack.stackables[item.code] += amount
-			else:
-				globals.state.backpack.stackables[item.code] = amount
-	else:
-		var counter = amount
-		while counter >= 1:
-			var tmpitem = globals.items.createunstackable(item.code)
+			return
+		if state == 'backpack' && item.has('weight') && globals.state.calculateweight().currentweight + amount*item.weight > globals.state.calculateweight().maxweight:
+			globals.main.infotext("Not enough carry capacity",'red')
+			return
+		elif state == 'backpack' && (item.code == 'food' || (item.code.find('teleport') >= 0 && item.code != 'teleportseal')):
+			globals.main.infotext("This item can't be purchased for backpack",'red')
+			return
+		if item.type != 'gear':
 			if state != 'backpack':
-				globals.state.unstackables[str(tmpitem.id)] = tmpitem
+				item.amount += amount
 			else:
-				globals.state.unstackables[str(tmpitem.id)] = tmpitem
-				tmpitem.owner = 'backpack'
-			counter -= 1
-			globals.main.infotext("Obtained: " + item.name, 'green')
-	if item.code in ['food'] || item.type == 'quest':
-		globals.items.call(item.effect, item)
-	elif item.code.find('teleport') >= 0 && item.code != 'teleportseal':
-		globals.items.call(item.effect, item)
-		selecteditem = null
-	else:
-		globals.resources.gold -= price*amount
-	clearitems()
-	if state == 'inventory':
-		itemsinventory()
-	elif state == 'backpack':
-		calculateweight()
-		itemsbackpack()
+				if globals.state.backpack.stackables.has(item.code):
+					globals.state.backpack.stackables[item.code] += amount
+				else:
+					globals.state.backpack.stackables[item.code] = amount
+		else:
+			var counter = amount
+			while counter >= 1:
+				var tmpitem = globals.items.createunstackable(item.code)
+				if state != 'backpack':
+					globals.state.unstackables[str(tmpitem.id)] = tmpitem
+				else:
+					globals.state.unstackables[str(tmpitem.id)] = tmpitem
+					tmpitem.owner = 'backpack'
+				counter -= 1
+				globals.main.infotext("Obtained: " + item.name, 'green')
+		if item.code in ['food'] || item.type == 'quest':
+			globals.items.call(item.effect, item)
+		elif item.code.find('teleport') >= 0 && item.code != 'teleportseal':
+			globals.items.call(item.effect, item)
+			selecteditem = null
+		else:
+			globals.resources.gold -= price*amount
+		clearitems()
+		if state == 'inventory':
+			itemsinventory()
+		elif state == 'backpack':
+			calculateweight()
+			itemsbackpack()
 	else:
 		if amount > int(selecteditem.get_node('number').text):
 			globals.main.infotext("Not enough items",'red')
@@ -448,4 +448,4 @@ func _on_addmax_pressed():
 	if isBuying:
 		$amountselect/SpinBox.value = floor(globals.resources.gold / selecteditem.get_meta('price'))
 	else:
-		$amountselect/SpinBox.value = int(selecteditem.get_node('number').text)
+		$amountselect/SpinBox.value = int(selecteditem.get_node('number').text)

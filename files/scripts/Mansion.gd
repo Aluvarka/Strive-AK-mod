@@ -895,7 +895,7 @@ func _on_end_pressed():
 					else:
 						text0.set_bbcode(text0.get_bbcode()+person.dictionary('[color=#ff4949]$name attempted to escape during the night but being handcuffed slowed them down and they were quickly discovered![/color]\n'))
 			#Races
-			elif person.race == 'Orc':
+			if person.race == 'Orc':
 				slavehealing += 0.15
 			elif person.race == 'Slime':
 				person.toxicity = 0
