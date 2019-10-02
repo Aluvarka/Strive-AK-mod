@@ -355,14 +355,15 @@ func questarray():
 	},
 	quest024 = {
 	code = '024',
-	shortdescription = "A rich man is looking for a wife.WIP",
-	description = "The head of a noble house wants to arrange a marriage for himself. In order to preserve their aristocratic dynasty, a pure and virgin maiden of Noble descent is required. She must be knowledgeable in the management of an estate, and have an attractiveness befitting for nobility. ",
-	reqs = [['obed','gte', 100], ['sex','eq','female'],['origins','gte','rich'],['beauty','gte', 100]],
+	shortdescription = "A rich man is looking for a wife.",
+	description = "The head of a noble house wants to arrange a marriage for himself. In order to preserve their aristocratic dynasty, a pure and virgin maiden of Rich descent is required. She must be knowledgeable in the management of an estate, and have an attractiveness befitting for nobility. ",
+	reqs = [['obed','gte', 80], ['sex','eq','female'],['origins','gte','rich'],['beauty','gte', 80],['conf','gte', 75],['age','neq','adult']],
 	reqstemp = [],
+	reqsfunc = ['virgin'],
 	time = round(rand_range(6,12)),
-	reward = round(rand_range(95,140))*10,
+	reward = round(rand_range(125,180))*10,
 	location = ['wimborn','gorn'],
-	difficulty = 'easy'
+	difficulty = 'medium'
 	},
 	quest025 = {
 	code = '025',
@@ -370,6 +371,7 @@ func questarray():
 	description = "The owner of local stable look for new $race for breeding his champion horse. I need fastest and hardest $sex, without any flaws.",
 	reqs = [['obed','gte', 80], ['age','eq',randage()], ['sex', 'eq',randsex()], ['beauty','gte', 80], ['send','gte', round(rand_range(3,5))], ['sagi','gte', round(rand_range(3,4))]],
 	reqstemp = [['race','eq', 'Centaur']],
+	reqsfunc = [],
 	time = round(rand_range(7,14)),
 	reward = round(rand_range(145,195))*10,
 	location = ['any'],
@@ -381,6 +383,7 @@ func questarray():
 	description = "A particularly elegant letterhead bears the nuanced description of a slave desired by a famously eccentric collector. A handsome reward is offered for the delivery of a $sex $race.",
 	reqs = [['obed','gte', 100],['beauty','gte', round(rand_range(75,110))]],
 	reqstemp = [['age','eq',randage()],['race','eq',rarerace()],['sex', 'eq', randsex()]],
+	reqsfunc = [],
 	time = round(rand_range(6,12)),
 	reward = round(rand_range(126,185))*10,
 	location = ['any'],
@@ -389,9 +392,10 @@ func questarray():
 	quest027 = {
 	code = '027',
 	shortdescription = "A local lumber look for workers.",
-	description = "The owner of local lumber look for new $race for hard work. They need to be prety might and don't distract other workers.",
-	reqs = [['obed','gte', 60], ['send','gte', round(rand_range(1,2))], ['sstr','gte', round(rand_range(1,2))], ['beauty','lte', round(rand_range(35,55))]],
+	description = "The owner of local lumber look for new $race for hard work. They need to be strong and don't distract other workers.",
+	reqs = [['obed','gte', 60], ['send','gte', round(rand_range(1,2))], ['sstr','gte', round(rand_range(1,2))], ['beauty','lte', 50]],
 	reqstemp = [],
+	reqsfunc = [],
 	time = round(rand_range(7,14)),
 	reward = round(rand_range(25,43))*10,
 	location = ['any'],
@@ -403,8 +407,33 @@ func questarray():
 	description = "A member of local slaveguild try to find person who suit him. He is looking for $sex $age",
 	reqs = [['conf','lte', round(rand_range(20,50))],['wit','gte', round(rand_range(40,60))]],
 	reqstemp = [['age','eq',randage()],['sex', 'eq', randsex()],['race','eq',anyrace()]],
+	reqsfunc = [],
 	time = round(rand_range(7,14)),
 	reward = round(rand_range(33,54))*10,
+	location = ['any'],
+	difficulty = 'easy'
+	},
+	quest029 = {
+	code = '029',
+	shortdescription = "A local looking for young innocent slave",
+	description = "A member of local pervert club try to find innocent $sex of $age age",
+	reqs = [['obed','gte', 80],['beauty','gte', 35]],
+	reqstemp = [['age','neq','adult'],['sex', 'eq', randsex()]],
+	reqsfunc = ['virgin'],
+	time = round(rand_range(7,14)),
+	reward = round(rand_range(40,62))*10,
+	location = ['any'],
+	difficulty = 'easy'
+	},
+	quest030 = {
+	code = '030',
+	shortdescription = "Rich man looking for good, cute pet",
+	description = "A member of local pervert club try to find suitabe pet. $he must be $age age and totally submissive",
+	reqs = [['obed','gte', 100],['asser','lte',40],['conf','lte',30],['beauty','gte', round(rand_range(50,70))]],
+	reqstemp = [['age','eq', randage()],['sex', 'eq', randsex()]],
+	reqsfunc = [],
+	time = round(rand_range(7,14)),
+	reward = round(rand_range(40,62))*10,
 	location = ['any'],
 	difficulty = 'easy'
 	},
@@ -416,6 +445,7 @@ func questarray():
 	description = 'A local beastkin is doing his part to buy enslaved beastkin of any type to restore them to freedom. His only requirement is they be pure breastkin. Taming is not required. ',
 	reqs = [['race','eq', randbeastkin()]],
 	reqstemp = [['sex', 'eq', randsex()]],
+	reqsfunc = [],
 	time = round(rand_range(3,5)),
 	reward = round(rand_range(30,40))*10,
 	location = ['frostford'],
@@ -427,6 +457,7 @@ func questarray():
 	description = 'A varied group of adventurers are in desperate need of a healer for their travels. The healer must have high skills in magic, the courage to not falter even in grim circumstances and be ever loyal to the party. ',
 	reqs = [['obed','gte', 80], ['smaf','gte', 3], ['cour','gte',40]],
 	reqstemp = [['sex', 'eq', randsex()]],
+	reqsfunc = [],
 	time = round(rand_range(6,8)),
 	reward = round(rand_range(80,110))*10,
 	location = ['any'],
@@ -439,6 +470,7 @@ func questarray():
 	description = 'An aged man needs to name an heir for his estate. He requires a young human boy with similar physical features to himself and carry himself fairly well. The boy must be well behaved and quite smart for his age.',
 	reqs = [['race','eq','Human'], ['sex', 'eq', 'male'], ['obed','gte', 80], ['origins','gte','common'], ['wit','lte',40], ['haircolor','eq',randhaircolor()], ['eyecolor','eq',randanyeyecolor()], ['age','eq','child']],
 	reqstemp = [],
+	reqsfunc = [],
 	time = round(rand_range(4,7)),
 	reward = round(rand_range(90,120))*10,
 	location = ['wimborn'],
@@ -451,6 +483,7 @@ func questarray():
 	description = 'A call for a young girl to act as servant and playmate has been issued by a well off family for their growing daughter. The girl in need must be biddable, quick and submissive.',
 	reqs = [['sex', 'eq', 'female'], ['obed','gte', 80], ['sagi','lte',4], ['cour','lte',40], ['age','eq','child'], ['bodyshape','eq','humanoid']],
 	reqstemp = [],
+	reqsfunc = [],
 	time = round(rand_range(5,9)),
 	reward = round(rand_range(70,90))*10,
 	location = ['any'],
@@ -462,6 +495,7 @@ func questarray():
 	description = "A member of the $race desires a worthy mate for reproductive purposes. The slave must be at least average in appearance and open to commands. ",
 	reqs = [['obed','gte', 80],['beauty','gte',50]],
 	reqstemp = [['sex', 'eq', randsex()], ['race','eq',rarerace()]],
+	reqsfunc = [],
 	time = round(rand_range(6,10)),
 	reward = round(rand_range(80,110))*10,
 	location = ['any'],
@@ -474,6 +508,7 @@ func questarray():
 	description = "Short slaves are needed to work in the mines. They must be strong, agile, and disciplined. ",
 	reqs = [['obed','gte', 80],['bodyshape','eq','shortstack'],['cour','gte',40], ['sagi','gte',2],['sstr','gte',2]],
 	reqstemp = [],
+	reqsfunc = [],
 	time = round(rand_range(6,8)),
 	reward = round(rand_range(60,90))*10,
 	location = ['gorn','frostford'],
@@ -483,7 +518,7 @@ func questarray():
 	return questsarray
 
 #warning-ignore:unused_class_variable
-var reqsfuncdescript = {nobadtraits = 'No Negative Physical Traits.'}
+var reqsfuncdescript = {nobadtraits = 'No Negative Physical Traits.', virgin = 'Intake virgin.'}
 
 func nobadtraits(person):
 	var result = true
@@ -492,6 +527,13 @@ func nobadtraits(person):
 		if i.tags.has('detrimental') && i.tags.has('physical'):
 			result = false
 	
+	return result
+	
+func virgin(person):
+	var result = false
+	
+	if person.vagvirgin == true && person.assvirgin == true && person.penisvirgin == true:
+		result = true
 	return result
 
 func generatequest(town, difficulty = 'easy'):

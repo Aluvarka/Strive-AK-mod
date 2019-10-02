@@ -1726,9 +1726,14 @@ func toxicclearance():
 	if person == globals.player:
 		return('You decide this potion is not going to benefit you at all.')
 	if person.toxicity >= 20:
-		person.health -= 5
-		person.energy -= 10	
-		person.toxicity -= 10
+		if person.effects.has('exhaust') == false:
+			person.add_effect(globals.effectdict.exhaust)
+			person.effects.exhaust.duration -= 1
+		else:
+			person.effects.exhaust.duration += 1
+		person.health -= 15
+#		person.energy -= 10	
+		person.toxicity -= round(person.toxicity/3+rand_range(3,6)*person.send)
 		return('After ingesting the potion, $name turned green and rushed to the restroom holding her stomach. $name spent inside lot of time. ')
 	else:
 		return("Apparently, $name isn't greatly affected by drinking the potion.")

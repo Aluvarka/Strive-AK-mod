@@ -801,7 +801,7 @@ func _on_end_pressed():
 				person.loyal += rand_range(0,1)
 				person.obed += person.loyal/5 - (person.cour+person.conf)/10
 				globals.resources.food -= consumption
-				if person.rules.betterfood == true && person.sleep != 'jail' && person.energy > person.stats.energy_max/1.3 && globals.resources.day - person.lastsexday >= 3:
+				if person.rules.betterfood == true && person.sleep != 'jail' && person.energy > person.stats.energy_max/1.3 && globals.resources.day - person.lastsexday >= 3  && (headgirl != null && globals.state.headgirlbehavior != 'strict'):
 					if person.traits.has("Plump") && !person.traits.has("Obese") && rand_range(0,100) <= 5:
 						person.trait_remove("Plump")
 						if person.traits.find("Baker") <= 0:
@@ -820,7 +820,9 @@ func _on_end_pressed():
 							person.titssize = globals.sizearray[globals.sizearray.find(person.titssize)+1]
 						if person.asssize != 'huge':
 							person.asssize = globals.sizearray[globals.sizearray.find(person.asssize)+1]
-				elif person.rules.betterfood == false && person.sleep != 'farm' || person.energy < person.stats.energy_max/1.3 && person.sleep != 'farm':
+					if headgirl != null:
+						text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=yellow]$name reports, that ') + person.dictionary('$name gaining weight. [/color]\n'))
+				elif person.rules.betterfood == false && person.sleep != 'farm' || person.energy < person.stats.energy_max/1.3 && person.sleep != 'farm' || headgirl != null && globals.state.headgirlbehavior == 'strict':
 					if person.traits.has("Plump") && rand_range(0,100) <= 10:
 						person.trait_remove("Plump")
 						if person.traits.find("Baker") <= 0:
@@ -829,6 +831,8 @@ func _on_end_pressed():
 							person.titssize = globals.sizearray[globals.sizearray.find(person.titssize)-1]
 						if person.asssize != 'flat':
 							person.asssize = globals.sizearray[globals.sizearray.find(person.asssize)-1]
+						if headgirl != null:
+							text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=green]$name reports, that ') + person.dictionary('$name losing weight. [/color]\n'))
 					elif person.traits.has("Obese") && rand_range(0,100) <= 8.3:
 						person.trait_remove("Obese")
 						person.stats.energy_max += 30
@@ -839,6 +843,8 @@ func _on_end_pressed():
 							person.titssize = globals.sizearray[globals.sizearray.find(person.titssize)-1]
 						if person.asssize != 'flat':
 							person.asssize = globals.sizearray[globals.sizearray.find(person.asssize)-1]
+						if headgirl != null:
+							text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=green]$name reports, that ') + person.dictionary('$name losing weight. [/color]\n'))
 			else:
 				person.stress += 20
 				person.health -= rand_range(person.stats.health_max/6,person.stats.health_max/4)
@@ -847,7 +853,7 @@ func _on_end_pressed():
 					if person.traits.find("Obese") <= 0 && person.traits.find("Plump") <= 0:
 						text = person.dictionary('[color=#ff4949]$name has died of starvation.[/color]\n')
 						deads_array.append({number = count, reason = text})
-					elif person.traits.find("Plump") > 0:
+					elif person.traits.has("Plump"):
 						person.trait_remove("Plump")
 						if person.traits.find("Baker") <= 0:
 							person.stats.energy_max += 10
@@ -855,7 +861,10 @@ func _on_end_pressed():
 							person.titssize = globals.sizearray[globals.sizearray.find(person.titssize)-1]
 						if person.asssize != 'flat':
 							person.asssize = globals.sizearray[globals.sizearray.find(person.asssize)-1]
-					elif person.traits.find("Obese") > 0:
+						if headgirl != null:
+							text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=green]$name reports, that ') + person.dictionary('$name losing weight. [/color]\n'))
+					elif person.traits.has("Obese"):
+						person.trait_remove("Obese")
 						person.stats.energy_max += 30
 						if person.sex != 'male' && person.titssize != 'flat':
 							person.titssize = globals.sizearray[globals.sizearray.find(person.titssize)-1]
@@ -864,6 +873,8 @@ func _on_end_pressed():
 						person.add_trait("Plump")
 						if person.traits.find("Baker") <= 0:
 							person.stats.energy_max -= 10
+						if headgirl != null:
+							text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=green]$name reports, that ') + person.dictionary('$name losing weight. [/color]\n'))
 			if person.obed < 25 && person.cour >= 50 && person.rules.silence == false && person.traits.find('Mute') < 0 && person.traits.find('Good Natured') < 0 && person.sleep != 'jail' && person.sleep != 'farm' && person.brand != 'advanced'&& rand_range(0,1) > 0.5:
 				text0.set_bbcode(text0.get_bbcode()+person.dictionary('$name dares to openly show $his disrespect towards you and instigates other servants. \n'))
 				for ii in globals.slaves:
