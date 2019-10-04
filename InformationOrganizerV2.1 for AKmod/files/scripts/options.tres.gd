@@ -17,31 +17,37 @@ func ruletoggle(rule):
 			get_node("TabContainer/Game/furrynipples").set_disabled(false)
 	if rule == 'futa':
 		if (globals.rules['futa'] == false):
-			get_node("TabContainer/Game/futaslider").hide()
+			get_node("TabContainer/Game/futasliderlabel").set_text('Random futa occurrence: 0% of females, 0% of people are futa')
+			get_node("TabContainer/Game/futaslider").set_editable(false)
 			get_node("TabContainer/Game/futaballs").set_disabled(true)
 			get_node("TabContainer/Game/futaballs").set_pressed(false)
 			globals.rules['futaballs'] = false
 		else:
-			get_node("TabContainer/Game/futaslider").show()
+			futaslider(globals.rules['futa_chance'])
+			get_node("TabContainer/Game/futaslider").set_editable(true)
 			get_node("TabContainer/Game/futaballs").set_disabled(false)
-	if rule == 'children':
-		if globals.rules.children == false:
-			get_node("TabContainer/Game/noadults").hide()
-			get_node("TabContainer/Game/noadults").set_pressed(false)
-			globals.rules.adults = true
-		else:
-			get_node("TabContainer/Game/noadults").show()
-
+#	if rule == 'children':
+#		if globals.rules.children == false:
+#			get_node("TabContainer/Game/noadults").hide()
+#			get_node("TabContainer/Game/noadults").set_pressed(false)
+#			globals.rules.noadults = false
+#		else:
+#			get_node("TabContainer/Game/noadults").show()
+	
 
 func maleslider(value):
 	globals.rules.male_chance = value
 	get_node("TabContainer/Game/malesslider").set_value(globals.rules['male_chance'])
-	get_node("TabContainer/Game/malesliderlabel").set_text('Random gender occurrence balance: ' + str(globals.rules['male_chance']) + '% of males')
+	get_node("TabContainer/Game/malesliderlabel").set_text('Random gender occurrence balance: ' + str(globals.rules['male_chance']) + '% of people are males')
 
 func futaslider(value):
 	globals.rules.futa_chance = value
 	get_node("TabContainer/Game/futaslider").set_value(globals.rules['futa_chance'])
-	get_node("TabContainer/Game/futasliderlabel").set_text('Random futa occurrence: ' + str(globals.rules['futa_chance']) + '% of females')
+	if (globals.rules['futa']):
+		get_node("TabContainer/Game/futasliderlabel").set_text('Random futa occurrence: ' + str(globals.rules['futa_chance']) + '% of females, '
+			+ str(round((100-globals.rules['male_chance'])*globals.rules['futa_chance']/10)/10) + '% of people are futa')
+	else:
+		get_node("TabContainer/Game/futasliderlabel").set_text('Random futa occurrence: 0% of females, 0% of people are futa')
 
 func _ready():
 	###BRP - Modified 2019/07/29
@@ -50,6 +56,7 @@ func _ready():
 	###BRP - End mod
 
 	futaslider(globals.rules.futa_chance)
+	get_node("TabContainer/Game/futaslider").set_editable(globals.rules.futa)
 	maleslider(globals.rules.male_chance)
 	for i in ['furry','furrynipples','futa','futaballs','slaverguildallraces','children','receiving','permadeath','noadults']:
 		get_node("TabContainer/Game/" + i).pressed = globals.rules[i]
@@ -84,11 +91,13 @@ func show():
 
 func _on_malesslider_value_changed( value ):
 	globals.rules['male_chance'] = value
-	get_node("TabContainer/Game/malesliderlabel").set_text('Random gender occurrence balance: ' + str(globals.rules['male_chance']) + '% of males')
+	get_node("TabContainer/Game/malesliderlabel").set_text('Random gender occurrence balance: ' + str(globals.rules['male_chance']) + '% of people are males')
+	futaslider(globals.rules['futa_chance'])
 
 func _on_futaslider_value_changed( value ):
 	globals.rules['futa_chance'] = value
-	get_node("TabContainer/Game/futasliderlabel").set_text('Random futa occurrence: ' + str(globals.rules['futa_chance']) + '% of females')
+	get_node("TabContainer/Game/futasliderlabel").set_text('Random futa occurrence: ' + str(globals.rules['futa_chance']) + '% of females, '
+		+ str(round((100-globals.rules['male_chance'])*globals.rules['futa_chance']/10)/10) + '% of people are futa')
 
 
 

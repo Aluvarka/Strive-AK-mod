@@ -309,6 +309,8 @@ func slavehover(meta):
 		tempslave = slavearray[int(meta.replace('person',''))]
 	elif meta.find('id') >= 0:
 		tempslave = globals.state.findslave(meta.replace('id',''))
+	else:
+		return
 	globals.slavetooltip(tempslave)
 
 func slaveclicked(meta):
