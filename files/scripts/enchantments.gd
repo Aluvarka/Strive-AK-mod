@@ -24,6 +24,8 @@ enchaccobedmod = {name = "+&100v% Obedience", id = 'accessobed', effect = "obedm
 enchundenergy = {name = "+&v Energy", id = 'underwearenergy', effect = "energy", mineffect = 10, maxeffect = 25, itemtypes = ['costume','underwear'], type = 'onequip'},
 enchundhealth = {name = "+&v Health", id = 'armorhealth', effect = "healthmod", mineffect = 10, maxeffect = 20, itemtypes = ['underwear'], type = 'onequip'},
 enchundcharm = {name = "+&v Charm", id = 'underwearcharm', effect = "charm", mineffect = 5, maxeffect = 10, itemtypes = ['underwear'], type = 'onequip'},
+encstunchnce = {name = "&v% Stun", id = 'stunchance5', effect = "stunchance5", mineffect = 2, maxeffect = 6, itemtypes = ['weapon'], type = 'passive'},
+encdblchnce = {name = "&v% Doubleattack", id = 'doubleattack5', effect = "doubleattack5", mineffect = 5, maxeffect = 10, itemtypes = ['weapon'], type = 'passive'},
 }
 #cursed gear
 var curseenchdict = {

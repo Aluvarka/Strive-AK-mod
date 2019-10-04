@@ -1221,6 +1221,20 @@ aydajewel = {
 	weight = 0,
 	obtainreqs = 'globals.state.sidequests.ayda == 14',
 },
+blackjckclub = {
+	code = 'blackjckclub',
+	name = "Blackjack",
+	icon = "res://mods/blackjack.png",
+	description = "Short stick with heavy lead end, enclosed in leather straps. Dangerous weapon, use wisely. ",
+	effect = [{type = 'incombat', effect = 'damage', effectvalue = 5, descript = "+5 Damage"}, {type = 'passive', effect = 'stunchance5', effectvalue = 5, descript = "Has chance to stun enemy. "}],
+	recipe = '',
+	reqs = [],
+	cost = 1000,
+	type = 'gear',
+	subtype = 'weapon',
+	weight = 5,
+	amount = 0,
+},
 }
 
 var recipeaphrodisiac = {

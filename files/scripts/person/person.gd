@@ -302,7 +302,7 @@ func getessence():
 		essence = 'taintedessenceing'
 	elif race in ['Fairy', 'Drow', 'Dragonkin', 'Seraph']:
 		essence = 'magicessenceing'
-	elif race == ['Dryad', 'Elf', 'Gnome']:
+	elif race in ['Dryad', 'Elf', 'Gnome']:
 		essence = 'natureessenceing'
 	elif race in ['Harpy', 'Centaur', 'Taurus'] || race.find('Beastkin') >= 0 || race.find('Halfkin') >= 0:
 		essence = 'bestialessenceing'

@@ -19,6 +19,7 @@ var characterstartbeauty = 40.0
 var basesexactions = 1.0
 var chancetoheal = 5
 var traitperlvlup = 3
+var attperstatspoints = 0
 var basenonsexactions = 1.0
 var playerbonusstatpoint = 2.0
 var banditishumanchance = 70.0
@@ -102,6 +103,7 @@ consumerope  = {descript = "Number of ropes to be consumed when capturing a slav
 learnpointsperstat = {descript = "Number of skill points required to increase mental stat by 1", default = 3, min = 1, max = 100},
 chancetoheal = {descript = "Size of chance to heal injury", default = 5, min = 1, max = 85},
 traitperlvlup = {descript = "Gain new trait every N levels", default = 3, min = 1, max = 100},
+attperstatspoints = {descript = "If > 0: change exchange from mansion upgrade points to person learning points. Recommended value betwen: 20 to 30, 30 is nice", default = 0, min = 0, max = 150},
 playerstartbeauty = {descript = "Player's starting beauty stat"},
 characterstartbeauty = {descript = "Starting slave's starting beauty stat"},
 basesexactions = {descript = 'Number of sex actions per day (before bonus from endurance)'},

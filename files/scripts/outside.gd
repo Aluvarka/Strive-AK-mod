@@ -1522,7 +1522,7 @@ func givecompanion():
 		globals.state.mainquest = 11
 		sprites = [['melissafriendly','pos1']]
 		text = ("— Splendid! You really are not held back by puny morals. I hope this will provide you with some useful information regarding the utilization of your servants. Now, if you’ll excuse me...\n\nWith that, your companion is taken away and you are promoted.[color=green] You are now an Adept in the Mage's Order.\n\nReceived 750 gold. [/color]\n[color=yellow]You have gained an extra level.[/color]")
-		globals.state.rank = 3
+		globals.state.rank = 4
 		globals.resources.gold += 750
 		main.currentslave = globals.slaves.find(person)
 		globals.player.levelup()

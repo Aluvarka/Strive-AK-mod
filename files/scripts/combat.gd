@@ -778,6 +778,9 @@ func physdamage(caster, target, skill):
 	if caster.passives.has('exhaust'):
 		power = power * 0.66
 	
+	if caster.passives.has('stunchance5') && rand_range(0,100) <= caster.passives.stunchance5.effectvalue:
+		caster.scene.sendbuff(caster, target, 'stun')
+		target.actionpoints = 0
 	damage = power * protection - armor
 	if target.person != null && target.person.traits.has("Sturdy"):
 		damage = damage*0.85
@@ -891,6 +894,9 @@ func useskills(skill, caster = null, target = null, retarget = false):
 		group = 'enemy'
 	var skillcounter = 1
 	if caster.passives.has('doubleattack') && rand_range(0,100) < caster.passives.doubleattack.effectvalue && skill.type == 'physical':
+		skillcounter += 1
+		text += "[color=yellow]Double attack![/color] "
+	elif caster.passives.has('doubleattack5') && rand_range(0,100) <= caster.passives.doubleattack5.effectvalue && skill.type == 'physical':
 		skillcounter += 1
 		text += "[color=yellow]Double attack![/color] "
 	while skillcounter > 0:
