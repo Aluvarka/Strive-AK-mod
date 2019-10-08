@@ -272,26 +272,26 @@ func _on_talk_pressed(mode = 'talk'):
 			text += "Despite your best attempts, you can't get more out of $name, than uncomfortable look. "
 		else:
 			if person.obed < 50:
-				text = text + "— I don't wanna talk with you after all you've done!\n"
+				text = text + "— I don't wanna talk with you afte$r all you've done$nya!\n"
 			elif person.traits.has('Sex-crazed') == true:
-				text = text + "— I don't care about my life, or anything, can we just fuck here, Master?"
+				text = text + "— I don't ca$re about my life, o$r anything, can we ju$st fuck he$re, Ma$ste$r$nya?"
 			else:
 				if person.loyal < 25:
-					text = text + '— Yes, I will obey your orders, $master. \n'
+					text = text + '— Ye$s, I will obey you$r o$rde$r$s, $master$nya. \n'
 					if person.brand != 'none':
-						text = text + "It's not like I have much of an option anyway. \n$name gives you a trapped look. "
+						text = text + "It'$s not like I have much of an option anyway$nya. \n$name gives you a trapped look. "
 				elif person.loyal < 60:
-					text = text + "—It wasn't easy at first, but I think warmly of you, $master. \n"
+					text = text + "—It wa$sn't ea$sy at fi$r$st, but I think wa$rmly of you, $master$nya. \n"
 					if person.brand != 'none':
-						text = text + "Even though I'm just your little slave now. \n"
+						text = text + "Even though I'm ju$st you$r little $slave now$nya. \n"
 				else:
-					text = text + "— I'll try my best for you, $master. Despite what others might think, you are invaluable to me!\n"
+					text = text + "— I'll t$ry my be$st fo$r you, $master. De$spite what othe$r$s might think, you a$re invaluable to me$nya!\n"
 				if person.stress > 50:
-					text = text + "— It has been tough for me recently... Could you consider giving me a small break, please?\n"
+					text = text + "— It ha$s been tough fo$r me $recently... Could you con$side$r giving me a $small b$reak, plea$se$nya?\n"
 				if person.lust >= 60 && person.consent == true && person.metrics.vag > 0:
-					text = text + "— I actually would love to fuck right now. \n"
+					text = text + "— I actually would love to fuck $right now$nya. \n"
 				elif person.lust >= 60 && person.consent == true:
-					text = text + "— Uhm... would you like to give me some private attention? — $name gives you a deep lusting look. \n"
+					text = text + "— Uhm... would you like to give me $some p$rivate attention$nya? — $name gives you a deep lusting look. \n"
 		if person.xp >= 100 && person.levelupreqs.has('code') == false:
 			buttons.append({text = person.dictionary("Investigate $name's potential"), function = 'levelreqs'})
 		elif person.levelupreqs.has('code'):

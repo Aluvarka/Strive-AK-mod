@@ -680,6 +680,9 @@ func dictionary(text):
 	string = string.replace('$master', getMasterNoun())
 	string = string.replace('[haircolor]', haircolor)
 	string = string.replace('[eyecolor]', eyecolor)
+	string = string.replace('$r', globals.fastif(race.find('Wolf') >= 1, 'rr', 'r'))
+	string = string.replace('$s', globals.fastif(race.find('Lamia') >= 1, 'ss', 's'))	
+	string = string.replace('$nya', globals.fastif(race.find('Cat') >= 1, '-nya', ''))
 	return string
 
 func dictionaryplayer(text):

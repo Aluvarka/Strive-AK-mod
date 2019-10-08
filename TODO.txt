@@ -23,7 +23,7 @@ Moar quests! +==
 
 todo: bdsm costume
 
-more weapons/items ===
+more weapons/items +==
 
 need pics for ^ and ^ +==
 
@@ -85,7 +85,8 @@ Add "personal pathronage" for nurture girl in to dom/sub by headgirl, through on
 
 Rework grade system: stats now didn’t depend on grade, now they depend on startvalue+racebonus+rndvalue. Need changes in stat maximum. Can be heavily base on race and attributes, like strong=courageous magical=witted(more like attributes/stats combination)
 
-Caravans! +++ Add trading with caravans. ===
+Caravans! +++ Add trading with caravans. ++=
+Buy without looking. ===
 
 High chance ambushes. +==
 
@@ -103,7 +104,7 @@ Change food buying system, every person check if autobuying enambled then buy fo
 
 Fix autobuying supply system, if market seller exist and box checked then buy supply like 4xResident. === 
 
-Fix lamias legs.(?) ===
+Fix lamias legs.(?) Idk what wrong.
 
 Event for EVERY new char, what happened during first(two?) week(s), where they can recieve 23% - good 44% neutral 23% - bad trait,
 
@@ -120,3 +121,4 @@ Provide more racial features in all ways. ===
 Add "mutate" related traits which can be obtained only through suffering. ===
 
 Add molesting punishment. With orgasms for lust >=80. ===
+

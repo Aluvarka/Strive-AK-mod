@@ -1657,8 +1657,11 @@ amberguardmarket = {code = 'amberguardmarket', name = "Amberguard's Market", ite
 sebastian = {code = 'sebastian', name = "Sebastian", items = ['teleportumbra'], selling = false},
 #----------------------------------------------------------------------------------------------------------
 outdoor = {code = 'outdoor', name = "Outdoor", items = [], selling = false},
+outdoorwimb = {code = 'outdoorwimb', name = "Wimborn Caravan", items = ['food','supply','basicsolutioning','clothmaid','clothbutler'], selling = false},
+outdoorgorn = {code = 'outdoorgorn', name = "Gorn Caravan", items = ['rope','weaponsword','armorchain','accslavecollar'], selling = false},
+outdoorfrost = {code = 'outdoorfrost', name = "Frostford Caravan", items = ['bandage','armorleather','acctravelbag'], selling = false},
 #----------------------------------------------------------------------------------------------------------
-blackmarket = {code = 'blackmarket', name = 'Black Market', items = ['aydabook','energizerpot','lockpick','accslavecollar','acchandcuffs','armorleather','armorchain','weaponsword','weaponhammer','armortentacle'], selling = true}
+blackmarket = {code = 'blackmarket', name = 'Black Market', items = ['aydabook','energizerpot','lockpick','accslavecollar','acchandcuffs','armorleather','armorchain','blackjckclub','weaponhammer','armortentacle'], selling = true}
 }
 
 func market():

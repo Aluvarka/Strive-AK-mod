@@ -391,10 +391,10 @@ func enemylevelup(person, levelarray):
 	var skillpoints = (level-person.level)*variables.skillpointsperlevel
 	person.level = level
 	while skillpoints > 0 && statdict.size() > 0:
-		if randf() <= 0.2:
-			person.skillpoints += 1
-			skillpoints -= 1
-			continue
+#		if randf() <= 0.2:
+#			person.skillpoints += 1
+#			skillpoints -= 1
+#			continue
 		var tempstat = statdict[randi()%statdict.size()]
 		if person.stats[globals.maxstatdict[tempstat].replace('_max',"_base")] >= person.stats[globals.maxstatdict[tempstat]]:
 			statdict.erase(tempstat)
@@ -773,7 +773,70 @@ func merchantencounter(stage = 0):
 	elif stage == 2:
 		globals.main.close_dialogue()
 		return
-	globals.main.dialogue(state, self, text, buttons, sprites)
+	globals.main.dialogue(state, self, text, buttons, sprites)	
+	
+func merchantencwimb(stage = 0):
+	var state = false
+	var buttons = []
+	var image
+	var sprites = []
+	if stage == 0:
+		mansion.maintext = "You meet caravan from Wimborn. "
+		buttons.append({name = 'Leave',function = 'enemyleave'})
+		buttons.append({name = 'Trade',function = 'merchantencwimb',args = 1})
+		buttons.append({name = 'Attack Caravan',function = 'merchantencwimb',args = 2})
+	elif stage == 1:
+		globals.main.get_node("outside").closefunction = ['merchantencwimb',1]
+		globals.main.get_node("outside").shopinitiate('outdoorwimb')
+		globals.main.get_node("outside").shopbuy()
+		globals.main.close_dialogue()
+		buttons.append({name = 'Leave',function = 'enemyleave'})
+	elif stage == 2:
+		enemyfight()
+		return
+	outside.buildbuttons(buttons,self)
+	
+func merchantencgorn(stage = 0):
+	var state = false
+	var buttons = []
+	var image
+	var sprites = []
+	if stage == 0:
+		mansion.maintext = "You meet caravan from Gorn. "
+		buttons.append({name = 'Leave',function = 'enemyleave'})
+		buttons.append({name = 'Trade',function = 'merchantencgorn',args = 1})
+		buttons.append({name = 'Attack Caravan',function = 'merchantencgorn',args = 2})
+	elif stage == 1:
+		globals.main.get_node("outside").closefunction = ['merchantencgorn',1]
+		globals.main.get_node("outside").shopinitiate('outdoorgorn')
+		globals.main.get_node("outside").shopbuy()
+		globals.main.close_dialogue()
+		buttons.append({name = 'Leave',function = 'enemyleave'})
+	elif stage == 2:
+		enemyfight()
+		return
+	outside.buildbuttons(buttons,self)
+	
+func merchantencfrost(stage = 0):
+	var state = false
+	var buttons = []
+	var image
+	var sprites = []
+	if stage == 0:
+		mansion.maintext = "You meet caravan from Frostford. "
+		buttons.append({name = 'Leave',function = 'enemyleave'})
+		buttons.append({name = 'Trade',function = 'merchantencfrost',args = 1})
+		buttons.append({name = 'Attack Caravan',function = 'merchantencfrost',args = 2})
+	elif stage == 1:
+		globals.main.get_node("outside").closefunction = ['merchantencfrost',1]
+		globals.main.get_node("outside").shopinitiate('outdoorfrost')
+		globals.main.get_node("outside").shopbuy()
+		globals.main.close_dialogue()
+		buttons.append({name = 'Leave',function = 'enemyleave'})
+	elif stage == 2:
+		enemyfight()
+		return
+	outside.buildbuttons(buttons,self)
 #-----------------------------------------------------------------------
 
 

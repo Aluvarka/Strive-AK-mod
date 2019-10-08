@@ -392,8 +392,8 @@ func questarray():
 	},
 	quest027 = {
 	code = '027',
-	shortdescription = "A local labor guild look for workers.",
-	description = "The member of local labor guild look for new slave for perform hard work. They need to be strong and don't distract other workers.",
+	shortdescription = "A local labor guild looking for workers.",
+	description = "The member of local labor guild look for new slave to perform hard work. They need to be strong and don't distract other workers.",
 	reqs = [['obed','gte', 60], ['send','gte', round(rand_range(1,2))], ['sstr','gte', round(rand_range(1,3))], ['beauty','lte', 50]],
 	reqstemp = [],
 	reqsfunc = [],
@@ -417,7 +417,7 @@ func questarray():
 	quest029 = {
 	code = '029',
 	shortdescription = "A local looking for young innocent slave",
-	description = "A member of local pervert club try to find innocent $sex of $age age",
+	description = "A member of local pervert club try to find innocent $child of $age age",
 	reqs = [['obed','gte', 80],['beauty','gte', 35]],
 	reqstemp = [['age','neq','adult'],['sex', 'eq', randsex()]],
 	reqsfunc = ['virgin'],
