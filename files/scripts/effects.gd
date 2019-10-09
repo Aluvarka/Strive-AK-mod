@@ -89,7 +89,7 @@ func sadness(person):
 	if person.traits.has("Sadness"):
 		person.effects.sad.duration += 1
 	if person.effects.has('joyful') != false:
-		person.effects.sad.duration -= 1		
+		person.effects.joyful.duration -= 1		
 	person.stress += 12
 	person.energy -= 6
 	person.conf -= 1
