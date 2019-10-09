@@ -1650,7 +1650,7 @@ func tishaquest():
 var shops = {
 wimbornmarket = {code = 'wimbornmarket', sprite = 'merchant', name = "Wimborn's Market", items =  ['teleportwimborn','food','supply','bandage','rope','torch','teleportseal', 'basicsolutioning','hairdye', 'aphrodisiac' ,'beautypot', 'magicessenceing', 'natureessenceing','armorleather','armorchain','weapondagger','weaponsword','clothsundress','clothmaid','clothbutler','underwearlacy','underwearboxers', 'acctravelbag'], selling = true},
 shaliqshop = {code = 'shaliqshop', name = "Village's Trader", items = ['teleportseal','lockpick','torch','hairdye','beautypot','armorleather','clothmiko','clothkimono','armorninja', 'acctravelbag'], selling = true},
-gornmarket = {code = 'gornmarket',  sprite = 'centaur', name = "Gorn's Market", items = ['teleportgorn','food', 'supply','bandage','rope','teleportseal','magicessenceing',"armorleather",'armorchain','weaponclaymore','weaponhammer','clothbedlah','accslavecollar','acchandcuffs'], selling = true},
+gornmarket = {code = 'gornmarket',  sprite = 'centaur', name = "Gorn's Market", items = ['teleportgorn','food', 'supply','bandage','rope','teleportseal','magicessenceing',"armorleather",'armorchain','weaponclaymore','weaponhammer','clothbedlah','vhelmet','accslavecollar','acchandcuffs'], selling = true},
 frostfordmarket = {code = 'frostfordmarket', sprite = 'frostfordtrader', name = "Frostford's Market", items = ['aydabrandy','teleportfrostford', 'supply','bandage','rope','torch','teleportseal', 'basicsolutioning','bestialessenceing','clothpet', 'weaponsword','accgoldring', 'acctravelbag'], selling = true},
 aydashop = {code = 'aydashop', sprite = 'aydanormal', name = "Ayda's Assortments", items = ['regressionpot', 'energizerpot', 'beautypot', 'hairdye', 'basicsolutioning','bestialessenceing','taintedessenceing','fluidsubstanceing'], selling = false},
 amberguardmarket = {code = 'amberguardmarket', name = "Amberguard's Market", items = ['teleportamberguard','beautypot','bestialessenceing','magicessenceing','fluidsubstanceing','armorelvenchain','armorrobe'], selling = true},
@@ -1661,7 +1661,7 @@ outdoorwimb = {code = 'outdoorwimb', name = "Wimborn Caravan", items = ['food','
 outdoorgorn = {code = 'outdoorgorn', name = "Gorn Caravan", items = ['rope','weaponsword','armorchain','accslavecollar'], selling = false},
 outdoorfrost = {code = 'outdoorfrost', name = "Frostford Caravan", items = ['bandage','armorleather','acctravelbag'], selling = false},
 #----------------------------------------------------------------------------------------------------------
-blackmarket = {code = 'blackmarket', name = 'Black Market', items = ['aydabook','energizerpot','lockpick','accslavecollar','acchandcuffs','armorleather','armorchain','blackjckclub','weaponhammer','armortentacle'], selling = true}
+blackmarket = {code = 'blackmarket', name = 'Black Market', items = ['aydabook','energizerpot','lockpick','accslavecollar','acchandcuffs','armorleather','armorchain','blackjckclub','weaponhammer','bdsmsuit','armortentacle'], selling = true}
 }
 
 func market():

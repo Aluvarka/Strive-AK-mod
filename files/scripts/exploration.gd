@@ -471,8 +471,8 @@ var treasuremisc = [['magicessenceing',7],['taintedessenceing',7],['natureessenc
 
 var chestloot = {
 	easy = ['armorleather','armorchain','weapondagger','weaponsword','clothsundress','clothmaid','clothbutler'],
-	medium = ['armorchain','weaponsword','clothsundress','clothmaid','clothbutler', 'armorelvenchain','armorrobe', 'weaponhammer','weaponclaymore','clothkimono','clothpet','clothmiko','clothbedlah','accgoldring','accslavecollar','acchandcuffs','acctravelbag'],
-	hard = ['armorplate','accamuletemerald','accamuletruby'],
+	medium = ['armorchain','weaponsword','clothsundress','clothmaid','clothbutler', 'armorelvenchain','armorrobe', 'weaponhammer','weaponclaymore','clothkimono','clothpet','clothmiko','clothbedlah','accgoldring','accslavecollar','acchandcuffs','acctravelbag','blackjckclub','bdsmsuit'],
+	hard = ['armorplate','accamuletemerald','accamuletruby','vhelmet','blackjckclub'],
 }
 
 

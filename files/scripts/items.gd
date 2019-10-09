@@ -690,7 +690,7 @@ clothpet = {
 clothchain = {
 	code = 'clothchain',
 	name = 'Chainmail Bikini',
-	icon = null,
+	icon = "res://files/images/items/clothcommon.png",
 	description = "Sexy “armor” that emphasizes the physical fitness of the wearer. Contrary to popular belief it is an impractical choice for protective wear.",
 	effect = [{type = 'incombat', effect = 'armor', effectvalue = 1, descript = "+1 Armor"}],
 	recipe = '',
@@ -1147,7 +1147,7 @@ armorcarapace= {
 	name = "Carapace",
 	icon = "res://files/images/items/3.png",
 	description = "Thick plate made for finest defense. \n[color=yellow]Requirements: 4 Endurance[/color]  ",
-	effect = [{type = 'incombat', effect = 'protection', effectvalue = 65, descript = "65% Protection"},{type = 'incombat', effect = 'armor', effectvalue = 5, descript = "+5 Armor"}],
+	effect = [{type = 'incombat', effect = 'protection', effectvalue = 65, descript = "65% Protection"},{type = 'incombat', effect = 'armor', effectvalue = 12, descript = "+12 Armor"}],
 	recipe = '',
 	reqs = [{reqstat = 'send', oper = 'gte', reqvalue = 4}],
 	cost = 1200,
@@ -1225,13 +1225,41 @@ blackjckclub = {
 	code = 'blackjckclub',
 	name = "Blackjack",
 	icon = "res://mods/blackjack.png",
-	description = "Short stick with heavy lead end, enclosed in leather straps. Dangerous weapon, use wisely. ",
+	description = "Short stick with heavy end, enclosed in leather straps. Dangerous weapon in good arms. ",
 	effect = [{type = 'incombat', effect = 'damage', effectvalue = 5, descript = "+5 Damage"}, {type = 'passive', effect = 'stunchance5', effectvalue = 5, descript = "Has chance to stun enemy. "}],
 	recipe = '',
 	reqs = [],
-	cost = 1000,
+	cost = 800,
 	type = 'gear',
 	subtype = 'weapon',
+	weight = 5,
+	amount = 0,
+},
+bdsmsuit= {
+	code = 'bdsmsuit',
+	name = "BDSM Suit",
+	icon = "res://mods/clothbdsm.png",
+	description = "Made of durable and flexible material, this suit limits the owner’s movement and leave their places exposed for torture. Ideal for training your slaves. ",
+	effect = [{type = 'incombat', effect = 'protection', effectvalue = -10, descript = "-10% Protection"},{type = 'incombat', effect = 'speed', effectvalue = -6, descript = "-6 Speed"},{type = 'onendday', effect = 'bdsmsuiteffect', descript = "Increases Obedience by the end of a day and prevents escapes. \n Increase submission at the end of the day. \n Lust grows at the end of the day. "}],
+	recipe = '',
+	reqs = [],
+	cost = 1200,
+	type = 'gear',
+	subtype = 'costume',
+	weight = 5,
+	amount = 0,
+},
+vhelmet= {
+	code = 'vhelmet',
+	name = "Helm",
+	icon = "res://mods/vikinghelm.png",
+	description = "Good helm with mail to protect your little head and neck.  ",
+	effect = [{type = 'incombat', effect = 'protection', effectvalue = 5, descript = "5% Protection"},{type = 'incombat', effect = 'armor', effectvalue = 3, descript = "+3 Armor"}],
+	recipe = '',
+	reqs = [],
+	cost = 300,
+	type = 'gear',
+	subtype = 'accessory',
 	weight = 5,
 	amount = 0,
 },
@@ -1457,6 +1485,7 @@ func kimonoeffect(person):
 
 func livingsuiteffect(person):
 	person.lust += 4
+	person.lewdness += 1
 	return "$name is being stimulated by wearing [color=yellow]Living suit[/color] and $his lust grows.\n\n"
 
 func peteffect(person):
@@ -1510,7 +1539,7 @@ func handcuffeffect(person):
 		person.lust += rand_range(5,10)
 		person.obed += rand_range(3,6)
 	else:
-		if person.obed >= 75:
+		if person.obed >= 75 || person.traits.has('Submissive') == true:
 			text += "attempts to do their daily tasks while handcuffed behind $his back.\n"
 			person.obed += rand_range(3,6)
 			person.asser += rand_range(-1,-3)
@@ -1521,7 +1550,29 @@ func handcuffeffect(person):
 			person.asser += rand_range(-1,-3)
 	return text
 
-
+func bdsmsuiteffect(person):
+	var text = "$name "
+	if person.traits.has('Deviant') == true:
+		text += "becomes more aroused while wearing restricted suit.\n"
+		person.lust += rand_range(7,16)
+		person.obed += rand_range(2,4)
+		person.lewdness += rand_range(1,3)
+	else:
+		if person.obed >= 75 || person.traits.has('Submissive') == true:
+			text += "attempts to do their daily tasks while restricted by suit.\n"
+			person.obed += rand_range(2,4)
+			person.lust += rand_range(5,10)
+			person.asser += rand_range(-2,-4)
+			person.lewdness += rand_range(1,2)
+		else:
+			text += "becomes more stressed as $he struggles to do $his daily tasks while wearing latex suit.\n"
+			person.obed += rand_range(1,3)
+			person.lust += rand_range(3,6)
+			person.stress += rand_range(5,10)
+			person.asser += rand_range(-1,-3)
+	return text
+			
+			
 func createunstackable(itemcode):
 	var item = itemlist[itemcode]
 	var tempitem = {code = item.code, type = item.subtype, name = item.name, owner = null, effects = str2var(var2str(item.effect)), enchant = '', reqs = item.reqs, icon = item.icon, description = item.description, weight = item.weight}

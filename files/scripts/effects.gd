@@ -77,6 +77,8 @@ func animalistic3(person):
 func joyfulness(person):
 	if person.traits.has("Happy-go-lucky"):
 		person.effects.joyful.duration += 1
+	if person.effects.has('sad') != false:
+		person.effects.sad.duration -= 1		
 	person.stress -= 12
 	person.fear -= 9
 	person.obed += 4
@@ -86,6 +88,8 @@ func joyfulness(person):
 func sadness(person):
 	if person.traits.has("Sadness"):
 		person.effects.sad.duration += 1
+	if person.effects.has('joyful') != false:
+		person.effects.sad.duration -= 1		
 	person.stress += 12
 	person.energy -= 6
 	person.conf -= 1
