@@ -585,6 +585,19 @@ energizerpot = {
 	weight = 1,
 	amount = 0
 	},
+trinkets = {
+	code = 'trinkets',
+	name = 'Valuable trinkets',
+	icon = load("res://mods/bearhide.png"),
+	description = "Remains of wild creature. Organs, guts, bones and others. ",
+	effect = '',
+	recipe = '',
+	cost = 500,
+	type = 'ingredient',
+	reqs = false,
+	weight = 1,
+	amount = 0
+	},
 	
 	######################################GEAR
 clothcommon = {

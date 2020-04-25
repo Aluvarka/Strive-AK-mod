@@ -273,6 +273,30 @@ func get_caste(person, caste):
 			person.add_trait(globals.origins.traits('horse').name)
 	if person.traits.find("Wolf Hide") >= 0:
 		person.stats.armor_cur += 2
+##lets add new weight system##
+#func getweight(value):
+	var tempweight = 0
+	tempweight = person.stats.weight_base+round(rand_range(0,20))
+	if person.traits.has('Plump') == true:
+		tempweight = tempweight*1.2
+	elif person.traits.has('Obese') == true:
+		tempweight = tempweight*1.5
+	if person.height == 'tiny' || person.height == 'petite':
+		tempweight = tempweight*0.5
+	elif person.height == 'short':
+		tempweight = tempweight*0.75
+	elif person.height == 'tall':
+		tempweight = tempweight*1.2
+	elif person.height == 'towering':
+		tempweight = tempweight*1.4
+	if person.race == 'Seraph' || person.race == 'Fairy' || person.race == 'Harpy':
+		tempweight = tempweight/1.3
+	elif person.race == 'Orc' || person.race == 'Demon' || person.race == 'Taurus' || person.race == 'Scylla' || person.race == 'Nereid':
+		tempweight = tempweight*1.3
+	elif person.race == 'Dragonkin' || person.race == 'Arachna' || person.race == 'Centaur':
+		tempweight = tempweight*1.5
+	person.stats.weight_base = tempweight
+	person.stats.weight_cur = tempweight
 
 func tohalfkin(person):
 	person.legs = 'normal'

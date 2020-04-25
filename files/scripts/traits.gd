@@ -873,7 +873,7 @@ var traits = {
   },
   "Strong back": {
     "name": "Strong back",
-    "description": "$name can pick up more weight than anyone. \n\n[color=aqua]Carry weight+++. [/color]",
+    "description": "$name can pick up more weight than anyone. \n\n[color=aqua]Carry weight +15. [/color]",
     "effect": {
 		
     },
@@ -890,14 +890,13 @@ var traits = {
   },
   "Broken mind": {
     "name": "Broken mind",
-    "description": "$name is emotionless, mindbreaked body, $he has no need and do any command but here is no more than husk. \n\n[color=red]Slaves mind is broken. No stress;No lust;Max confidence----; Max obedience; Max loyalty;  [/color]",
+    "description": "$name is emotionless, mindbreaked body, $he has no need and do any command but here is no more than husk. \n\n[color=red]Slaves mind is broken. No stress;No lust;Max confidence -90 Max obedience; Max loyalty;  [/color]",
     "effect": {
       "code": "broken",
       "conf_max": -90,
       "wit_max": -55,
       "loyalty_min": 100,
       "stress_mod": -2.0
-	  
     },
     "tags": [
       "mental",
@@ -910,7 +909,7 @@ var traits = {
   },
   "Melancholia": {
     "name": "Melancholia",
-    "description": "$name is heavily depressed. Keep \n\n[color=#ff4949]Stress++; If stress high enough - $he can be mind breaked! [/color]",
+    "description": "$name is heavily depressed. Keep \n\n[color=#ff4949]Stress grew 40% faster; If stress high enough - $he can be mind breaked! [/color]",
     "effect": {
       "code": "melancholia",
       "conf_cur": -10,
@@ -928,7 +927,7 @@ var traits = {
   },
   "Elegant": {
     "name": "Elegant",
-    "description": "$name's eyes is big, $he has smooth and beautiful skin, almost like baby, everyone charmed by $him. \n\n[color=aqua]Beauty ++; Max charm +15 [/color]",
+    "description": "$name's eyes is big, $he has smooth and beautiful skin, almost like baby, everyone charmed by $him. \n\n[color=aqua]Beauty +10; Max charm +15 [/color]",
     "effect": {
       "code": "attractive",
       "charm_max": 15,
@@ -946,7 +945,7 @@ var traits = {
   },
   "Peaceful mind": {
     "name": "Peaceful mind",
-    "description": "Almost no problem can shake $his emotions or thoughts. \n\n[color=aqua]Stress never be high. [/color]",
+    "description": "Almost no problem can shake $his emotions or thoughts. \n\n[color=aqua]Stress never be high. Stress grew 30% less, Stress max -60 [/color]",
     "effect": {
       "code": "calm_mind",
       "stress_mod": -0.3,
@@ -1012,7 +1011,7 @@ var traits = {
   },
   "Obese": {
     "name": "Obese",
-    "description": "$name uncontrolable $himself when eat, what progress into lot of fat on $his body. \n\n[color=red]Need lot of food everyday. $name have problem with any physical exercises. [/color]",
+    "description": "$name uncontrolable $himself when eat, what progress into lot of fat on $his body. \n\n[color=red]Need lot of food everyday. $name have problem with any physical exercises. Stress grew +10% [/color]",
     "effect": {
       "code": "obese",
       "stress_mod": 0.1,
@@ -1029,7 +1028,7 @@ var traits = {
   },
   "Broken limb": {
     "name": "Broken limb",
-    "description": "$name accidentally broke his limb. \n\n[color=red]Less agility and strength. Heal with time. [/color]",
+    "description": "$name accidentally broke his limb. \n\n[color=red]Agility and strength -1. Heal with time. [/color]",
     "effect": {
       "code": "broken_limb",
       "agi_mod": -1,
@@ -1047,7 +1046,7 @@ var traits = {
   },
   "Cracked rib": {
     "name": "Cracked rib",
-    "description": "$name accidentally breaked his ribs. \n\n[color=red]Less endurance. Heal with time. [/color]",
+    "description": "$name accidentally breaked his ribs. \n\n[color=red]Endurance -1. Heal with time. [/color]",
     "effect": {
       "code": "cracked_rib",
       "end_mod": -1
@@ -1064,7 +1063,7 @@ var traits = {
   },
   "Heavy injured": {
     "name": "Heavy injured",
-    "description": "$name is badly injured. $he feels good enough to do some work, but. \n\n[color=red]Less strength. Heal with time. [/color]",
+    "description": "$name is badly injured. $he feels good enough to do some work, but. \n\n[color=red]Strength, Agility and Endurance -1. Heal with time. [/color]",
     "effect": {
       "code": "heavy_injured",
       "end_mod": -1,
@@ -1084,7 +1083,7 @@ var traits = {
   },
   "Bruised": {
     "name": "Bruised",
-    "description": "$name's body is covered in lot of bruises. Besides being terrifying to look at, this also makes $him suffer. \n\n[color=red]-Beauty [/color]",
+    "description": "$name's body is covered in lot of bruises. Besides being terrifying to look at, this also makes $him suffer. \n\n[color=red]Beauty -15 [/color]",
     "effect": {
       "code": "bruised",
       "beautytemp": -15,
@@ -1194,7 +1193,7 @@ var traits = {
   },
   "Happy-go-lucky": {
     "name": "Happy-go-lucky",
-    "description": "$name seems to be very joyful. \n\n[color=aqua]Stress-,Fear- [/color]",
+    "description": "$name seems to be very joyful. \n\n[color=aqua]Stress grew -20%, Fear grew -20% [/color]",
     "effect": {
       "code": "happy-go-lucky",
       "stress_mod": -0.2,
@@ -1211,7 +1210,7 @@ var traits = {
   },
   "Sadness": {
     "name": "Sadness",
-    "description": "$name is feeling very sad. \n\n[color=red]Stress+ [/color]",
+    "description": "$name is feeling very sad. \n\n[color=red]Stress grew +20% [/color]",
     "effect": {
       "code": "sadness",
       "stress_mod": 0.2,
@@ -1226,7 +1225,7 @@ var traits = {
   },
   "Wolf Hide": {
     "name": "Wolf Hide",
-    "description": "$name's ancestors gifted to $him thick fur. \n\n[color=aqua]Recieve less damage.[/color] [color=red] Max charm- [/color]",
+    "description": "$name's ancestors gifted to $him thick fur. \n\n[color=aqua]Armor +2.[/color] [color=red] Max charm -15 [/color]",
     "effect": {
       "code": "wolf_hide",
       "charm_max": -15,
@@ -1242,7 +1241,7 @@ var traits = {
   },
   "Claws and Fangs": {
     "name": "Claws and Fangs",
-    "description": "When battle is hot, $name doesn't think 'slash or bite' \n\n[color=aqua]Damage+ [/color]",
+    "description": "When battle is hot, $name doesn't think 'slash or bite' \n\n[color=aqua]Damage +2 [/color]",
     "effect": {
       "code": "claws_fangs",
     },
@@ -1260,7 +1259,7 @@ var traits = {
   },
   "Bestial Instinct": {
     "name": "Bestial Instinct",
-    "description": "$name always trust $his inner voice. \n\n[color=aqua]Speed+, Awareness+ [/color]",
+    "description": "$name always trust $his inner voice. \n\n[color=aqua]Speed +2, Awareness +3 [/color]",
     "effect": {
       "code": "bestial_instinct",
     },
@@ -1284,7 +1283,7 @@ var traits = {
   },
   "Regeneration": {
     "name": "Regeneration",
-    "description": "$name has pretty fast metabolism. \n\n[color=aqua]Higher chance for recover after injure. [/color]",
+    "description": "$name has pretty fast metabolism. \n\n[color=aqua]Higher chance for recover after injure. Bigger hp recover from rest. [/color]",
     "effect": {
       "code": "regenertion",
     },
@@ -1303,7 +1302,7 @@ var traits = {
   },
   "Dodger": {
     "name": "Dodger",
-    "description": "$name silly dodger. \n\n[color=aqua]Speed+. [/color]",
+    "description": "$name silly dodger. \n\n[color=aqua]Speed +3 [/color]",
     "effect": {
       "code": "dodger",
     },
@@ -1319,7 +1318,7 @@ var traits = {
   },
   "Glass Bones": {
     "name": "Glass Bones",
-    "description": "$name bones is thin and fragile $he also recover after injuring slower. \n\n[color=red]Max health--. [/color]",
+    "description": "$name bones is thin and fragile $he also recover after injuring slower. \n\n[color=red]Max health -15%. [/color]",
     "effect": {
       "code": "glass_bones",
       "health_bonus": -0.15
@@ -1335,7 +1334,7 @@ var traits = {
   },
   "Eloquent": {
     "name": "Eloquent",
-    "description": "You must say that $name has Silver Tongue, but that doesn't describe enough. \n\n[color=aqua]Charm+. [/color]",
+    "description": "You must say that $name has Silver Tongue, but that doesn't describe enough. \n\n[color=aqua]Max Charm +20. [/color]",
     "effect": {
       "code": "eloquent",
       "charm_max": 20,
@@ -1353,7 +1352,7 @@ var traits = {
   },
   "Good Natured": {
     "name": "Good Natured",
-    "description": "$name is frendly person who preffered word instead of sword. \n\n[color=aqua]Charm+, Wit+,[/color] [color=red] Courage-, Confidence-. [/color]",
+    "description": "$name is frendly person who preffered word instead of sword. \n\n[color=aqua]Max Charm +20, Max Wit +20,[/color] [color=red]Max Courage -25, Max Confidence -25. [/color]",
     "effect": {
       "code": "good_natured",
       "charm_max": 20,
@@ -1375,7 +1374,7 @@ var traits = {
   },
   "Best Flyer Ever": {
     "name": "Best Flyer Ever",
-    "description": "$name can fly faster than anyone. \n\n[color=aqua]Speed ++. [/color]",
+    "description": "$name can fly faster than anyone. \n\n[color=aqua]Speed +5. [/color]",
     "effect": {
       "code": "best_flyer_ever",
     },
@@ -1394,7 +1393,7 @@ var traits = {
   },
   "Heavy Hooves": {
     "name": "Heavy Hooves",
-    "description": "$name has big and srong hooves, very dangerous for enemies. \n\n[color=aqua]Damage+ Speed+. [/color]",
+    "description": "$name has big and srong hooves, very dangerous for enemies. \n\n[color=aqua]Damage +2 [/color][color=red]Speed -2. [/color]",
     "effect": {
       "code": "heavy_hooves",
     },
@@ -1411,7 +1410,7 @@ var traits = {
   },
   "Brute": {
     "name": "Brute",
-    "description": "$name is a brutal, strong and slow. \n\n[color=aqua]Health +20 Damage+ [/color] [color=red]Speed-. [/color]",
+    "description": "$name is a brutal, strong and slow. \n\n[color=aqua]Health +20, Damage +3. [/color] [color=red]Speed -3, Max Wit -20. [/color]",
     "effect": {
       "code": "brute",
       "health_base": 20,
@@ -1441,7 +1440,7 @@ var traits = {
   },
   "Sickness": {
     "name": "Sickness",
-    "description": "$name got sick and now not feeling well. \n\n[color=red]Less energy. Heal at time. [/color]",
+    "description": "$name got sick and now not feeling well. \n\n[color=red]Max Energy -10. Heal at time. [/color]",
     "effect": {
       "code": "sickness",
       "energy_max": -10,
@@ -1478,7 +1477,7 @@ var traits = {
   },
   "Shy": {
     "name": "Shy",
-    "description": "$name easy to manipulate and scare. \n\n[color=aqua]Max Courage and Confidence--, Stress and Obedience++. [/color]",
+    "description": "$name easy to manipulate and scare. \n\n[color=aqua]Obedience +20%. [/color] [color=red]Max Courage and Confidence -25, Stress +25%.[/color]",
     "effect": {
       "code": "shyness",
       "cour_max": -25,
@@ -1498,7 +1497,7 @@ var traits = {
   },
   "Hidden Trait": {
     "name": "Hidden Trait",
-    "description": "$name has hidden trait. \n\n[color=aqua]Damage+ Speed+. [/color]",
+    "description": "$name has hidden trait. \n\n[color=aqua]Can be revealed in daily event. [/color]",
     "effect": {
       "code": "hidden_trait",
     },
@@ -1513,7 +1512,7 @@ var traits = {
   },
   "Horns&Hooves": {
     "name": "Horns&Hooves",
-    "description": "$name allow to deal more damage in battles. \n\n[color=aqua]Damage+. [/color]",
+    "description": "$name allow to deal more damage in battles. \n\n[color=aqua] Damage +4. [/color]",
     "effect": {
       "code": "horns&hooves",
     },
@@ -1530,7 +1529,7 @@ var traits = {
   },
   "Nine Lives": {
     "name": "Nine Lives",
-    "description": "$name insert text here. \n\n[color=aqua]Can survive death once. [/color]",
+    "description": "$name insert text here. \n\n[color=aqua]Can once survive death blow. [/color]",
     "effect": {
       "code": "nine_lives",
     },

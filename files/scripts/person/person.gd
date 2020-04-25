@@ -174,6 +174,15 @@ var stats = {
 	loyal_mod = 1,
 	loyal_max = 100,
 	loyal_min = 0,
+	mood_cur = 100,
+	mood_mod = 0,
+	mood_min = 0,
+	mood_max = 200,
+	character = 0,
+	weight_cur = 60,
+	weight_base = 60,
+	weight_min = 0,
+	weight_max = 200
 }
 var health setget health_set,health_get
 var energy setget energy_set,energy_get
@@ -196,6 +205,8 @@ var loyal setget loyal_set,loyal_get
 var lust setget lust_set,lust_get
 var toxicity setget tox_set,tox_get
 
+var mood setget mood_set,mood_get
+var personweight setget weight_set,weight_get
 
 func fear_raw(value):
 	fear += value
@@ -509,6 +520,37 @@ func lust_set(value):
 	else:
 		stats.lust_cur = clamp(stats.lust_cur + difference,stats.lust_min,stats.lust_max)
 
+func mood_set(value):
+	var difference = value - stats.mood_cur
+	if difference > 0:
+		stats.mood_cur = clamp(stats.mood_cur + difference*(1 + stats.mood_mod/100),stats.mood_min,stats.mood_max)
+	else:
+		stats.mood_cur = clamp(stats.mood_cur + difference,stats.mood_min,stats.mood_max)
+
+
+func weight_set(value):
+	var difference = stats.weight_base - stats.weight_cur
+	var plusweight = true
+	var heightbonus = 1.0
+	var malebonus = 1.0
+	var agebonus = 1.0
+	var result = 0
+	malebonus = globals.fastif(sex == 'male', '1.2', '1.0')
+	if age != 'adult':
+		if age == 'child':
+			agebonus = 1.4
+		else:
+			agebonus = 1.2
+	if stats.weight_cur > stats.weight_base || stats.weight_cur < stats.weight_base:
+		plusweight = true
+	stats.weight_base = min(stats.weight_base, stats.weight_max)
+	result = (stats.weight_base/agebonus)*malebonus*heightbonus
+	if plusweight:
+		self.stats.weight_cur = stats.weight_base + difference
+	else:
+		self.stats.weight_cur = result
+#	self.stats.weight_cur += stats.weight_base+difference
+
 #warning-ignore:unused_argument
 func str_set(value):
 	stats.str_base = min(stats.str_base, stats.str_max)
@@ -582,6 +624,12 @@ func maf_get():
 
 func end_get():
 	return stats.end_base + stats.end_mod
+
+func mood_get():
+	return stats.mood_cur
+	
+func weight_get():
+	return stats.weight_cur
 
 func awareness(hunt = false):
 	var number = 0

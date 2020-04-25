@@ -603,7 +603,6 @@ class combatant:
 		effects.clear()
 		scene.combatantnodes.erase(node)
 		scene.combatlog += scene.combatantdictionary(self, self, "\n[color=aqua][name1] has been defeated.[/color]")
-		var pgrp = 0
 		if group == 'enemy':
 			for i in scene.enemygroup:
 				if i.passives.has("cultleaderpassive") && i != self:
@@ -613,11 +612,10 @@ class combatant:
 					scene.combatlog += "\n[color=red]Cult leader absorbs the power of defeated ally and grows stronger![/color]"
 		if group == 'player':		
 			scene.playergroup.remove(scene.playergroup.find(self))
-			pgrp += 1
 			if person == globals.player:
-				if pgrp <= globals.state.playergroup.size():
+				if scene.playergroup.size() > 0:
 					person.add_effect(globals.effectdict.escapeddeath)
-				elif pgrp > globals.state.playergroup.size():
+				elif scene.playergroup.size() == 0:
 					globals.main.animationfade(1)
 					if OS.get_name() != 'HTML5':
 						yield(globals.main, 'animfinished')
@@ -646,7 +644,7 @@ class combatant:
 					for i in globals.state.playergroup:
 						globals.state.findslave(i).stress += rand_range(25,40)
 					_slave.death()
-			if pgrp >= globals.state.playergroup.size()+1:
+			if scene.playergroup.size() == 0:
 				globals.main.animationfade(1)
 				if OS.get_name() != 'HTML5':
 					yield(globals.main, 'animfinished')
@@ -683,7 +681,7 @@ func checkforresults():
 	var text = ''
 	
 	for i in playergroup:
-		if i.state == 'defated':
+		if i.state == 'defeated':
 			text += '\n[color=#ff4949]' + i.name + ' has fallen. [/color]'
 			playergroup.remove(playergroup.find(i))
 	for i in enemygroup:
