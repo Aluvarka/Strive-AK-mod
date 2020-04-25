@@ -673,7 +673,7 @@ func ffprostitution(person):
 	if rand_range(1,10) > 4:
 		globals.impregnation(person)
 	var counter = 0
-	gold = (rand_range(1,5) + max(5, person.charm/4 + person.send*15 + person.lewdness/2) + person.beauty/5)/(person.stats.energy_cur/90)
+	gold = (rand_range(1,5) + max(5, person.charm/4 + person.send*15 + (1+person.lewdness/2) + person.beauty/5))/(person.stats.energy_cur/90)
 	if person.traits.has('Sex-crazed') == true || person.traits.has('Fickle') == true:
 		person.stress += -counter*4
 		gold = gold*1.2
@@ -874,7 +874,7 @@ func whorewimborn(person):
 	if rand_range(1,10) > 4:
 		globals.impregnation(person)
 	var counter = 0
-	gold = (rand_range(1,5) + max(5, person.charm/4 + person.send*15 + person.lewdness/2) + person.beauty/5)/(person.stats.energy_cur/80)
+	gold = (rand_range(1,5) + max(5, person.charm/4 + person.send*15 + (1+person.lewdness/2)) + person.beauty/5)/(person.stats.energy_cur/80)
 	if person.traits.has('Sex-crazed') == true || person.traits.has('Fickle') == true:
 		person.stress += -counter*4
 		gold = gold*1.2
@@ -961,7 +961,7 @@ func fucktoywimborn(person):
 	if rand_range(1,10) > 2:
 		globals.impregnation(person)
 	var counter = 0
-	gold = (rand_range(5,10) + person.cour/2.3 + person.send*15 + person.beauty/5 + person.lewdness/1.5)/(person.stats.energy_cur/74)
+	gold = rand_range(5,10) + person.cour/2.3 + person.send*15 + person.beauty/5 + (1+person.lewdness/1.5)/(person.stats.energy_cur/74)
 	if person.traits.has('Sex-crazed') == true || person.traits.has('Fickle'):
 		person.stress += -counter*4
 		gold = gold*1.2
