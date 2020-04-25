@@ -777,7 +777,15 @@ func impregnation(mother, father = null, anyfather = false):
 	baby.cleartraits()
 	
 	var traitpool = father.traits + mother.traits
+	var tabutraitpool = ['Masochist','Deviant','Slutty','Pervert','Sex-crazed','Likes it rough','Enjoys Anal','Grateful','Broken mind','Melancholia','Love childs','Obese','Broken limb','Cracked rib','Heavy injured','Bruised','Baker','Magician','Warrior','Hunter','Athlete','Sadness','Mute','Bisexual','Homosexual','Sickness','Devoted','Uncivilized']
 	for i in traitpool:
+		traitpool.sort();
+		tabutraitpool.sort();
+		for ii in tabutraitpool:
+			if i == ii: 
+				traitpool.remove(i)
+				continue
+			else:
 		if rand_range(0,100) <= variables.traitinheritchance:
 			baby.add_trait(i)
 	

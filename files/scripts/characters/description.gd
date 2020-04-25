@@ -300,7 +300,7 @@ static func getstatus(person):
 	text += '\n'
 	text += "Stress: "
 	if person.stress < 33:
-		text += '[color=green]Overall $name acts content and lively[/color]. ' 
+		text += '[color=green]Overall $name acts content and lively.[/color] ' 
 	elif person.stress < 66:
 		text += '[color=yellow]$name looks somewhat depressed.[/color] '
 	elif person.stress < 99:

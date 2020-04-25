@@ -855,7 +855,7 @@ var traits = {
   },
   "Thick skinned": {
     "name": "Thick skinned",
-    "description": "$name's hard life hardened $him against any type of stress. \n\n[color=aqua]Recieve stress -10%. [/color]",
+    "description": "$name's hard life hardened $him against any type of stress. \n\n[color=aqua]Recieve stress -10%. Armor +2 [/color]",
     "effect": {
       "code": "thick_skinned",
 	  "stress_mod": -0.1
@@ -1433,6 +1433,8 @@ var traits = {
     },
     "tags": [
       "secondary",
+	  "third",
+      "elitething"
     ],
     "conflict": [
       ""
@@ -1456,7 +1458,7 @@ var traits = {
   },
   "Alopecia": {
     "name": "Alopecia",
-    "description": "$name was born with bale skin instead of racial coverage on body. \n\n[color=red]Doesnot have fur or scales. [/color]",
+    "description": "$name was born with bale skin instead of racial coverage on body. \n\n[color=red]Doesn't have fur or scales. [/color]",
     "effect": {
       "code": "alopecia",
       "stress_mod": -0.1,
@@ -1502,6 +1504,7 @@ var traits = {
       "code": "hidden_trait",
     },
     "tags": [
+      "third",
       "secondary",
       "mental",
       "physical",
@@ -1550,6 +1553,7 @@ var traits = {
       "code": "kleptomania",
     },
     "tags": [
+      "third",
 	  "mental",
 	  "detrimental"
     ],
