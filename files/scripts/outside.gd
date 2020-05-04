@@ -6,9 +6,7 @@ onready var buttoncontainer = $buttonpanel/outsidebuttoncontainer
 onready var button = $buttonpanel/outsidebuttoncontainer/buttontemplate
 onready var questtext = globals.questtext
 onready var mansion = get_parent()
-var location = ''
 var questgiveawayslave
-var currentzone
 
 #QMod - Variables
 onready var mainQuestTexts = globals.mainQuestTexts
@@ -27,6 +25,18 @@ func _ready():
 	if globals.guildslaves.umbra.size() < 4:
 		var rand = round(rand_range(4,6))
 		newslaveinguild(rand, 'umbra')
+	if globals.guildslaves.wimbornmerc.size() < 1:
+		var rand = round(rand_range(3,3))
+		newslaveinguild(rand, 'wimbornmerc')
+	if globals.guildslaves.gornmerc.size() < 1:
+		var rand = round(rand_range(3,4))
+		newslaveinguild(rand, 'gornmerc')
+	if globals.guildslaves.frostfordmerc.size() < 1:
+		var rand = round(rand_range(2,3))
+		newslaveinguild(rand, 'frostfordmerc')
+	if globals.guildslaves.umbramerc.size() < 1:
+		var rand = round(rand_range(2,3))
+		newslaveinguild(rand, 'umbramerc')
 	for i in ['armor','weapon','costume','accessory','underwear']:
 		$playergrouppanel/characterinfo.get_node(i).connect('mouse_entered',self,'iteminfo',[i])
 		$playergrouppanel/characterinfo.get_node(i).connect('mouse_exited',self,'iteminfoclose')
@@ -39,6 +49,8 @@ func _ready():
 	$minimappanel/map/Control.set_process_input(false)
 	$shoppanel/Panel/exchange.connect("pressed", self, "exchangeitems")
 	$shoppanel/exchange/TradeButton.connect('pressed', self, 'exchangeitemsconfirm')
+	get_node("playergroupdetails/Panel/TabContainer/Items").get_node("_v_scroll").visible = false
+	get_node("playergroupdetails/Panel/TabContainer/Spells").get_node("_v_scroll").visible = false
 
 
 
@@ -191,7 +203,7 @@ func opencharacter(person, combat = false, combatant = null):
 		$playergrouppanel/characterinfo.get_node(i).texture_normal = geardefaulticon[i]
 		if person.gear[i] != null:
 			var item = globals.state.unstackables[person.gear[i]]
-			$playergrouppanel/characterinfo.get_node(i).texture_normal = load(item.icon)
+			$playergrouppanel/characterinfo.get_node(i).texture_normal = globals.loadimage(item.icon)
 	for i in $playergrouppanel/characterinfo/Container/GridContainer.get_children():
 		if i.get_name() != 'Button':
 			i.visible = false
@@ -233,7 +245,7 @@ func abilitytoggle(ability):
 	if get_parent().get_node('combat').is_visible_in_tree():
 		var combatant = get_parent().get_node('combat').findcombatantfromslave(partyselectedchar)
 		if combatant.actionpoints > 0:
-			get_parent().get_node('combat').selectedcharacter = combatant
+			combatant.selectcombatant()
 			combatant.buildabilities()
 
 func _on_grade_mouse_entered():
@@ -270,17 +282,21 @@ func buildbars(parentnode, person):
 	parentnode.get_node("name").text = person.name_short()
 	parentnode.get_node("hp").value = (person.health/person.stats.health_max)*100
 	parentnode.get_node("hp").hint_tooltip = "Health: " + str(person.health) + "/" + str(person.stats.health_max)
-	parentnode.get_node("en").value = (float(person.energy)/person.stats.energy_base)*100
-	parentnode.get_node("en").hint_tooltip = "Energy: " + str(person.energy) + "/" + str(person.stats.energy_base)
+	parentnode.get_node("en").value = (float(person.energy)/person.stats.energy_max)*100
+	parentnode.get_node("en").hint_tooltip = "Energy: " + str(person.energy) + "/" + str(person.stats.energy_max)
 	parentnode.get_node("portait").set_texture(globals.loadimage(person.imageportait))
 	if parentnode.get_parent() == $playergrouppanel/VBoxContainer:
 		parentnode.get_node("xp").value = person.xp
 		parentnode.get_node("xp").hint_tooltip = "Experience: " + str(person.xp) + "/100"
+		if person.xp == 100:
+			parentnode.get_node("xp").tint_progress = Color(0.65,0.87,0.875,1)
+		else:
+			parentnode.get_node("xp").tint_progress = Color(0.3,0.74,0.75,1)
 	if person != globals.player:
 		parentnode.get_node("stress").visible = true
-		#parentnode.get_node("lust").visible = true
+		parentnode.get_node("lust").visible = false
 		parentnode.get_node("stress").value = (float(person.stress)/person.stats.stress_max)*100
-		parentnode.get_node('stress').hint_tooltip = "Stress: " + str(person.stress)
+		parentnode.get_node('stress').hint_tooltip = "Stress: " + str(floor(person.stress)) + "/100"
 		#parentnode.get_node("lust").value = (float(person.lust)/person.stats.lust_max)*100
 		
 	else:
@@ -342,6 +358,14 @@ func newslaveinguild(number, town = 'wimborn'):
 			racearray = [[globals.getracebygroup("frostford"),1],['Human', 1.5],['Halfkin Wolf', 3],['Beastkin Wolf', 5]]
 		elif town == 'umbra':
 			racearray = [[globals.allracesarray[rand_range(0,globals.allracesarray.size())],1]]
+		elif town == 'wimbornmerc':
+			racearray = [[globals.getracebygroup("wimborn"),1],['Drow', 2],['Dark Elf', 1.5],['Elf', 2],['Human', 6],['Centaur', 1],['Taurus', 2],['Halfkin Fox', 1.5]]
+		elif town == 'gornmerc':
+			racearray = [[globals.getracebygroup("gorn"),1],['Centaur', 1],['Human', 2],['Goblin', 2],['Orc', 5],['Harpy', 1.5],['Lamia',0.5]]
+		elif town == 'frostfordmerc':
+			racearray = [[globals.getracebygroup("frostford"),1],['Human', 1.5],['Halfkin Wolf', 3],['Beastkin Wolf', 5],['Halfkin Tanuki', 1.5],['Halfkin Cat', 3],['Beastkin Cat', 5]]
+		elif town == 'umbramerc':
+			racearray = [[globals.allracesarray[rand_range(0,globals.allracesarray.size())],1]]
 		if globals.rules.slaverguildallraces == true && globals.state.sandbox == true:
 			originpool = ['slave','poor','commoner','rich','noble']
 			origin = originpool[rand_range(0,originpool.size())]
@@ -350,14 +374,23 @@ func newslaveinguild(number, town = 'wimborn'):
 			race = globals.weightedrandom(racearray)
 			if town == 'umbra':
 				originpool = [['noble', 1],['rich',2],['commoner',3], ['poor', 3], ['slave',1]]
+			elif town == 'wimbornmerc' || town == 'gornmerc' || town == 'frostfordmerc' || town == 'umbramerc':
+				originpool = [['rich',2], ['commoner',8], ['poor', 6]]
 			else:
 				originpool = [['rich',1], ['commoner',3], ['poor', 6], ['slave', 6]]
 			origin = globals.weightedrandom(originpool)
 		var newslave = globals.newslave(race, 'random', 'random', origin)
+		var merclvlplus = round(rand_range(1,4))
 		if town == 'umbra':
 			newslave.obed = rand_range(0,80)
 			if rand_range(0,100) >= 30:
 				newslave.add_effect(globals.effectdict.captured)
+		elif town in ['wimbornmerc','gornmerc','frostfordmerc','umbramerc']:
+			newslave.obed += 160
+			newslave.add_trait("Mercenary")
+			newslave.level += merclvlplus
+			newslave.learningpoints += round((rand_range(3,6)*merclvlplus)*variables.skillpointsperlevel)
+			newslave.skillpoints += merclvlplus*variables.skillpointsperlevel
 		else:
 			newslave.obed += 95
 		newslave.fromguild = true
@@ -377,10 +410,10 @@ func setcharacter(text):
 func slaveguild(guild = 'wimborn'):
 	mindread = false
 	var text = ''
-	sellslavelocation = 'guild'
 	guildlocation = guild
-	if guild == 'wimborn':
+	if guild == 'wimborn' || guild == 'wimbornmerc':
 		slavearray = globals.guildslaves.wimborn
+		mercarray = globals.guildslaves.wimbornmerc
 		if get_node("charactersprite").is_visible() == false || get_node("charactersprite").get_texture() != globals.spritedict.fairy:
 			main.background_set('slaverguild')
 			yield(main, 'animfinished')
@@ -395,7 +428,7 @@ func slaveguild(guild = 'wimborn'):
 			globals.charactergallery.maple.unlocked = true
 		else:
 			text += "You enter through the guild’s doors, and are greeted once again by the busy sights and sounds of customers, slaves, and workers shuffling around at blistering speeds. You give a polite bow to one of the receptionists and grab a pen to sign in. In few moments Maple appears before you.\n\n[color=yellow]— Ah, my pleasure, $name, how can I help you today?[/color] "
-		var array = [{name = 'See slaves for sale', function = 'slaveguildslaves'}, {name = 'Offer your servants',function = 'slaveguildsells'}, {name = 'See custom requests', function = 'slaveguildquests'},{name = 'Services for Slaves',function = 'slaveservice'},{name = 'Leave', function = 'town'}]
+		var array = [{name = 'See slaves for sale', function = 'slaveguildslaves', args = 'wimborn'}, {name = 'Offer your servants',function = 'sellslavelist', args = 'wimborn'}, {name = 'See custom requests', function = 'slaveguildquests'},{name = 'Services for Slaves',function = 'slaveservice'},{name = "Hire Mercenary", function = 'mercguildslaves', args = 'wimbornmerc'},{name = 'Leave', function = 'towimborn'}]
 		if globals.state.sandbox == true && globals.state.sidequests.maple < 1: globals.state.sidequests.maple = 1
 		if globals.state.mainquest == 3:
 			array.insert(3, {name = "Ask about fairies", function = 'slaveguildfairy'})
@@ -409,12 +442,13 @@ func slaveguild(guild = 'wimborn'):
 			text = "You enter through the guild’s doors, and are greeted once again by the busy sights and sounds of customers, slaves, and workers shuffling around at blistering speeds. You give a polite bow to one of the receptionists and grab a pen to sign in."
 		mansion.maintext = globals.player.dictionary(text)
 		buildbuttons(array)
-	elif guild == 'gorn':
+	elif guild == 'gorn' || guild == 'gornmerc':
 		clearselection()
 		setcharacter('goblin')
 		slavearray = globals.guildslaves.gorn
+		mercarray = globals.guildslaves.gornmerc
 		mansion.maintext = globals.player.dictionaryplayer("Huge part of supposed guild takes a makeshift platform and tents on the outside with few half-empty cages. In the middle, you can see a presentation podium which is easily observable from main street. Despite Gorn being very different from common, primarily human-populated towns, it still directly follows Mage's Order directives — race diversity and casual slavery are very omnipresent. \n\nAs you walk in, one of the goblin receptionists quickly recognizes you as an Order member and hastily grabs your attention, sensing a profitable customer.\n\n— $sir interested in some heat-tolerant 'orkers? *chuckles* Or you are in preference of short girls? We quite often get those as well, for every taste and color!")
-		var array = [{name = 'See slaves for sale',function = 'slaveguildslaves'}, {name = 'Offer your servants',function = 'slaveguildsells'}, {name = 'See custom requests', function = 'slaveguildquests'},{name = 'Services for Slaves',function = 'slaveservice'}]
+		var array = [{name = 'See slaves for sale',function = 'slaveguildslaves', args = 'gorn'}, {name = 'Offer your servants',function = 'sellslavelist', args = 'gorn'}, {name = 'See custom requests', function = 'slaveguildquests'},{name = 'Services for Slaves',function = 'slaveservice'},{name = "Hire Mercenary", function = 'mercguildslaves', args = 'gornmerc'}]
 		#Old Event Hooks
 		if globals.state.sidequests.emily in [14,15]:
 			array.insert(1, {name = 'Search for Tisha', function = 'tishaquest'})
@@ -443,15 +477,16 @@ func slaveguild(guild = 'wimborn'):
 		
 #		
 #		buildbuttons(array, self, false, buttonCount)
-	elif guild == 'frostford':
+	elif guild == 'frostford' || guild == 'frostfordmerc':
 		clearselection()
 		setcharacter('frostfordslaver')
 		slavearray = globals.guildslaves.frostford
+		mercarray = globals.guildslaves.frostfordmerc
 		text = "A humble local guild building is bright and warm inside. Just as the whole of Frostford, this place is serene in its mood compared to what you are used to. "
 		if globals.state.mainquest >= 2:
 			text += "Realizing you belong to the Mage's Order, the attendant politely greets you and asks how she may assist you. "
 		mansion.maintext = globals.player.dictionaryplayer(text)
-		var array = [{name = 'See slaves for sale',function = 'slaveguildslaves'},{name = 'Offer your servants',function = 'slaveguildsells'}, {name = 'See custom requests', function = 'slaveguildquests'}, {name = 'Services for Slaves',function = 'slaveservice'}, {name = 'Leave', function = 'tofrostford'}]
+		var array = [{name = 'See slaves for sale',function = 'slaveguildslaves', args = 'frostford'},{name = 'Offer your servants',function = 'sellslavelist', args = 'frostford'}, {name = 'See custom requests', function = 'slaveguildquests'}, {name = 'Services for Slaves',function = 'slaveservice'},{name = "Hire Mercenary", function = 'mercguildslaves', args = 'frostfordmerc'}, {name = 'Leave', function = 'tofrostford'}]
 		buildbuttons(array)
 	get_node("playergrouppanel/VBoxContainer").visible = false
 	if globals.spelldict.mindread.learned == false:
@@ -523,6 +558,11 @@ func slaveguildfairy(stage = 0):
 	else:
 		main.dialogue(state, self, globals.player.dictionary(text), buttons, sprites)
 
+func towimborn():
+	get_parent().nodefade($charactersprite, 0.3)
+	get_node("playergrouppanel/VBoxContainer").visible = true
+	main.get_node("explorationnode").zoneenter('wimborn')
+	
 func togorn():
 	get_parent().nodefade($charactersprite, 0.3)
 	get_node("playergrouppanel/VBoxContainer").visible = true
@@ -537,12 +577,19 @@ var selectedslave
 var selectedslaveprice
 var slavearray
 var mindread = false
-var sellslavelocation
 var guildlocation
+var mercarray
 
 
-func slaveguildslaves():
+func slaveguildslaves(location):
+	guildlocation = location
 	get_node("slavebuypanel").visible = true
+	var cost = 5
+	if globals.state.spec == 'Mage':
+		cost = cost/2
+	get_node("slavebuypanel/mindreadbutton").text = "Use Mind Read (" +str(cost)+ ")"
+	get_node("slavebuypanel/mindreadbutton").hint_tooltip = "Allows to see more information about the slaves.\nCosts " +str(cost)+ " mana"
+	get_node("slavebuypanel/mindreadbutton").disabled = mindread == true || globals.spelldict.mindread.learned == false || globals.resources.mana < cost
 	var slavelist = get_node("slavebuypanel/slavebuypanel/ScrollContainer/VBoxContainer")
 	var slavebutton = get_node("slavebuypanel/slavebuypanel/ScrollContainer/VBoxContainer/slavebutton")
 	for i in slavelist.get_children():
@@ -561,7 +608,7 @@ func slaveguildslaves():
 		var price = max(person.buyprice()*0.8,50)
 		if globals.state.reputation.has(location) && globals.state.reputation[location] <= -10 && location != 'umbra':
 			price *= (abs(globals.state.reputation[location])/20.0)
-		if guildlocation == 'outside':
+		if location == 'slavers':
 			price *= 0.5
 		price = round(price)
 		newbutton.set_meta('person', person)
@@ -570,8 +617,51 @@ func slaveguildslaves():
 		newbutton.get_node("sex").texture = globals.sexicon[person.sex]
 		newbutton.get_node("sex").hint_tooltip = person.sex
 		newbutton.connect('pressed',self,'selectslavebuy',[person])
-	if guildlocation != 'outside':
+	if location != 'slavers' || location != 'frostfordmerc' || location != 'gornmerc' || location != 'wimbornmerc' || location != 'umbramerc':
 		mansion.maintext = 'You get a simple catalogue with currently present slaves available for purchase.'
+	$slavebuypanel/statspanel.visible = false
+	clearbuttons()
+
+func mercguildslaves(location):
+	guildlocation = location
+	get_node("slavebuypanel").visible = true
+	var cost = 5
+	if globals.state.spec == 'Mage':
+		cost = cost/2
+	get_node("slavebuypanel/mindreadbutton").text = "Use Mind Read (" +str(cost)+ ")"
+	get_node("slavebuypanel/mindreadbutton").hint_tooltip = "Allows to see more information about the slaves.\nCosts " +str(cost)+ " mana"
+	get_node("slavebuypanel/mindreadbutton").disabled = mindread == true || globals.spelldict.mindread.learned == false || globals.resources.mana < cost
+	var slavelist = get_node("slavebuypanel/slavebuypanel/ScrollContainer/VBoxContainer")
+	var slavebutton = get_node("slavebuypanel/slavebuypanel/ScrollContainer/VBoxContainer/slavebutton")
+	for i in slavelist.get_children():
+		if i != slavebutton:
+			i.visible = false
+			i.queue_free()
+	for person in mercarray:
+		var newbutton = slavebutton.duplicate()
+		slavelist.add_child(newbutton)
+		newbutton.visible = true
+		newbutton.get_node('name').set_text(person.dictionary('$name, ')+ person.race)
+		newbutton.get_node('age').set_text(person.age.capitalize())
+		newbutton.get_node("grade").texture = globals.gradeimages[person.origins]
+		newbutton.get_node("grade").connect("mouse_entered", globals, 'gradetooltip',[person])
+		newbutton.get_node("grade").connect("mouse_exited",globals, 'hidetooltip')
+		var price = max(person.buyprice()*0.8,50)
+		if globals.state.reputation.has(location) && globals.state.reputation[location] <= -10 && location != 'umbra':
+			price *= (abs(globals.state.reputation[location])/20.0)
+		if location == 'slavers':
+			price *= 0.5
+		price = round(price)
+		newbutton.set_meta('person', person)
+		newbutton.get_node('price').set_text(str(price)+ ' gold')
+		newbutton.set_meta('price', price)
+		newbutton.get_node("sex").texture = globals.sexicon[person.sex]
+		newbutton.get_node("sex").hint_tooltip = person.sex
+		newbutton.connect('pressed',self,'selectslavebuy',[person])
+	if location in ['wimbornmerc','gornmerc','frostfordmerc','umbramerc']:
+		mansion.maintext = 'You get a simple catalogue with currently present peoples available for hire.'
+	else:
+		mansion.maintext = 'wrong text'
 	$slavebuypanel/statspanel.visible = false
 	clearbuttons()
 
@@ -585,11 +675,22 @@ func selectslavebuy(person):
 		else:
 			i.set_pressed(false)
 	var text = ''
-	if person.effects.has('captured') == true:
+	if person.effects.has('captured') == true && person.traits.has('Mercenary') != true:
 		text += "During the examination $name only returned bold, angry look, showing $his [color=#ff4949]rebellious[/color] attitude. \n\n"
-	elif person.obed < 40:
+	elif person.obed < 40 && person.traits.has('Mercenary') != true:
 		text += "$name reacts to commands [color=#ff4949]poorly[/color] and does not seem to hold any enthusiasm about $his position. Perhaps $he will need an additional training...\n\n"
-	if person.vagvirgin == true && person.vagina != 'none':
+	else:
+		if person.traits.has('Mercenary') == true:
+			text += "You are looking throught $name file: \n"
+			if person.sstr + person.send >= 6 && person.cour >= 50 || person.stats.str_max + person.stats.end_max >= 8:
+				text += "$name is strong and endure, $he will be decent [color=aqua]warrior[/color] \n"
+			if person.smaf >= 4 && person.wit >= 50 || person.stats.maf_max >= 5 && person.wit >= 50:
+				text += "$name is smart and wise, $he will be decent [color=aqua]mage[/color] \n"
+			if person.sagi >= 5 && person.cour+person.wit >= 80 || person.stats.agi_max >= 6 && person.cour+person.wit >= 100:
+				text += "$name is nimble and cunning, $he will be decent [color=aqua]hunter[/color] \n"
+			if person.conf+person.charm >= 100 && person.origins >= "commoner":
+				text += "$name is confident and charming, $he will be decent [color=aqua]manager[/color] \n"
+	if person.vagvirgin == true && person.vagina != 'none' && person.traits.has('Mercenary') != true:
 		if person.obed >= 40:
 			text += "After a gesture, $name reveals to you $his [color=aqua]virgin[/color] pussy. \n\n"
 		else:
@@ -600,10 +701,6 @@ func selectslavebuy(person):
 		get_node("slavebuypanel/purchasebutton").set_disabled(true)
 	else:
 		get_node("slavebuypanel/purchasebutton").set_disabled(false)
-	if globals.spelldict.mindread.learned == true && globals.resources.mana >= 5 && mindread == false:
-		get_node("slavebuypanel/mindreadbutton").set_disabled(false)
-	else:
-		get_node("slavebuypanel/mindreadbutton").set_disabled(true)
 	get_node("slavebuypanel/statspanel").person = person
 	get_node("slavebuypanel/statspanel").visible = true
 	$slavebuypanel/statspanel/portrait.texture = globals.loadimage(person.imageportait)
@@ -617,25 +714,30 @@ func selectslavebuy(person):
 
 
 func _on_mindreadbutton_pressed():
-	globals.resources.mana -= 5
+	var cost = 5
+	if globals.state.spec == 'Mage':
+		cost = cost/2
+	globals.resources.mana -= cost
 	mindread = true
+	get_node("slavebuypanel/mindreadbutton").disabled = true
 	
-	selectslavebuy(selectedslave)
+	if selectedslave != null:
+		selectslavebuy(selectedslave)
 
 
-func selectslavesell(person = null, type = 'guild'):
-	if type == 'guild':
-		selectedslaveprice = person.sellprice()
-	elif type == 'sebastian':
+func selectslavesell(person, location):
+	if location == 'sebastian':
 		selectedslaveprice = round(person.sellprice(true)*0.7)
-	elif type == 'umbra':
+	elif location == 'umbra':
 		selectedslaveprice = person.sellprice(true)
+	else:
+		selectedslaveprice = person.sellprice()
 	selectedslave = person
 	var text = ''
 	text = 'After some time, you get an offer to sell this servant for [color=yellow]' + str(selectedslaveprice) + ' gold[/color]. '
 	if selectedslave.fromguild == true:
 		text += person.dictionary("\n\n[color=#ff4949]You won't get any upgrade points from selling this person as $he has been registered in the census.[/color]")
-	elif type != 'guild' || (selectedslave.obed >= 90 && selectedslave.fromguild == false && selectedslave.effects.has('captured') == false):
+	elif !location in ['wimborn','gorn','frostford'] || (selectedslave.obed >= 90 && selectedslave.fromguild == false && selectedslave.effects.has('captured') == false):
 		text += person.dictionary("\n\n[color=aqua]You will get upgrade points from selling this person here depending on $his grade.[/color]")
 	else:
 		text += person.dictionary("\n\n[color=#ff4949]You won't get any upgrade points from selling this person currently $he's too rebellious.[/color]")
@@ -654,27 +756,36 @@ var closefunction
 func _on_slavelistcancel_pressed():
 	get_node("slavebuypanel").visible = false
 	clearselection()
-	if guildlocation == 'outside':
-		get_parent().get_node("explorationnode").call(closefunction[0], closefunction[1])
-	elif location != 'umbra':
-		slaveguild(location)
-	else:
+	if guildlocation == 'slavers':
+		get_parent().get_node("explorationnode").slaversenc(2)
+		get_node("playergrouppanel/VBoxContainer").visible = true
+	elif guildlocation == 'umbra' || guildlocation == 'umbramerc':
 		get_parent().get_node("explorationnode").zoneenter('umbra')
 		get_node("playergrouppanel/VBoxContainer").visible = true
+	else:
+		slaveguild(guildlocation)
 
 func _on_purchasebutton_pressed():
 	globals.resources.gold -= selectedslaveprice
 	
-	if guildlocation == 'outside':
+	if guildlocation == 'slavers':
 		get_parent().get_node("explorationnode").captureeffect(selectedslave)
 	else:
 		globals.slaves = selectedslave
-		main.popup('You pay ' + str(selectedslaveprice) + selectedslave.dictionary(" gold for $name. With that, guild's helper brands $him for you and $he's sent to your mansion. "))
-		mansion.maintext = globals.player.dictionary("A finest choice, $sir. Anyone else caught your attention?")
-		selectedslave.brand = 'basic'
-	selectedslave.sleep = 'communal'
-	slavearray.remove(slavearray.find(selectedslave))
-	slaveguildslaves()
+		if selectedslave.traits.has('Mercenary') != true:
+			main.popup('You pay ' + str(selectedslaveprice) + selectedslave.dictionary(" gold for $name. With that, guild's helper brands $him for you and $he's sent to your mansion. "))
+			selectedslave.brand = 'basic'
+			mansion.maintext = globals.player.dictionary("A finest choice, $sir. Anyone else caught your attention?")
+			selectedslave.sleep = 'communal'
+			slavearray.remove(slavearray.find(selectedslave))
+			slaveguildslaves(guildlocation)
+		else:
+			main.popup('You pay ' + str(selectedslaveprice) + selectedslave.dictionary(" gold and sign $name's contract. With that $he's sent to your mansion. "))
+			selectedslave.brand = 'freewill'
+			mansion.maintext = globals.player.dictionary("A finest choice, $sir. Anyone else caught your attention?")
+			selectedslave.sleep = 'communal'
+			mercarray.remove(mercarray.find(selectedslave))
+			mercguildslaves(guildlocation)
 	clearselection('buy')
 
 
@@ -686,39 +797,42 @@ func _on_slavesellbutton_pressed():
 	if selectedslave.obed >= 90 && selectedslave.fromguild == false && selectedslave.effects.has('captured') == false:
 		upgradefromslave = true
 		globals.resources.upgradepoints += globals.originsarray.find(selectedslave.origins)+1
-	elif sellslavelocation in ['sebastian','umbra'] && selectedslave.fromguild == false:
+	elif guildlocation in ['sebastian','umbra'] && selectedslave.fromguild == false:
 		upgradefromslave = true
 		globals.resources.upgradepoints += globals.originsarray.find(selectedslave.origins)+1
-		if selectedslave.fromguild == false && (selectedslave.obed < 90 || selectedslave.effects.has('captured') == true):
+		if selectedslave.fromguild == false && (selectedslave.obed < 90 || selectedslave.effects.has('captured') == true) || selectedslave.traits.has('Mercenary') == true:
 			var reputationloss = [['wimborn',1],['gorn',1],['frostford',1],['amberguard',1]]
 			if selectedslave.race in ['Elf','Dark Elf','Drow']:
 				reputationloss[3][1] += 12
 			elif selectedslave.race.find('Beastkin') >= 0 ||  selectedslave.race.find('Halfkin') >= 0:
 				reputationloss[2][1] += 8
 			elif selectedslave.race in ['Orc','Goblin','Centaur']:
-				reputationloss[2][1] += 10
-			globals.state.reputation[globals.weightedrandom(reputationloss)] -= 4
+				reputationloss[1][1] += 10
+			else:
+				globals.state.reputation[globals.weightedrandom(reputationloss)] -= 4
+			if selectedslave.traits.has('Mercenary') == true:
+				globals.state.reputation[globals.weightedrandom(reputationloss)] -= 20
 			text += "[color=yellow]Your reputation has suffered from this deal. [/color]\n"
-	if globals.guildslaves.has(location):
-		globals.guildslaves[location].append(selectedslave)
+	if globals.guildslaves.has(guildlocation):
+		globals.guildslaves[guildlocation].append(selectedslave)
 	selectedslave.removefrommansion()
 	selectedslave.fromguild = true
 	text += selectedslave.dictionary('You sell $name for ') + str(selectedslaveprice) + selectedslave.dictionary(" gold. ")
-	if sellslavelocation != 'sebastian':
+	if guildlocation != 'sebastian':
 		text += selectedslave.dictionary("$He's taken away and put on sale for other customers. ")
 	main.rebuild_slave_list()
-	sellslavelist(sellslavelocation)
+	sellslavelist(guildlocation)
 	clearselection('sell')
 	mansion.maintext = text
 
 
-func slaveguildsells():
-	sellslavelist('guild')
-
-func sellslavelist(type = 'guild'):
+func sellslavelist(location):
+	guildlocation = location
 	var text = 'Select a person you wish to sell. '
-	if type == 'guild':
+	if location in ['wimborn','gorn','frostford']:
 		text += "You will receive Mansion Upgrade points if person haven't been registered before and is not rebellious."
+	elif location in ['sebastian','umbra']:
+		text = "[color=aqua]Selling slaves here will still provide upgrade points even if they are rebellious, but will lower your reputation. [/color]"
 	mansion.maintext = text
 	get_node("slavesellpanel").visible = true
 	clearbuttons()
@@ -729,7 +843,7 @@ func sellslavelist(type = 'guild'):
 			i.visible = false
 			i.queue_free()
 	for person in globals.slaves:
-		if person.away.duration == 0:
+		if person.away.duration == 0 || person.traits.has('Mercenary') != true:
 			var newbutton = slavebutton.duplicate()
 			slavelist.add_child(newbutton)
 			newbutton.visible = true
@@ -740,37 +854,36 @@ func sellslavelist(type = 'guild'):
 			newbutton.get_node("sex").texture = globals.sexicon[person.sex]
 			newbutton.get_node("sex").hint_tooltip = person.sex
 			newbutton.get_node('name').set_text(person.dictionary('$name, ')+ person.race + ', ' + person.age + ', ' + person.work)
-			if type == 'guild':
-				newbutton.get_node('price').set_text(str(person.sellprice()) + ' gold')
-			elif type == 'sebastian':
+			if location == 'sebastian':
 				newbutton.get_node('price').set_text(str(round(person.sellprice(true)*0.7))+ ' gold')
-			elif type == 'umbra':
+			elif location == 'umbra':
 				newbutton.get_node('price').set_text(str(person.sellprice(true))+ ' gold')
-			if type in ['sebastian','umbra']:
-				mansion.maintext = "[color=aqua]Selling slaves here will still provide upgrade points even if they are rebellious, but will lower your reputation. [/color]"
+			else:
+				newbutton.get_node('price').set_text(str(person.sellprice()) + ' gold')
 			newbutton.set_meta('person', person)
-			newbutton.connect('pressed',self,'selectslavesell',[person, type])
+			newbutton.connect('pressed',self,'selectslavesell',[person, location])
 
 
 func _on_slavesellcancel_pressed():
 	get_node("slavesellpanel").visible = false
 	clearselection()
-	if sellslavelocation == 'guild':
-		slaveguild(guildlocation)
-	elif sellslavelocation == 'sebastian':
-		sebastian()
-	elif sellslavelocation == 'umbra':
+	if guildlocation == 'umbra':
 		get_parent().get_node("explorationnode").zoneenter('umbra')
 		get_node("playergrouppanel/VBoxContainer").visible = true
+	elif globals.guildslaves.has(guildlocation):
+		slaveguild(guildlocation)
+	elif guildlocation == 'sebastian':
+		sebastian()
 
 func clearselection(temp = ''):
-	selectedslave = ''
+	selectedslave = null
 	selectedslaveprice = 0
 	mansion.maintext = ''
-	if temp == 'buy' && guildlocation != 'outside':
-		mansion.maintext = '[color=yellow]Your newly purchased slave has been sent to your mansion. [/color]'
-	elif temp == 'buy' && guildlocation == 'outside':
-		mansion.maintext = '[color=yellow]Purchased slave is added to your group. [/color]'
+	if temp == 'buy':
+		if guildlocation == 'slavers':
+			mansion.maintext = '[color=yellow]Purchased slave is added to your group. [/color]'
+		else:
+			mansion.maintext = '[color=yellow]Your newly purchased slave has been sent to your mansion. [/color]'
 	elif temp == 'sell':
 		mansion.maintext = "[color=yellow]You receive a nice purse of gold for your freshly selled servant. [/color]"
 	get_node("slavebuypanel/purchasebutton").set_disabled(true)
@@ -799,12 +912,7 @@ func slaveguildquests():
 		if i != button:
 			i.visible = false
 			i.queue_free()
-	if location == 'wimborn':
-		questarray = globals.state.repeatables.wimbornslaveguild
-	elif location == 'gorn':
-		questarray = globals.state.repeatables.gornslaveguild
-	elif location == 'frostford':
-		questarray = globals.state.repeatables.frostfordslaveguild
+	questarray = globals.state.repeatables.get(guildlocation + 'slaveguild', [])
 	for i in questarray:
 		if i.taken == true:
 			var fontcolor
@@ -846,7 +954,7 @@ func slaveguildquests():
 
 func _on_questhide_pressed():
 	get_node("slaveguildquestpanel").visible = false
-	slaveguild(location)
+	slaveguild(guildlocation)
 
 func questbuttonpressed(quest):
 	mansion.maintext = slavequesttext(quest)
@@ -860,7 +968,6 @@ func removequest():
 		for ii in globals.state.repeatables[i]:
 			if ii == selectedquest:
 				globals.state.repeatables[i].remove(globals.state.repeatables[i].find(ii))
-	main.get_node("menucontrol/yesnopopup").visible = false
 	slaveguildquests()
 
 func _on_questaccept_pressed():
@@ -870,20 +977,20 @@ func _on_questaccept_pressed():
 		mansion.maintext = "You sign under the request and take a copy of it."
 	else:
 		if get_node("slaveguildquestpanel/questaccept").get_text() == 'Turn in':
-			main.popup(offeredslave.dictionary('You hand away $name and receive your reward. \n[color=yellow]You have gained ' + str(selectedquest.reward/10) + ' XP.[/color]\n\n[color=green]Your reputation with ' + location.capitalize() + " has increased.[/color]"))
+			main.popup(offeredslave.dictionary('You hand away $name and receive your reward. \n[color=yellow]You have gained ' + str(selectedquest.reward/10) + ' XP.[/color]\n\n[color=green]Your reputation with ' + guildlocation.capitalize() + " has increased.[/color]"))
 			globals.slaves.remove(globals.slaves.find(offeredslave))
 			selectedquest.taken = false
 			globals.player.xp += selectedquest.reward/10
 			globals.resources.gold += selectedquest.reward
 			if selectedquest.difficulty == 'easy':
-				globals.state.reputation[location] += 3
-				globals.resources.upgradepoints += round(rand_range(1,3))
+				globals.state.reputation[guildlocation] += 3
+				globals.resources.upgradepoints += 3
 			elif selectedquest.difficulty == 'medium':
-				globals.state.reputation[location] += 5
-				globals.resources.upgradepoints += round(rand_range(2,6))
+				globals.state.reputation[guildlocation] += 5
+				globals.resources.upgradepoints += 6
 			elif selectedquest.difficulty == 'hard':
-				globals.state.reputation[location] += 10
-				globals.resources.upgradepoints += round(rand_range(4,9))
+				globals.state.reputation[guildlocation] += 10
+				globals.resources.upgradepoints += 10
 			for i in globals.state.repeatables:
 				for ii in globals.state.repeatables[i]:
 					if ii == selectedquest:
@@ -1201,7 +1308,7 @@ func _on_serviceconfirm_pressed():
 
 func _on_slaveservicecancel_pressed():
 	get_node("slaveservicepanel").visible = false
-	slaveguild(location)
+	slaveguild(guildlocation)
 
 func specchosen(button):
 	for i in get_tree().get_nodes_in_group('specsbutton'):
@@ -1301,7 +1408,7 @@ func mageorder():
 		array.append({name = 'Seek Audience', function = 'mageorderquest1'})
 	elif globals.state.mainquest == 2:
 		array.append({name = 'Consult on further promotions',function = 'mageorderquest1'})
-	elif globals.state.mainquest >= 3 && globals.state.mainquestcomplete != true:
+	elif globals.state.mainquest >= 3 && globals.state.mainquest < 40 && globals.state.mainquestcomplete != true:
 		array.append({name = 'Find Melissa', function = 'mageorderquest1'})
 	if globals.state.mainquest == 27:
 		array.append({name = "Teleport to Capital", function = 'capitalteleport'})	
@@ -1406,7 +1513,10 @@ func mageorderquest1(person = null):
 		sprites = [['melissafriendly','pos1','opac']]
 		text = ("— You got it?” she inquires, “Splendid!\n\nAs you pass her the potion, she quickly puts it inside the desk.\n\n— Yeah, I've done the paperwork. Here's your new badge; you'll need it. You remind me of myself, back when I joined  the guild...\n\n— I was actually sold into slavery to one of the mages in my youth. Not gonna complain about my position back then much. *giggles* Eventually, I asked him to teach me, as I wanted to be something more than just another plaything. He agreed. I guess I wasn’t a disappointment, as in the end I inherited his manor in this city and have made it this far.\n\n— Anyway, come see me later. I still have business to take care of today.\n\n[color=yellow]You are now a Journeyman in the Mage guild.[/color]")
 	elif globals.state.mainquest == 6:
-		text = ("You decide it is unwise to see Melissa without her delivery right now.")
+		if globals.state.getCountStackableItem('youthingpot','inventory') > 0:
+			text = ("You forgot to bring the Youthing Elixir in your backpack and decide it is unwise to see Melissa without her delivery right now.")
+		else:
+			text = ("You decide it is unwise to see Melissa without her delivery right now.")
 	elif globals.state.mainquest == 7:
 		globals.state.mainquest = 8
 		sprites = [['melissafriendly','pos1','opac']]
@@ -1477,7 +1587,7 @@ func mageorderselect(stage):
 	elif stage == 2:
 		reqs = 'person.race == "Fairy"'
 	elif stage == 3:
-		reqs = "person.race == 'Taurus' && person.titssize == 'huge' && person.lactation == true"
+		reqs = "person.race == 'Taurus' && person.titssize == 'huge' && person.lactation == true && person.titsextradeveloped && person.titsextra >= 3"
 	main.selectslavelist(true, 'mageorderquest1', self, reqs)
 
 func orderhade():
@@ -1502,6 +1612,7 @@ func givecompanion():
 			globals.spelldict.mindread.learned = true
 			if globals.abilities.abilitydict.has('mindread') == true:
 				globals.player.ability.append('mindread')
+				globals.player.abilityactive.append('mindread')
 			globals.state.branding = 1
 			globals.state.rank = 1
 			globals.resources.upgradepoints += 5
@@ -1592,6 +1703,7 @@ func _on_learnspellbutton_pressed():
 	spell.learned = true
 	if globals.abilities.abilitydict.has(spell.code) == true:
 		globals.player.ability.append(spell.code)
+		globals.player.abilityactive.append(spell.code)
 	mageservices()
 
 
@@ -1697,6 +1809,7 @@ func shoppanelclosecheck():
 	if get_node("shoppanel/Panel").visible == false:
 		get_node("shoppanel").visible = false
 		get_node("shoppanel/Panel").visible = true
+	playergrouppanel()
 #-----------------------------------------------------------------------
 
 func shopinitiate(shopname):
@@ -1746,7 +1859,7 @@ func exchangeRefresh():
 		if i.owner == null && i.enchant == 'basic':
 			var newbutton = $shoppanel/exchange/ScrollContainer/GridContainer/Button.duplicate()
 			newbutton.show()
-			newbutton.get_node('Icon').texture = load(i.icon)
+			newbutton.get_node('Icon').texture = globals.loadimage(i.icon)
 			$shoppanel/exchange/ScrollContainer/GridContainer.add_child(newbutton)
 			newbutton.connect('mouse_entered', globals, 'itemtooltip', [i])
 			newbutton.connect("mouse_exited", globals, 'itemtooltiphide')
@@ -1778,7 +1891,7 @@ var treasurepool = [['armorninja',5],['armorplate',1],['armorleather',20],['armo
 ['clothsundress',10], ['clothmaid',10], ['clothkimono',7], ['clothmiko',5], ['clothpet',3], ['clothbutler',10], ['clothbedlah',4],
 ['accgoldring',3],['accslavecollar',4],['acchandcuffs',3],['acctravelbag',5],['accamuletemerald', 1], ['accamuletruby', 1], 
 ['weaponelvensword',3], ['weaponnaturestaff',2], ['armortentacle', 0.5], ['clothtentacle', 1], 
-['armorrogue', 0.5],['weaponcursedsword', 0.5]
+['armorrogue', 0.5],['weaponcursedsword', 0.5],['blackjckclub', 4],['bdsmsuit', 3],['vhelmet', 4]
 ]
 
 func exchangeitemsconfirm():
@@ -1939,7 +2052,6 @@ func sebastianquest(stage = 0):
 		sebastian()
 	elif stage == 3:
 		sellslavelist('sebastian')
-		sellslavelocation = 'sebastian'
 	elif stage == 4:
 		globals.state.sidequests.sebastianumbra = 2
 		sebastian()
@@ -2042,7 +2154,10 @@ func backstreets():
 		text += '\n\nYou see an urchin girl trying to draw your attention'
 		array.insert(1,{name = 'Respond to the urchin girl', function = 'emily'})
 	if globals.state.sidequests.cali in [14,15,16]:
-		array.insert(1,{name = "Visit local bar", function = "calibarquest"})
+		for i in globals.slaves:
+			if i.unique == 'Cali':
+				array.insert(1,{name = "Visit local bar", function = "calibarquest"})
+				break
 	if globals.state.sidequests.emily == 13:
 		array.insert(1,{name = 'Search Backstreets', function = 'tishaquest'})
 	
@@ -2149,17 +2264,28 @@ var partyselectedslave
 
 func _on_details_pressed(empty = null):
 	var newbutton
-	backpackselecteditem = null
-	partyselectedslave = null
-	backpackselectedspell = null
+	if globals.state.getCountStackableItem(backpackselecteditem,'backpack') <= 0:
+		backpackselecteditem = null
+	if partyselectedslave != null:
+		var foundSelected = false
+		for i in [globals.player.id] + globals.state.playergroup:
+			if str(i) == str(partyselectedslave.id):
+				foundSelected = true
+		for i in globals.state.capturedgroup:
+			if i == partyselectedslave:
+				foundSelected = true
+		if !foundSelected:
+			partyselectedslave = null
+	if !globals.spelldict.get(backpackselectedspell,{}).get('learned'):
+		backpackselectedspell = null
 	if get_node("playergroupdetails/TabContainer").is_connected('tab_changed',self,'_on_details_pressed') == false:
 		get_node("playergroupdetails/TabContainer").connect("tab_changed",self,"_on_details_pressed")
 	if get_node("playergroupdetails/Panel/TabContainer").is_connected('tab_changed',self,'_on_details_pressed') == false:
 		get_node("playergroupdetails/Panel/TabContainer").connect("tab_changed",self,"_on_details_pressed")
-	get_node("playergroupdetails").popup()
-	get_node("playergroupdetails/Panel/itemdescript").set_bbcode("")
-	get_node("playergroupdetails/Panel/discardbutton").set_disabled(true)
-	get_node("playergroupdetails/Panel/usebutton").set_disabled(true)
+	if !backpackselecteditem:
+		get_node("playergroupdetails/Panel/itemdescript").set_bbcode("")
+		get_node("playergroupdetails/Panel/discardbutton").set_disabled(true)
+		get_node("playergroupdetails/Panel/usebutton").set_disabled(true)
 	for i in get_node("playergroupdetails/TabContainer/Captured Slaves/HBoxContainer/").get_children() + get_node("playergroupdetails/Panel/TabContainer/Items/VBoxContainer").get_children() + get_node("playergroupdetails/TabContainer/Party/HBoxContainer").get_children() + get_node("playergroupdetails/Panel/TabContainer/Spells/VBoxContainer").get_children():
 		if i.get_name() != 'Button':
 			i.visible = false
@@ -2178,13 +2304,13 @@ func _on_details_pressed(empty = null):
 	
 	var person 
 	
-	for i in globals.state.playergroup + [globals.player.id]:
+	for i in [globals.player.id] + globals.state.playergroup:
 		person = globals.state.findslave(i)
 		newbutton = get_node("playergroupdetails/TabContainer/Party/HBoxContainer/Button").duplicate()
 		get_node("playergroupdetails/TabContainer/Party/HBoxContainer/").add_child(newbutton)
 		newbutton.visible = true
 		newbutton.set_meta("person", person)
-		newbutton.set_text(person.dictionary("$name, HP: ") + str(person.health) + '/' + str(person.stats.health_max)  + ", EN: " + str(person.energy) + '/' + str(person.stats.energy_base))
+		newbutton.set_text(person.dictionary("$name, HP: ") + str(person.health) + '/' + str(person.stats.health_max)  + ", EN: " + str(person.energy) + '/' + str(person.stats.energy_max))
 		newbutton.connect("mouse_entered", globals, 'slavetooltip', [person])
 		newbutton.connect("mouse_exited", globals, 'slavetooltiphide')
 		newbutton.connect("pressed",self,'selectpartymember',[person])
@@ -2214,6 +2340,7 @@ func _on_details_pressed(empty = null):
 		newbutton.set_meta('spell', spell)
 		newbutton.connect("pressed",self,'spellbackpackselect',[spell])
 	
+	selectpartymember(partyselectedslave)
 	if !get_parent().get_node("explorationnode").currentzone.code in ['wimborn','gorn','frostford', 'amberguard'] || globals.resources.gold <= 25:
 		get_node("playergroupdetails/return").set_disabled(true)
 	else:
@@ -2226,6 +2353,7 @@ func _on_details_pressed(empty = null):
 		get_node("playergroupdetails/Panel/discardbutton").visible = false
 	else:
 		get_node("playergroupdetails/Panel/discardbutton").visible = true
+	get_node("playergroupdetails").popup()
 
 
 func selectpartymember(person):
@@ -2260,16 +2388,17 @@ func spellbackpackselect(spell):
 		i.set_pressed(i.get_name() != 'Button' && i.get_meta("spell") == spell)
 	get_node("playergroupdetails/Panel/discardbutton").set_disabled(false)
 	var cost = globals.spells.spellcost(spell)
-	if globals.resources.mana >= cost && partyselectedslave != null:
-		get_node("playergroupdetails/Panel/usebutton").set_disabled(false)
-	elif spell.code == 'mindread' && partyselectedslave == globals.player:
+	if spell.code == 'mindread' && partyselectedslave == globals.player:
 		get_node("playergroupdetails/Panel/usebutton").set_disabled(true)
+	elif globals.resources.mana >= cost:
+		if spell.code == 'guidance':
+			get_node("playergroupdetails/Panel/usebutton").set_disabled(get_parent().exploration.inencounter)
+		elif spell.code == 'mark':
+			get_node("playergroupdetails/Panel/usebutton").set_disabled(!get_parent().exploration.currentzone.combat)
+		else:
+			get_node("playergroupdetails/Panel/usebutton").set_disabled(partyselectedslave == null)
 	else:
 		get_node("playergroupdetails/Panel/usebutton").set_disabled(true)
-	if spell.code == 'guidance':
-		get_node("playergroupdetails/Panel/usebutton").set_disabled(get_parent().exploration.inencounter)
-	elif spell.code == 'mark':
-		get_node("playergroupdetails/Panel/usebutton").set_disabled(!get_parent().exploration.currentzone.combat)
 	var text ='[center]' + spell.name + '[/center]\n' + spell.description + '\n\nMana Cost: ' + str(cost)
 	get_node("playergroupdetails/Panel/itemdescript").set_bbcode(text)
 
@@ -2287,6 +2416,7 @@ func useitem(item, person):
 				temp.away.duration = round(rand_range(1,3))
 				temp.away.at = 'travel back'
 			globals.main.sound("teleport")
+			main.exploration.deeperregion = false
 			mansion()
 		elif globals.slaves.find(person) >= 0:
 			get_parent().popup(person.dictionary("After activating Teleportation Seal, $name slowly dissipates in bright sparkles."))
@@ -2410,7 +2540,7 @@ func _on_switch_pressed():
 
 func _on_mapbutton_pressed():
 	$bigmappanel.visible = !$bigmappanel.visible
-	$bigmappanel/ScrollContainer/Control.centermap(currentzone.code)
+	$bigmappanel/ScrollContainer/Control.centermap(main.exploration.currentzone.code)
 
 
 func _on_mapclose_pressed():

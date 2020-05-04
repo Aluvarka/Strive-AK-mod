@@ -26,8 +26,7 @@ var helpdescript = {
 	mood = '[center]Mood[/center]\nA high mood increases loyalty and reduces stress after interaction is finished\nMood grows from positive interactions and decreases from negative interactions. Its also affected by loyalty.',
 	fear = '[center]Fear[/center]\nFear helps to keep obedience high for long period of time. Its built with disciplinary actions but often comes with stress. ',
 	stress = '[center]Stress[/center]\nStress accumulates from injury in combat,  poor treatment or unsanitary conditions\nHigh amounts of stress over a long period of time can reduce performance and loyalty',
-	
-	}
+}
 
 func fear_set(value):
 	var difference = value - fear
@@ -295,7 +294,7 @@ onready var nakedspritesdict = {
 	Ayneris = {cons = 'aynerisneutralnaked', rape = 'aynerisangrynaked', clothcons = 'aynerisneutral', clothrape = 'aynerisangry'},
 	Zoe = {cons = "zoehappynaked", rape = 'zoesadnaked', clothcons = 'zoehappy', clothrape = 'zoesad'},
 	Melissa = {cons = "melissanakedfriendly", rape = 'melissanakedneutral', clothcons = 'melissafriendly', clothrape = 'melissaneutral'},
-	}
+}
 
 var locationdicts = {
 	livingroom = {code = 'livingroom',name = 'Living Room', background = 'mansion'},
@@ -366,7 +365,7 @@ func initiate(tempperson):
 	self.loyalStart = person.loyal
 	self.lustStart = person.lust
 	self.learningpointsStart = person.learningpoints
-	self.turns = 10
+	self.turns = int(variables.timeformeetinteraction)
 	$fullbody.set_texture(null)
 	if nakedspritesdict.has(person.unique):
 		if person.obed >= 50 || person.stress < 10:
@@ -569,7 +568,7 @@ func chat(person, counter):
 	var text = ''
 	text += "You attempt to initiate a friendly chat with [name2]. "
 	
-	if counter < 3 || randf() >= counter/10+0.1:
+	if counter < 3 || randf() >= counter/10.0+0.1:
 		text += "[name2] spends some time engaging in a friendly chat with you. "
 		self.mood += 2
 	else:
@@ -583,7 +582,7 @@ func intimate(person, counter):
 	var text = ''
 	text += "You talk to [name2] about personal matters. "
 	
-	if randf() >= counter/10 && self.mood >= 7 && person.loyal >= 10:
+	if randf() >= counter/10.0 && self.mood >= 7 && person.loyal >= 10:
 		text += "[he2] opens to you"
 		self.mood += 3
 		person.loyal += rand_range(2,5)

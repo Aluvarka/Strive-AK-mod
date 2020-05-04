@@ -866,7 +866,7 @@ var passivesdict = {
 doubleattack15 = {code = 'doubleattack15', effect = 'doubleattack', effectvalue = 15, descript = '15% chance to attack twice'},
 doubleattack25 = {code = 'doubleattack25', effect = 'doubleattack', effectvalue = 25, descript = '25% chance to attack twice'},
 cultleaderpassive = {code = 'cultleaderpassive', effect = 'cultleaderpassive', effectvalue = null, descript = 'Grows stronger when alies defeated'},
-doubleattack5 = {code = 'doubleattack5', effect = 'doubleattack', effectvalue = 50, descript = '5% chance to attack twice'},
+doubleattack5 = {code = 'doubleattack5', effect = 'doubleattack', effectvalue = 5, descript = '5% chance to attack twice'},
 stunchance5 = {code = 'stunchance5', effect = 'stunchance', effectvalue = 5, descript = 'v% chance to stun enemy'},
 
 }

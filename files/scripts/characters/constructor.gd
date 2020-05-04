@@ -65,18 +65,24 @@ func newslave(race, age, sex, origins = 'slave'):
 			person.sexuals.actions[ii] = 0
 	person.memory = person.origins
 	person.masternoun = ''
-	if randf() < 0.05:
-		var spec = globals.specarray[rand_range(0,globals.specarray.size())]
+	if randf() < variables.specializationchance/100.0 || person.traits.find("Mercenary") >= 0:
 		globals.currentslave = person
-		if globals.evaluate(globals.jobs.specs[spec].reqs) == true:
-			person.spec = spec
+		var possible = []
+		for i in globals.specarray:
+			if globals.evaluate(globals.jobs.specs[i].reqs.replacen("person.consent == true","true").replacen("person.loyal >= 50","true")) == true:
+				possible.append(i)
+		if possible.size() > 0:
+			person.spec = possible[randi()%possible.size()]
+			if person.spec == 'bodyguard':
+				person.add_effect(globals.effectdict.bodyguardeffect)
 	if person.age == 'child' && randf() < 0.1:
 		person.vagvirgin = false
 	elif person.age == 'teen' && randf() < 0.3:
 		person.vagvirgin = false
 	elif person.age == 'adult' && randf() < 0.65:
 		person.vagvirgin = false
-	person.health = 100
+	person.health = 1000
+	person.stats.character = rand_range(1000000,9999999)
 	return person
 
 func changerace(person, race = null):
@@ -110,7 +116,7 @@ func get_caste(person, caste):
 		person.conf -= rand_range(10,30)
 		person.wit -= rand_range(10,30)
 		person.charm -= rand_range(10,30)
-		person.beautybase += rand_range(0,45)
+		person.beautybase = rand_range(0,45)
 		person.stats.obed_mod += 0.25
 		if rand_range(0,10) >= 9:
 			person.level += 1
@@ -120,8 +126,8 @@ func get_caste(person, caste):
 		person.cour -= rand_range(5,15)
 		person.conf -= rand_range(5,15)
 		person.wit -= rand_range(5,15)
-		person.charm += rand_range(-5,15)
-		person.beautybase += rand_range(0,55)
+		person.charm -= rand_range(5,15)
+		person.beautybase = rand_range(0,55)
 		if rand_range(0,10) >= 8:
 			person.level += round(rand_range(0,2))
 		if rand_range(0,100) >= 95:
@@ -131,7 +137,7 @@ func get_caste(person, caste):
 		person.conf += rand_range(-5,15)
 		person.wit += rand_range(-5,15)
 		person.charm += rand_range(-5,20)
-		person.beautybase += rand_range(10,65)
+		person.beautybase = rand_range(10,65)
 		if rand_range(0,10) >= 7:
 			person.level += round(rand_range(0,2))
 		if rand_range(0,100) >= 95:
@@ -140,8 +146,8 @@ func get_caste(person, caste):
 		person.cour += rand_range(5,20)
 		person.conf += rand_range(5,25)
 		person.wit += rand_range(5,20)
-		person.charm += rand_range(-5,15)
-		person.beautybase += rand_range(25,75)
+		person.charm += rand_range(5,25)
+		person.beautybase = rand_range(25,75)
 		person.stats.obed_mod -= 0.2
 		if rand_range(0,10) >= 5:
 			person.level += round(rand_range(0,3))
@@ -159,7 +165,9 @@ func get_caste(person, caste):
 		if rand_range(0,100) >= 95:
 			person.beautybase += rand_range(0,30)
 	
-	person.skillpoints += (person.level-1)*variables.skillpointsperlevel
+
+	person.skillpoints += (person.level-1)*variables.skillpointsperlevel	
+
 	spin = person.skillpoints
 	array = ['sstr','sagi','smaf','send']
 	while spin > 0:
@@ -168,7 +176,6 @@ func get_caste(person, caste):
 			person.stats[globals.basestatdict[temp]] += 1
 			person.skillpoints -= 1
 		spin -= 1
-	
 	
 	if rand_range(0,10) > 8:
 		person.add_trait(globals.origins.traits('background').name)
@@ -184,6 +191,26 @@ func get_caste(person, caste):
 	if rand_range(0,10) > 7:
 		person.add_trait(globals.origins.traits('third').name)
 
+	var genes = round(rand_range(1,4))
+	if person.traits.find("Good genetics") >= 0:
+		spin += 2
+	elif rand_range(0,100) >= 75:
+		spin += 1
+	while spin > 0:
+		if genes == 1:
+			person.stats.str_max += 1
+			spin -= 1
+		elif genes == 2:
+			person.stats.agi_max += 1
+			spin -= 1
+		elif genes == 3:
+			person.stats.maf_max += 1
+			spin -= 1
+		elif genes == 4:
+			person.stats.end_max += 1
+			spin -= 1
+		if spin == 0:
+			break
 	if person.traits.find("Love childs") >= 0: 
 		if person.sex == 'male' || person.age == 'child':
 			person.add_trait(globals.origins.traits('third').name)
@@ -196,16 +223,6 @@ func get_caste(person, caste):
 				person.titssize = globals.sizearray[globals.sizearray.find(person.titssize)+1]
 	if person.traits.find("Fickle") >= 0:
 		person.sexuals.unlocks.append("swing")
-##	if person.traits.find("Lovable") >= 0:
-##		person.beautybase += rand_range(5,15)
-##	if person.traits.find("Tough") >= 0:
-##		person.stats.health_bonus += 0.25
-##	if person.traits.find("Vigorous") >= 0:
-##		person.stats.energy_max += 25
-##	if person.traits.find("Strong willed") >= 0:
-##		person.stats.obed_mod -= 0.35
-##		person.stats.loyal_max -= 25
-##		person.stats.conf_min = 45
 	if person.traits.find("Thick skinned") >= 0:
 		person.stats.armor_cur += 2
 	if person.traits.find("Obese") >= 0: 
@@ -226,24 +243,6 @@ func get_caste(person, caste):
 	if person.race == 'Fairy':
 		person.stats.health_base -= 15
 		person.stats.wit_base += 20
-#	if person.traits.find("Magician") >= 0:
-#		person.stats.maf_max += 1
-#		person.stats.str_max -= 1
-#		person.stats.wit_base += 20
-#	if person.traits.find("Warrior") >= 0:
-#		person.stats.str_max += 1
-#		person.stats.maf_max -= 1
-#		person.stats.cour_base += 20
-#	if person.traits.find("Hunter") >= 0:
-#		person.stats.agi_max += 1
-#		person.stats.wit_base += 10
-#		person.stats.cour_base += 10
-#	if person.traits.find("Athlete") >= 0:
-#		person.stats.end_max += 1
-#		person.stats.cour_base += 10
-#		person.stats.charm_base += 10
-##	if person.traits.find("Glass Bones") >= 0:
-##		person.stats.health_bonus -= 0.3
 	if rand_range(0,10) > 7.5:
 		if person.race.find('Wolf') >= 0:
 			person.add_trait(globals.origins.traits('wolfish').name)
@@ -274,7 +273,6 @@ func get_caste(person, caste):
 	if person.traits.find("Wolf Hide") >= 0:
 		person.stats.armor_cur += 2
 ##lets add new weight system##
-#func getweight(value):
 	var tempweight = 0
 	tempweight = person.stats.weight_base+round(rand_range(0,20))
 	if person.traits.has('Plump') == true:

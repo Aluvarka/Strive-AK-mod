@@ -677,7 +677,7 @@ func _on_end_pressed():
 			if person.sleep != 'jail' && person.sleep != 'farm':
 				if person.work in corejobs:
 					
-					if person.work != 'rest' && person.energy < 30:
+					if person.work != 'rest' && person.energy < person.stats.energy_max*0.25:
 						person.work = 'rest'
 
 					for i in globals.slaves:
@@ -761,7 +761,7 @@ func _on_end_pressed():
 				person.stress -= rand_range(5,10)
 			for i in person.effects.values():
 				if i.has('duration') && i.code != 'captured':
-					if person.race != 'Dark Elf' || randf() > 0.5:
+					if person.race != 'Dark Elf' || (!i.code in ['bandaged','sedated'] && randf() > 0.5):
 						i.duration -= 1
 					if i.duration <= 0:
 						person.add_effect(i, true)
@@ -1264,7 +1264,7 @@ func _on_end_pressed():
 					person.away.at = ''
 				for i in person.effects.values():
 					if i.has('duration') && i.code != 'captured':
-						if person.race != 'Dark Elf' || randf() > 0.5:
+						if person.race != 'Dark Elf' || (!i.code in ['bandaged','sedated'] && randf() > 0.5):
 							i.duration -= 1
 						if i.duration <= 0:
 							person.add_effect(i, true)
@@ -1358,7 +1358,6 @@ func _on_end_pressed():
 				if globals.state.mansionupgrades.farmmana > 0 && randf() <= 0.33:
 					globals.resources.mana += round(rand_range(1,3))
 					text1.bbcode_text += person.dictionary("A small amount of mana has been gathered from $name.\n")
-
 	#####          Dirtiness
 	if globals.state.condition <= 40:
 		for person in globals.slaves:
@@ -1523,9 +1522,16 @@ func nextdayevents():
 	globals.state.dailyeventcountdown -= 1
 	if globals.state.dailyeventcountdown <= 0 && !$scene.is_visible_in_tree() && !$dialogue.is_visible_in_tree():
 		var event
-		event = launchrandomevent()
+		var moarevents = variables.dailyeventsamount
+		var timebeetwen = variables.dailyeventstime
+		var timebeetmax = timebeetwen*2
+		while moarevents > 0:
+			event = launchrandomevent()
+			moarevents -= 1
 		if event != null:
-			globals.state.dailyeventcountdown = rand_range(5,10)
+			if moarevents == 0:
+				globals.state.dailyeventcountdown = round(rand_range(timebeetwen, timebeetmax))
+
 			get_node("dailyevents").show()
 			get_node("dailyevents").currentevent = event
 			get_node("dailyevents").call(event)
@@ -1577,7 +1583,7 @@ func launchrandomevent():
 	var rval
 	var personlist = []
 	for i in globals.slaves:
-		if i.away.duration == 0 && i.sleep != 'jail' && i.sleep != 'farm' && i.attention >= 50:
+		if i.away.duration == 0 && i.sleep != 'jail' && i.sleep != 'farm' && i.attention >= 50 || i.away.duration == 0 && i.traits.has('Mercenary') == true:
 			personlist.append(i)
 	while personlist.size() > 0:
 		var number = floor(rand_range(0,personlist.size()))
@@ -1586,6 +1592,10 @@ func launchrandomevent():
 			rval = get_node("dailyevents").getrandomevent(personlist[number])
 			#rval = $dailyevents.getfixedevent('assaultevent')
 			personlist[number].attention = 0
+			break
+		elif personlist[number].traits.has('Mercenary') == true && personlist[number].metrics.ownership >= variables.merccontractlength:
+			get_node("dailyevents").person = personlist[number]
+			rval = get_node("dailyevents").getfixedevent('mercevent')
 			break
 		else:
 			personlist.remove(number)
@@ -1722,6 +1732,9 @@ func popup(text):
 func _on_popupmessagetext_meta_clicked( meta ):
 	if meta == 'patreon':
 		OS.shell_open('https://www.patreon.com/maverik')
+	if meta == 'race':
+		get_tree().get_current_scene().showracedescript(get_node("MainScreen/slave_tab").person)
+		_on_popupclosebutton_pressed()
 
 var spritedict = globals.spritedict
 onready var nodedict = {pos1 = get_node("dialogue/charactersprite1"), pos2 = get_node("dialogue/charactersprite2")}
@@ -2335,9 +2348,9 @@ func build_mansion_info():
 				else:
 					value = 'low'
 				text += colordict[value] + statedict.health[value] + "[/color], "
-				if float(person.stats.energy_cur)/person.stats.energy_base > 0.5: 
+				if float(person.stats.energy_cur)/person.stats.energy_max > 0.5: 
 					value = 'high'
-				elif float(person.stats.energy_cur)/person.stats.energy_base > 0.2:
+				elif float(person.stats.energy_cur)/person.stats.energy_max > 0.2:
 					value = 'med'
 				else:
 					value = 'low'
@@ -2406,8 +2419,8 @@ func _on_jailpanel_visibility_changed():
 	if temp == '':
 		text = 'You have no prisoners at this moment.'
 	else:
-		text = 'You have '+str(prisoners.size()) + ' prisoner(s).\nYou have ' + str(globals.state.mansionupgrades.jailcapacity-prisoners.size()) + ' free cell(s).\nPrisoners can be disciplined at "Interactions" with abuse setting. '
-	if globals.state.mansionupgrades.jailincenses:
+		text = 'You have '+str(prisoners.size()) + ' prisoner(s).\nYou have ' + str(globals.state.mansionupgrades.jailcapacity-prisoners.size()) + ' free cell(s).\nPrisoners can be disciplined at "Interactions" with meet setting. '
+	if globals.state.mansionupgrades.jailtreatment:
 		text += "\n[color=green]Your jail is decently furnished and tiled. [/color]"
 	if globals.state.mansionupgrades.jailincenses:
 		text += "\n[color=green]You can smell soft burning incenses in the air.[/color]"
@@ -2663,7 +2676,7 @@ var mainquestdict = {
 '7' : "Visit Melissa for your next task.",
 '8' : "Set up a Laboratory through Mansion Upgrades tab. Then return to Melissa.",
 '9' : "Return to Melissa.",
-'10': "Bring Melissa a Taurus girl with huge lactating tits. Size can be altered with certain potions. ",
+'10': "Bring Melissa a Taurus girl with huge lactating tits and at least three additional pairs of tits.\n\nSize and lactation can be altered with certain potions, while the laboratory lets you add and develop extra tits. ",
 '11': "Visit Melissa for your next mission. ",
 '12': "Melissa told you to travel to Gorn and find the Orc named Garthor. ",
 '13': "Garthor from Gorn ordered you to capture and bring Dark Elf Ivran who you can find at Gorn's outskirts.",
@@ -2812,8 +2825,7 @@ func repeatableselect(quest):
 	var text = ''
 	for i in get_node("questnode/TabContainer/Repeatable Quests/ScrollContainer/VBoxContainer").get_children():
 		if i.has_meta('quest') == true:
-			if i.get_meta('quest') != quest && i.is_pressed() == true:
-				i.set_pressed(false)
+			i.set_pressed(i.get_meta('quest') == quest)
 	text = get_node("outside").slavequesttext(quest)
 	text = text.replace('Time Limit:', 'Time Remained:')
 	get_node("questnode/TabContainer/Repeatable Quests/repetablequesttext").set_bbcode(text)
@@ -2827,7 +2839,6 @@ func removequest():
 		for ii in globals.state.repeatables[i]:
 			if ii == selectedrepeatable:
 				globals.state.repeatables[i].remove(globals.state.repeatables[i].find(ii))
-	get_node("menucontrol/yesnopopup").hide()
 	_on_questnode_visibility_changed()
 
 var spellscategory = 'control'
@@ -3079,9 +3090,9 @@ func updatestats(person):
 		else:
 			get_node("MainScreen/mansion/selfinspect/statspanel/" + i+'/Button').visible = false
 	get_node("MainScreen/mansion/selfinspect/statspanel/hp").set_value((person.stats.health_cur/float(person.stats.health_max))*100)
-	get_node("MainScreen/mansion/selfinspect/statspanel/en").set_value((person.stats.energy_cur/float(person.stats.energy_base))*100)
+	get_node("MainScreen/mansion/selfinspect/statspanel/en").set_value((person.stats.energy_cur/float(person.stats.energy_max))*100)
 	get_node("MainScreen/mansion/selfinspect/statspanel/xp").set_value(person.xp)
-	text = "Health: " + str(person.stats.health_cur) + "/" + str(person.stats.health_max) + "\nEnergy: " + str(person.stats.energy_cur) + "/" + str(person.stats.energy_base) + "\nExperience: " + str(person.xp)
+	text = "Health: " + str(person.stats.health_cur) + "/" + str(person.stats.health_max) + "\nEnergy: " + str(person.stats.energy_cur) + "/" + str(person.stats.energy_max) + "\nExperience: " + str(person.xp)
 	get_node("MainScreen/mansion/selfinspect/statspanel/hptooltip").set_tooltip(text)
 	if person.imageportait != null && globals.loadimage(person.imageportait):
 		$MainScreen/mansion/selfinspect/statspanel/TextureRect/portrait.set_texture(globals.loadimage(person.imageportait))
@@ -3193,6 +3204,7 @@ func selfabilityselect(ability):
 func _on_abilitypurchase_pressed():
 	var abil = get_node("MainScreen/mansion/selfinspect/selfabilitypanel/abilitypurchase").get_meta('abil')
 	globals.player.ability.append(abil.code)
+	globals.player.abilityactive.append(abil.code)
 	if globals.spelldict.has(abil.code):
 		globals.spelldict[abil.code].learned = true
 	popup('You have learned ' + abil.name+'. ')
@@ -3203,6 +3215,8 @@ func _on_abilitypurchase_pressed():
 func _on_selfportait_pressed():
 	imageselect("portrait",globals.player)
 
+func _on_selfbody_pressed():
+	imageselect("body",globals.player)
 
 func _on_abilityclose_pressed():
 	get_node("MainScreen/mansion/selfinspect/selfabilitypanel").hide()
@@ -3505,7 +3519,6 @@ func _on_closeslavefarm_pressed():
 
 
 func _on_farmadd_pressed():
-	get_node("MainScreen/mansion/farmpanel/slavetofarm").show()
 	selectslavelist(false, 'farmassignpanel')
 
 func farmassignpanel(person):
@@ -3531,6 +3544,7 @@ func farmassignpanel(person):
 			get_node("MainScreen/mansion/farmpanel/slavetofarm/addhen").set_disabled(false)
 			get_node("MainScreen/mansion/farmpanel/slavetofarm/addhen").set_tooltip("")
 	get_node("MainScreen/mansion/farmpanel/slavetofarm/slaveassigntext").set_bbcode("Selected servant - " + person.name_long()+ '. \nLactation: ' +globals.fastif(person.lactation == true, '[color=green]present[/color]', '[color=#ff4949]not present[/color]')+ '. \nTits size : '+person.titssize)
+	get_node("MainScreen/mansion/farmpanel/slavetofarm").show()
 
 func _on_releasefromfarm_pressed():
 	var person = get_node("MainScreen/mansion/farmpanel/slavefarminsepct/releasefromfarm").get_meta('slave')
@@ -4221,6 +4235,10 @@ func _on_close_pressed():
 
 func _on_hideui_pressed():
 	$outside.visible = !$outside.visible
+	if $outside.visible:
+		$hideui.text = "Hide UI"
+	else:
+		$hideui.text = "Show UI"
 	$ResourcePanel.visible = !$ResourcePanel.visible
 
 func _on_selfpierce_pressed():
@@ -4308,7 +4326,7 @@ func traitpanelshow(person, effect):
 			priceModifier *= 0.7
 		manaCost = round(50 * priceModifier)
 		goldCost = round(100 * priceModifier)
-		text += person.dictionary("Select physical trait to remove from $name. Requires 1 [color=yellow]Clarity Potion[/color], ") + str(manaCost) + " mana, " + str(goldCost) +" gold, and " + str(timeCost) + " days."
+		text += person.dictionary("Select physical trait to remove from $name. Requires 1 [color=yellow]Elixir of Clarity[/color], ") + str(manaCost) + " mana, " + str(goldCost) +" gold, and " + str(timeCost) + " days."
 	for i in person.traits:
 		var trait = globals.origins.trait(i)
 		if effect == 'clearmental':
@@ -4354,7 +4372,6 @@ func _on_traitselectclose_pressed():
 
 func _on_selfgear_pressed():
 	globals.main._on_inventory_pressed()
-	globals.main.get_node('inventory').selectcategory(globals.main.get_node('inventory/everything'))
 	globals.main.get_node('inventory/gear').pressed = true
 	globals.main.get_node('inventory').selectcategory(globals.main.get_node('inventory/gear'))
 	globals.main.get_node('inventory').selectbuttonslave(globals.player)

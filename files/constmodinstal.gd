@@ -3,7 +3,7 @@ extends Node
 var dir = Directory.new()
 var file = File.new()
 var info = 'This is an inbuilt mod allowing user to access and edit constants from main menu. If your game experiences issues, please delete it to clear settings. \n\nAuthor: Maverik'
-var modversion = '0.3.1'
+var modversion = '0.4'
 
 
 func run(overwrite = false):

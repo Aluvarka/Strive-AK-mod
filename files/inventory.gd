@@ -4,7 +4,7 @@ var state
 var location = 'mansion'
 var selectedslave
 var filter = ''
-
+var gearTypes = ['weapon','armor','costume','underwear','accessory']
 
 var categories = {everything = true, potion = false, ingredient = false, gear = false, supply = false}
 onready var itemgrid = get_node("ScrollContainer/GridContainer")
@@ -51,7 +51,7 @@ func gearinfo(gear):
 	if selectedslave != null && selectedslave.gear[gear] != null:
 		var item = globals.state.unstackables[selectedslave.gear[gear]]
 		get_node("iteminfo/RichTextLabel").set_bbcode(globals.itemdescription(item))
-		get_node("iteminfo/TextureFrame").set_texture(load(item.icon))
+		get_node("iteminfo/TextureFrame").set_texture(globals.loadimage(item.icon))
 		get_node("iteminfo").popup()
 
 func geartooltip(gear):
@@ -84,6 +84,7 @@ func open(place = 'mansion', part = 'inventory', keepslave = false):
 	calculateweight()
 	slavelist()
 	get_node("mode").set_normal_texture(modetextures[state])
+	selectcategory(get_node("everything"))
 	self.visible = true
 
 func updateitems():
@@ -190,17 +191,13 @@ func itemsinventory():
 		elif i[0].enchant == 'bagzbunny':
 			button.get_node("Label").set('custom_colors/font_color', Color(0.8,0.6,0))
 		if i[0].icon != null:
-			button.get_node("icon").set_texture(load(i[0].icon))
+			button.get_node("icon").set_texture(globals.loadimage(i[0].icon))
 		itemgrid.add_child(button)
 
 func sortgear(first, second):
-
-	first = first[0]
-	second = second[0]
-	var type = ['weapon','armor','costume','underwear','accessory']
-	var valCmp = type.find(first.type) - type.find(second.type)
+	var valCmp = gearTypes.find(first[0].type) - gearTypes.find(second[0].type)
 	if valCmp == 0:
-		return first.name < second.name
+		return first[0].name < second[0].name
 	else:
 		return valCmp < 0
 
@@ -272,7 +269,7 @@ func itemsbackpack():
 		if i[0].enchant != '':
 			button.get_node("Label").set('custom_colors/font_color', Color(0,0.5,0))
 		if i[0].icon != null:
-			button.get_node("icon").set_texture(load(i[0].icon))
+			button.get_node("icon").set_texture(globals.loadimage(i[0].icon))
 		get_node("ScrollContainer/GridContainer").add_child(button)
 
 var renameitem
@@ -313,7 +310,7 @@ func slavelist():
 
 func selectbuttonslave(person):
 	for i in $slavelist/GridContainer.get_children():
-		if i.has_meta('person') && i.get_meta('person') == person:
+		if i.visible && i.has_meta('person') && i.get_meta('person') == person:
 			selectslave(i)
 			return
 
@@ -329,7 +326,7 @@ var nakedspritesdict = globals.gallery.nakedsprites
 
 func slavegear(person):
 	var text = ''
-	text += person.name_short() + "\nHealth: " + str(person.health) + "/" + str(person.stats.health_max) + '\nEnergy: ' + str(person.energy) + '/' + str(person.stats.energy_base) + '\n'
+	text += person.name_short() + "\nHealth: " + str(person.health) + "/" + str(person.stats.health_max) + '\nEnergy: ' + str(person.energy) + '/' + str(person.stats.energy_max) + '\n'
 	for i in person.gear:
 		if person.gear[i] == null:
 			continue
@@ -361,7 +358,7 @@ func slavegear(person):
 			get_node("gearpanel/"+i).set_normal_texture(sil[i])
 		else:
 			get_node("gearpanel/"+i+"/unequip").visible = true
-			get_node("gearpanel/"+i).set_normal_texture(load(globals.state.unstackables[person.gear[i]].icon))
+			get_node("gearpanel/"+i).set_normal_texture(globals.loadimage(globals.state.unstackables[person.gear[i]].icon))
 
 func use(button):
 	if selectedslave == null:

@@ -1133,7 +1133,6 @@ margin_right = 1.0
 margin_bottom = -75.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
-scroll_horizontal_enabled = false
 
 [node name="slave_list" type="VBoxContainer" parent="charlistcontrol/CharList/scroll_list"]
 margin_right = 330.0
@@ -2164,9 +2163,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -159.0
-margin_top = -299.0
+margin_top = -339.0
 margin_right = -20.0
-margin_bottom = -260.0
+margin_bottom = -300.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "Inspect Looks"
@@ -2177,9 +2176,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -159.0
-margin_top = -259.0
+margin_top = -299.0
 margin_right = -20.0
-margin_bottom = -220.0
+margin_bottom = -260.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "Gear"
@@ -2190,9 +2189,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -159.0
-margin_top = -219.0
+margin_top = -259.0
 margin_right = -20.0
-margin_bottom = -180.0
+margin_bottom = -220.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "Piercing"
@@ -2203,9 +2202,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -159.0
-margin_top = -179.0
+margin_top = -219.0
 margin_right = -20.0
-margin_bottom = -140.0
+margin_bottom = -180.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "Tattoo"
@@ -2216,12 +2215,25 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -159.0
+margin_top = -139.0
+margin_right = -20.0
+margin_bottom = -100.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+text = "Set Portrait"
+
+[node name="selfbody" type="Button" parent="MainScreen/mansion/selfinspect"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -159.0
 margin_top = -99.0
 margin_right = -20.0
 margin_bottom = -60.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
-text = "Set Portait"
+text = "Set Body Image"
 
 [node name="selfabilityupgrade" type="Button" parent="MainScreen/mansion/selfinspect"]
 anchor_left = 1.0
@@ -2229,9 +2241,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -159.0
-margin_top = -139.0
+margin_top = -179.0
 margin_right = -20.0
-margin_bottom = -100.0
+margin_bottom = -140.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "Unlock Abilities"
@@ -5347,10 +5359,6 @@ size_flags_vertical = 2
 [node name="TextureRect2" type="TextureRect" parent="MainScreen/slave_tab/stats/customization/relativespanel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -1.0
-margin_top = -49.0
-margin_right = -1.0
-margin_bottom = -49.0
 texture = ExtResource( 44 )
 expand = true
 
@@ -8302,13 +8310,13 @@ text = "Headgirl Setting"
 align = 1
 
 [node name="foodbuy" type="SpinBox" parent="mansionsettings/Panel"]
-margin_left = 694.0
-margin_top = 33.0
-margin_right = 810.0
-margin_bottom = 63.0
+margin_left = 680.0
+margin_top = 60.0
+margin_right = 796.0
+margin_bottom = 94.0
+hint_tooltip = "Amount of food purchased by the cook when mansion has less than 200 food"
 size_flags_horizontal = 2
 size_flags_vertical = 2
-min_value = 20.0
 max_value = 3000.0
 step = 20.0
 value = 200.0
@@ -8319,18 +8327,27 @@ margin_left = 134.0
 margin_top = 6.0
 margin_right = 234.0
 margin_bottom = 22.0
+hint_tooltip = "Amount of food purchased by the cook when mansion has less than 200 food"
+mouse_filter = 1
 size_flags_horizontal = 2
 size_flags_vertical = 0
-text = "Food purchase"
+text = "Low food resupply"
+
+[node name="Label2" type="Label" parent="mansionsettings/Panel/foodbuy"]
+margin_left = -30.0
+margin_top = -30.0
+margin_right = 53.0
+margin_bottom = -10.0
+text = "Cooking Job Settings"
 
 [node name="supplykeep" type="SpinBox" parent="mansionsettings/Panel"]
-margin_left = 694.0
-margin_top = 74.0
-margin_right = 810.0
-margin_bottom = 104.0
+margin_left = 680.0
+margin_top = 140.0
+margin_right = 796.0
+margin_bottom = 174.0
+hint_tooltip = "Market workers will attempt to sell any supplies over this amount"
 size_flags_horizontal = 2
 size_flags_vertical = 2
-min_value = 1.0
 max_value = 200.0
 value = 10.0
 rounded = true
@@ -8340,6 +8357,8 @@ margin_left = 134.0
 margin_top = 6.0
 margin_right = 243.0
 margin_bottom = 22.0
+hint_tooltip = "Market workers will attempt to sell any supplies over this amount"
+mouse_filter = 1
 size_flags_horizontal = 2
 size_flags_vertical = 0
 text = "Keep supplies"
@@ -8348,9 +8367,17 @@ text = "Keep supplies"
 margin_top = 40.0
 margin_right = 267.0
 margin_bottom = 65.0
+hint_tooltip = "If enabled, market workers will attempt to buy supplies up to the amount above"
 size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "Purchase when low"
+
+[node name="Label2" type="Label" parent="mansionsettings/Panel/supplykeep"]
+margin_left = -30.0
+margin_top = -30.0
+margin_right = 69.0
+margin_bottom = -10.0
+text = "Market Job Settings"
 
 [node name="tutorialnode" type="Control" parent="." groups=[
 "blockmaininput",
@@ -9005,6 +9032,7 @@ current = true
 [connection signal="pressed" from="MainScreen/mansion/selfinspect/selfpierce" to="." method="_on_selfpierce_pressed"]
 [connection signal="pressed" from="MainScreen/mansion/selfinspect/selftattoo" to="." method="_on_selftattoo_pressed"]
 [connection signal="pressed" from="MainScreen/mansion/selfinspect/selfportait" to="." method="_on_selfportait_pressed"]
+[connection signal="pressed" from="MainScreen/mansion/selfinspect/selfbody" to="." method="_on_selfbody_pressed"]
 [connection signal="pressed" from="MainScreen/mansion/selfinspect/selfabilityupgrade" to="." method="_on_selfabilityupgrade_pressed"]
 [connection signal="pressed" from="MainScreen/mansion/selfinspect/selfrelatives" to="." method="_on_selfrelatives_pressed"]
 [connection signal="pressed" from="MainScreen/mansion/selfinspect/spellbook" to="." method="_on_spellbook_pressed"]

@@ -6,7 +6,7 @@ path="res://mods/blackjack.png-3f5870227274390aa3c37575dd5cf4e4.stex"
 
 [deps]
 
-source_file="res://blackjack.png"
+source_file="res://mods/blackjack.png"
 source_md5="35048e98c883072e65a464c453a0be19"
 
 dest_files=[ "res://mods/blackjack.png-3f5870227274390aa3c37575dd5cf4e4.stex" ]

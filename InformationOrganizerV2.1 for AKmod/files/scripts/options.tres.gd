@@ -7,7 +7,7 @@ func ruletoggle(rule):
 		globals.rules[rule] = get_node("TabContainer/Settings/"+rule).pressed
 	else:
 		globals.rules[rule] = get_node("TabContainer/Game/"+rule).pressed
-
+	
 	if rule == 'furry':
 		if (globals.rules['furry'] == false):
 			get_node("TabContainer/Game/furrynipples").set_disabled(true)

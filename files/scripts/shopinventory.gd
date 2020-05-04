@@ -46,6 +46,7 @@ func open(place = 'mansion', part = 'inventory', keepslave = false):
 	updateitems()
 	calculateweight()
 	get_node("mode").set_normal_texture(modetextures[state])
+	selectcategory(get_node("everything"))
 	self.visible = true
 
 func updateitems():
@@ -147,7 +148,7 @@ func itemsinventory():
 		elif i[0].enchant == 'unique':
 			button.get_node("Label").set('custom_colors/font_color', Color(0.6,0.4,0))
 		if i[0].icon != null:
-			button.get_node("icon").set_texture(load(i[0].icon))
+			button.get_node("icon").set_texture(globals.loadimage(i[0].icon))
 		itemgrid.add_child(button)
 
 func itemsbackpack():
@@ -213,7 +214,7 @@ func itemsbackpack():
 		if i[0].enchant != '':
 			button.get_node("Label").set('custom_colors/font_color', Color(0,0.5,0))
 		if i[0].icon != null:
-			button.get_node("icon").set_texture(load(i[0].icon))
+			button.get_node("icon").set_texture(globals.loadimage(i[0].icon))
 		get_node("ScrollContainer/GridContainer").add_child(button)
 
 func itemsshop():
@@ -243,10 +244,8 @@ func itemsshop():
 		newbutton.connect("mouse_entered", globals, 'itemtooltip', [item])
 		newbutton.connect("mouse_exited", globals, 'itemtooltiphide')
 		newbutton.set_meta("category", item.type)
-		if typeof(item.icon) == TYPE_STRING:
-			newbutton.get_node("icon").set_texture(load(item.icon))
-		else:
-			newbutton.get_node("icon").set_texture(item.icon)
+		if item.icon != null:
+			newbutton.get_node("icon").set_texture(globals.loadimage(item.icon))
 		newbutton.set_meta('item', item)
 		newbutton.get_node("info").connect("pressed",self,'info',[newbutton])
 		#newbutton.connect('pressed',self,'selectshopitem', [newbutton])
@@ -263,19 +262,20 @@ func getcost(item, mode):
 				merchant = true
 		if typeof(item) == TYPE_STRING:
 			item = globals.itemdict[item]
-		if globals.itemdict[item.code].type != 'gear':
-			cost = item.cost*variables.sellingitempricemod
-			if merchant == true:
-				cost *= 1.25
-			if item.type == 'potion' && globals.state.spec == "Alchemist":
-				cost *= 2
-		else:
-			var itemtype = globals.itemdict[item.code]
-			cost = itemtype.cost*variables.sellingitempricemod
-			if item.has('enchant') && item.enchant != '' && item.enchant != 'cursed':
-				cost = cost*variables.enchantitemprice
-			elif item.enchant == 'cursed' || item.enchant == 'bugzbunny':
-				cost = cost*(variables.enchantitemprice/2)
+		if globals.itemdict.has(item.code): 
+			if globals.itemdict[item.code].type != 'gear':
+				cost = item.cost*variables.sellingitempricemod
+				if merchant == true:
+					cost *= 1.25
+				if item.type == 'potion' && globals.state.spec == "Alchemist":
+					cost *= 2
+			else:
+				var itemtype = globals.itemdict[item.code]
+				cost = itemtype.cost*variables.sellingitempricemod
+				if item.has('enchant') && item.enchant != '' && item.enchant != 'cursed':
+					cost = cost*variables.enchantitemprice
+				elif item.enchant == 'cursed' || item.enchant == 'bugzbunny':
+					cost = cost*(variables.enchantitemprice/2)
 	return round(cost)
 
 

@@ -85,7 +85,7 @@ func upgradecostupdate():
 	$stats/trainingabilspanel/upgradecost.text = text
 
 func buyattributepoint():
-	if variables.attperstatspoints > 0:		
+	if person.skillpoints >= variables.attributepointsperupgradepoint && variables.attperstatspoints > 0:
 		person.skillpoints -= variables.attributepointsperupgradepoint
 		person.learningpoints += variables.attperstatspoints
 	elif person.skillpoints >= variables.attributepointsperupgradepoint && variables.attperstatspoints <= 0:
@@ -160,7 +160,7 @@ func slavetabopen():
 		find_node('brandbutton').set_disabled(true)
 	else:
 		find_node('brandbutton').set_disabled(false)
-#	text = "Health : " + str(round(person.health)) + '/' + str(round(person.stats.health_max)) + '\nEnergy : ' + str(round(person.energy)) + '/' + str(round(person.stats.energy_base)) + '\nLevel : '+str(person.level) + '\nExp : '+str(round(person.xp))+'\nSkillpoints : '+str(person.skillpoints)
+#	text = "Health : " + str(round(person.health)) + '/' + str(round(person.stats.health_max)) + '\nEnergy : ' + str(round(person.energy)) + '/' + str(round(person.stats.energy_max)) + '\nLevel : '+str(person.level) + '\nExp : '+str(round(person.xp))+'\nSkillpoints : '+str(person.skillpoints)
 #	get_node("stats/levelinfo").set_bbcode(text)
 	for i in get_tree().get_nodes_in_group('prisondisable'):
 		if tab == 'prison':
@@ -354,6 +354,8 @@ func regulationdescription():
 		text = text + 'On $his neck you can recognize the magic [color=green]brand[/color] you left on $him.\n'
 	elif person.brand == 'advanced':
 		text = text + 'On $his neck you can spot the complex symbol of your [color=green]refined brand[/color].\n'
+	elif person.brand == 'freewill':
+		text = text + '[color=green]$his is a person of a free will.[/color].\n'
 	if person.gear.costume != null:
 		text += "$He wears [color=green]" + globals.state.unstackables[person.gear.costume].name + '[/color]'
 		if person.gear.armor != null:
@@ -404,16 +406,17 @@ func _on_brandbutton_pressed():
 		find_node('brandremovetext').visible = true
 		if globals.resources.mana >= 5:
 			find_node('remove').visible = true
-	if person.brand == 'none' && globals.state.branding >= 1:
+	if globals.state.branding >= 1:
 		find_node('brandingtext').visible = true
-		if globals.resources.mana >= 10 && globals.player.energy >= 20:
-			confirm.visible = true
-			confirm.set_meta('value', 1)
-		else:
-			confirm.visible = false
+		if person.brand == 'none'|| person.brand == 'freewill':
+			if globals.resources.mana >= 10 && globals.player.energy >= 20 && person.traits.has('Mercenary') != true:
+				confirm.visible = true
+				confirm.set_meta('value', 1)
+			else:
+				confirm.visible = false
 	elif person.brand == 'basic' && globals.state.branding == 2:
 		find_node('enhbrandingtext').visible = true
-		if globals.resources.mana >= 15:
+		if globals.resources.mana >= 15 && globals.player.energy >= 20:
 			confirm.visible = true
 			confirm.set_meta('value', 2)
 
@@ -426,9 +429,14 @@ func _on_confirm_pressed():
 	var popup = find_node('brandpopup')
 	popup.visible = false
 	if confirm.get_meta('value') == 1:
-		person.brand = 'basic'
-		person.stress = 15 + person.conf/5 - person.loyal/10
+		if person.brand == 'freewill' && person.traits.has('Mercenary') != true:
+			person.stats.loyal_cur = 0
+			person.stats.obed_cur = 0
+			person.stress += 50
+		else:
+			person.stress += 15 + person.conf/5 - person.loyal/10
 		get_tree().get_current_scene().popup(person.dictionary('You perform a Ritual of Branding on $name. As symbols are engraved onto $his neck, $he yelps in pain. \n\nWith this you put serious claim on $his future life: $He will be unable to raise a hand against you and will be far less tempted to escape. '))
+		person.brand = 'basic'
 		globals.resources.mana -= 10
 		globals.player.energy -= 20
 	elif confirm.get_meta('value') == 2:
@@ -458,6 +466,8 @@ func _on_sleep_item_selected( ID ):
 	for i in sleepdict:
 		if sleepdict[i] == ID:
 			person.sleep = i
+	if person.sleep == 'jail':
+		person.work = 'rest'
 	get_parent().get_parent().rebuild_slave_list()
 	slavetabopen()
 
@@ -596,7 +606,6 @@ func _on_confirmdescript_pressed():
 
 func _on_gear_pressed():
 	globals.main._on_inventory_pressed()
-	globals.main.get_node('inventory').selectcategory(globals.main.get_node('inventory/everything'))
 	globals.main.get_node('inventory/gear').pressed = true
 	globals.main.get_node('inventory').selectcategory(globals.main.get_node('inventory/gear'))
 	globals.main.get_node('inventory').selectbuttonslave(person)
@@ -604,7 +613,6 @@ func _on_gear_pressed():
 
 func _on_items_pressed():
 	globals.main._on_inventory_pressed()
-	globals.main.get_node('inventory').selectcategory(globals.main.get_node('inventory/everything'))
 	globals.main.get_node('inventory/potion').pressed = true
 	globals.main.get_node('inventory').selectcategory(globals.main.get_node('inventory/potion'))
 	globals.main.get_node('inventory').selectbuttonslave(person)
@@ -942,7 +950,7 @@ func updatestats():
 	get_node("stats/statspanel/hp").set_value((person.stats.health_cur/float(person.stats.health_max))*100)
 	get_node("stats/statspanel/en").set_value((person.stats.energy_cur/float(person.stats.energy_max))*100)
 	get_node("stats/statspanel/xp").set_value(person.xp)
-	text = "Health: " + str(person.stats.health_cur) + "/" + str(person.stats.health_max) + "\nEnergy: " + str(person.stats.energy_cur) + "/" + str(person.stats.energy_base) + "\nExperience: " + str(person.xp) 
+	text = "Health: " + str(person.stats.health_cur) + "/" + str(person.stats.health_max) + "\nEnergy: " + str(person.stats.energy_cur) + "/" + str(person.stats.energy_max) + "\nExperience: " + str(person.xp) 
 	get_node("stats/statspanel/hptooltip").set_tooltip(text)
 	get_node("stats/statspanel/grade").set_texture(gradeimages[person.origins])
 	if person.imageportait != null && globals.loadimage(person.imageportait):
@@ -951,11 +959,14 @@ func updatestats():
 		person.imageportait = null
 		$stats/statspanel/TextureRect/portrait.set_texture(null)
 	$stats/statspanel/spec.set_texture(specimages[str(person.spec)])
-	if person.xp >= 100 && person.levelupreqs.empty():
-		$stats/basics/levelupreqs.set_bbcode(person.dictionary("You don't know what might unlock $name's potential further, yet. "))
-	elif person.xp >= 100:
-		$stats/basics/levelupreqs.set_bbcode(person.levelupreqs.descript)
+	if person.xp >= 100:
+		get_node("stats/statspanel/xp").tint_progress = Color(2.167,1.176,1.167,1)
+		if person.levelupreqs.empty():
+			$stats/basics/levelupreqs.set_bbcode(person.dictionary("You don't know what might unlock $name's potential further, yet. "))
+		else:
+			$stats/basics/levelupreqs.set_bbcode(person.levelupreqs.descript)
 	else:
+		get_node("stats/statspanel/xp").tint_progress = ColorN("white")
 		$stats/basics/levelupreqs.set_bbcode('')
 
 var gradeimages = globals.gradeimages

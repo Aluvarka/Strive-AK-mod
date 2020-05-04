@@ -540,12 +540,19 @@ func getrequest(person):
 
 func rest(person):
 	var text = ""
+	var healing = 0.15
 	if person.work != 'rest':
 		text = "$name had no energy to fulfill $his duty and had to take a rest.\n"
 	else:
 		text = '$name has spent most of the day relaxing.\n'
-	_brp_heal_slave(person, 0.15)
-	person.stress -= 20
+	if person.race == 'Orc':
+		healing += 0.15
+	_brp_heal_slave(person, healing)
+	if person.race == 'Fairy':
+		person.stress -= rand_range(30,40)
+	else:
+		person.stress -= rand_range(25,30)
+	person.energy += rand_range(20,30) + person.send*6
 
 	var dict = {text = text}
 	return _brp_job_adjustments(person, dict)
@@ -562,7 +569,7 @@ func forage(person):
 	if person.smaf * 3 + 2 >= rand_range(0,100):
 		text += "$name has found nature's essence. \n"
 		globals.itemdict.natureessenceing.amount += 1
-	food = min(food, (person.sstr+person.send)*20+25)
+	food = min(food, max(person.sstr+person.send, -1)*20+25)
 	if person.spec == 'ranger':
 		food *= 1.25
 	food = round(food)
@@ -582,7 +589,7 @@ func hunt(person):#agility, strength, endurance, courage
 		food = food*1.3
 	if person.spec in ['ranger','trapper']:
 		food *= 1.25
-	food = round(min(food, (person.sstr+person.send)*30+40))
+	food = round(min(food, max(person.sstr+person.send, -1)*30+40))
 	supplies += round(food/12)
 	globals.itemdict.supply.amount += supplies
 	person.xp += food/7
@@ -803,7 +810,7 @@ func storewimborn(person):
 		bonus += 0.3
 		supplyPrice += 1
 	var gold = rand_range(1,5) + (person.charm + person.wit) / 2
-	gold = round(gold * min(0.30 * (globals.originsarray.find(person.origins) + 1), 1) * bonus)
+	gold = round(gold * min(0.10 * (globals.originsarray.find(person.origins) + 7), 1) * bonus)
 
 	var supplySold = min(floor(gold / supplyPrice), globals.itemdict.supply.amount - globals.state.supplykeep)
 	if supplySold > 0:
@@ -816,12 +823,14 @@ func storewimborn(person):
 		globals.itemdict.supply.amount += supplySold
 		text += "With the money earned $he purchased [color=yellow]" + str(supplySold) + "[/color] supply units. "
 		supplySold = -supplySold
+	else:
+		supplySold = 0
 
 	gold = round(gold)
 	person.energy -= round(rand_range(20,35))
 	person.xp += gold / 4
 	person.stress += rand_range(5,10)
-	text = text + "$He earned "+str(gold)+" gold by the end of day.\n"
+	text = text + "$He returned with "+str(gold)+" gold by the end of day.\n"
 	var dict = {text = text, gold = gold, supplies = -supplySold}
 	return _brp_job_adjustments(person, dict)
 

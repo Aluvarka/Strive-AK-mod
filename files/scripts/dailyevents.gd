@@ -23,7 +23,7 @@ escape = ["Early in the morning you receive a report that $name has recently bee
 kidnap = ["Early in the morning you receive a report that $name did not come back yesterday and according to few witnesses, may have been kidnapped. ", "You hastily initiate a rescue operation and with help of Mage's Order you find $name unharmed ", "You leave searches to your appointed headgirl, deciding $he should be able to take care of it. By the end of the day ","You decide to not spend any resources on searching $name. "], #options: Rush to search, leave it to the headgirl, do nothing
 gift = ["During the morning you are visited by $name, who recently saw a very pretty piece of jewelry possessed by strange trader and making big eyes asks you to purchase it for $him while the trader is still around. ", "After some thoughts, you decide that spoiling your $child once in awhile is not really detrimental to $his behavior and send $him off with some gold. $name happily takes the money and thanks you for your generosity before running away. ", "You deny $name $his request making it clear that $he doesn't deserve such praise. Perhaps, another time if $he behaves properly. ", "After some consideration, you give $name a nasty smirk and tell $child, that if $he wants something from someone, $he should give something in return. "], #options: purchase, deny, make $him earn it
 injure = ["During the early part of the day you receive a report that $name has injured $himself at work and is having some troubles moving around. After visiting and inspecting $him, you decide it’s nothing life threatening, but $name could use some rest. ", "You tell $name, that $he can take it easy for few days until $he gets better. $name is surprised with your attention and expresses $his gratitude. ", "You tell $name that $he can have a day off to rest and get better. $name warmly thanks you for your care. ", "You decide that $name's work is too important to let $him waste time laying around. $name acts stoically, even though $he hoped you would show a little bit of compassion. "], #options: let $name rest for 3 days, let $name rest for day, no rest
-escapedslave = ["During the morning you receive a report that $name has caught a trespasser on the mansion grounds. Apparently, it's a runaway slave who recently escaped from the town. You speak to the $2child, $2he tells you that he has been treated very badly by $2his masters, which you confirm by numerous visible bruises. $2He says $2he couldn't find much food in past few days. ", "You offer $2child the chance to join your household and be provided with food and shelter. You also promise to treat $2him better than $2his previous owners. With little options and an empty stomach, $he takes your offer, at least for now. $2name now belongs to you.", "You order the escaped slave to be tied up tightly and return $2him to town. After finding $2his previous owners you manage to earn some gold for your service.", "You decide, that $2child's life is of no interest to you. You threaten to punish $2him greatly if you see $2him again. "], #options: keep person to yourself, return person to city, act disinterested
+escapedslave = ["During the morning you receive a report that $name has caught a trespasser on the mansion grounds. Apparently, it's a runaway slave who recently escaped from the town. You speak to the $2child, $2he tells you that he has been treated very badly by $2his masters, which you confirm by numerous visible bruises. $2He says $2he couldn't find much food in past few days. ", "You offer $2name the chance to join your household and be provided with food and shelter. You also promise to treat $2him better than $2his previous owners. With little options and an empty stomach, $2he takes your offer, at least for now. $2name now belongs to you.", "You order the escaped slave to be tied up tightly and return $2him to town. After finding $2his previous owners you manage to earn some gold for your service.", "You decide that the $2child's life is of no interest to you. You threaten to punish $2him greatly if you see $2him again. "], #options: keep person to yourself, return person to city, act disinterested
 teenagersflirt = ["As you stroll around the mansion, you spot $name being wooed over by few male teenagers. Apparently they find $him fairly attractive and are trying their best at flirting with $him. ", "Without much deliberation you appear before them and quickly indicate that $name belongs solely to you and they will be in big trouble if you see them again anywhere near your mansion. They swiftly retreat and $name thanks you for the help, showing some additional respect as $he does so. ", "You decide it would be amusing to make $name submit to a bunch of horny teens. You show up and tell $name that you demand $him responds to $his admirers in a most sincere way. The teenagers cheer at your commands and under pressure $name has no choice but to follow your order. Surrounded, $he's quickly freed of $his clothes and proceeds to give simultaneous blowjobs. ", "You decide to not waste your time and continue with your business. "], #options: Drive them away, Make $name serve them, Ignore
 devotedevent = ["During the morning you are visited by $name, who tells you how $he talked one of the citizens $he's familiar with, into offering $2himself to you. You invite them over and inspect $2him. \n$2He tells you how great the opinion of $name is of you, and how recent hardships have made $2his life very complicated to the point, $2he's ready to became a slave to have some stability and not die from starvation. ", "You accept $2child's proposal and introduce $2him to your household. ", "You reject the $2child's offer telling that your current situation does not allow you to take just about anyone in. $2He leaves with a disappointed look. "], #options: accept,reject
 passiveevent = ["Walking through the mansion you spot how $name is being bullied and made fun of by couple of the other servants. $His meek personality apparently prevents $him from rebuking or putting an end to this treatment. ", "You approach the group and immediately put a stop to the verbal abuse. You harshly criticize the aggressors and explain that it is in their best interest not to pick on the others and you are not going to excuse any quarrels. They react with fright and remorse. After they leave $name expresses $his heartfelt appreciation. ", "Succumbing to the mob mentality you walk over to $name and passively observe the bullying with a smirk. Weak. Vulnerable. It strikes you that it might be fun to pay $name a visit later. To do it more. The servants seem to like you more now. ", "You decide it's not your business and move on your way. "], #options: defend $name, support bullying, ignore
@@ -40,9 +40,11 @@ mockeryevent = ["While taking an evening stroll through your mansion, you encoun
 thiefevent = ["$name approaches you while you are in your study, nearly in tears. It seems that one of $his treasured possessions disappeared several days ago, and $he just saw $2name walking around carrying it. $name asks you to retrieve $his possession for $him.","After hearing $name’s story, you quickly send for $2name. With both servant’s standing before you, you ask $2name about $name’s possession. Seeing the serious look on your face, $2name does not even attempt to lie. Shamefaced, $2he hands the item over to you.\n\nYou hand the retrieved item to $name, and tell $him that $he may choose how $2name is punished for the theft. Looking at $2name’s shamed face, and then at you, $name tells you that $he has $his belonging back, and does not want anyone punished. Then, cradling $his treasured possession to $his chest, $name quickly leaves your study.\n\nLeft alone with $2name, you inform $2him that $2he should be very grateful for $name’s mercy, but not to expect it if $2he repeats $2his actions. Bowing $2his head in shame, $2name assures you it won’t happen again, and hurries to follow $name out.","You tell $name to wait in your study, and leave to seek out $2name. It’s a simple matter to retrieve $name’s possession, and when you return to your study, $name cries out in joy to see it, reaching out for it. But you don’t hand it to $him.\n\n$name sees the acquisitive gleam in your eye as you look at $his belonging. In a distressed burst of words, $he tells you that $he’ll do anything you want, give you anything, to have it back. Looking at $him, so desperate to please, you smile.\n\nMoments later you find yourself leaning back in your chair and holding up $name’s item, watching the way it shines in the light from the window. Then you look down. Kneeling between your legs, $name begins to use $his lips and tongue to pleasure you, $his eyes showing how desperate $he is to convince you to return what was stolen from $him.","After hearing out $name’s request, you quickly deny $him, informing $him that it is not your responsibility to retrieve lost items for the likes of $him. You wave away any objections $he tries to make, as $he argues that it was stolen, not lost, and tell $him to be more careful with $his belongings in the future."],
 assaultevent = ["[color=yellow]– Please, please just let me go back to my room… Please, someone could walk by at any time![/color]\n\nYou hear the whimpers from one of the many unoccupied rooms in your mansion. Looking through the door, you see $name with $his back to the wall, $his hands stretched above $his head and held there by $2name. $name’s clothing is partially undone, and as $2name’s hand begins to slide down $name’s stomach and beneath $his waistband, it’s obvious from the look on $his face that $he is not a willing participant.","$2name jumps in shock as you shove the door fully open, allowing it to slam against the wall. $2He quickly steps away from $name and the wall, shoving $2his hands into $2his pockets and attempting to look innocent. Now free, $name scurries towards you as $his savior. With a nod, you tell $him to let you handle this, and gesture $him from the room. Then, you turn to face $2name.\n\n[color=yellow]– I can explain, Master. This is all just a misunderst--[/color]\n\nYou cut off $2name’s protestations with a curt shake of your head, and ask $2him in a cold voice if $2he believes $2he has the right to assault $2his fellow servants, your servants. You slap $2him when $2he tries to respond, and again as $he tries to explain, until finally $he is silent.\n\nAfter that, it’s a simple matter to drag $2name to your dungeon, $2his cries for forgiveness and mercy likely keeping some of your servants awake late into the night.","You watch the assault unfold, $2name’s hand pushing beneath $name’s clothing to the juncture of $his thighs. $name struggles to resist the sensations $2name is forcing on $him, but eventually $his face begins to flush, $his chest rising and falling in breathy moans until $he falls trembling to the ground at $2name’s feet. It’s at that moment that you choose to enter the room.\n\n$2name turns in surprise as you enter the room, but something about your expression informs $2him that you don’t entirely disapprove of $2his actions. Grinning deviously, $2he pushes $name to the floor, holding $him down while $2he looks up at you.\n\n[color=yellow]– $He’s all prepared, Master. Would you like me to hold $him down for you while you have some fun?[/color]\n\n$name tries to struggle, to catch your eye and plead for mercy. But you pay $him little heed as you begin to remove your clothing.","It take a bare minimum of magical effort to send $2name into a brief-but-deep sleep, $2his body collapsing to the floor. A moment’s more spellwork, and $2name’s unconscious form is shackled magically to the wall next to $name, who has begun to squirm as $he realizes you haven’t arrived as $his saviour.\n\n$2name comes-to a few moments later, eyes dazed and muscles tensing as $2he struggles against the magical bonds holding $2him immobile. You slap $2him a few times to still $2him, slapping $name a few times as well for good measure. You explain that their little show has left you quite aroused, and now you intend to do something to solve that little problem.\n\nTheir eyes widen as you begin to strip the clothing from their helpless bodies.","You chuckle to yourself, stepping away from the doorway as $name continues to whimper and protest against $2name’s assault. You decide that it’s not your job to police every interaction between your servants and, clasping your hands behind you back, you stroll away from the room and leave $name to $his feet."],
 sabotagevent = ["Your headgirl approaches you in the evening with some concerns about two of your servants. It seems that $name has been making a number of small mistakes lately, such as breaking some small items or leaving tasks undone. Since each of the mistakes was relatively minor your headgirl handled them personally, but the sheer number of incidents made her feel that you should be informed.\n\nWhen you look into the incidents, you begin to notice an odd coincidence. Every time $name broke an item, your other servant $2name was also nearby. Every time $name left a task undone, $2name was the one who reported $him. Although you have no hard evidence, you begin to suspect that $2name is sabotaging $name, perhaps due to some personal argument or dislike.","[color=yellow]– It’s not fair, Master, please, it’s not fair! I didn’t break those things, I don’t know how they--[/color]\n\n$name’s protestations of innocence are cut off as you force the ballgag into $his mouth, the crowd of servants watching in silence behind you. You bind $name’s arms behind $him and easily lift $him onto the sawhorse, listening to $him squeal as $his full weight falls down onto the sensitive area between $his thighs. A few well-placed spanks only add to the squeals, until $name is flushed in the face with tears in $his eyes.\n\nTurning to the crowd of watching servants, you tell them that $name is going to spend the night thinking about $his mistakes, and they would do well to think about them as well. Then you lead the crowd of servants out of the dungeon, leaving $name alone to suffer on the sawhorse. As you walk by $2name, you can’t help but notice a look of vindictive glee on $2his face.","Looking at the crowd of your servants, you tell them that sabotage, deception and false accusations will not be tolerated. $2name is silent behind you, standing bound and spread with a rope around each wrist and ankle, $2his mouth held open by a ring gag. $2He quickly becomes less silent as the whip begins to fly through the air.\n\nAgain and again the whip falls as $2name twists between the ropes you’ve bound $2him in, leaving light red marks on $2his chest, thighs and arse. Behind you, the crowd of servants inhales each time the whip whistles through the air, echoing $2name’s gasps and cries through the ring gag.\n\nFinally, you decided that $2name has had enough an put the whip down, leaving $2him crying in his bondage. You gesture for all of the watching servants to leave, wanting to have a private word with $2name before you release $2him. Catching a glimpse of $name as $he turns to leave, you see a gleam of justified satisfaction in $his eyes.","Calling both $name and $2name into your study, you tell them what you have learned, and you tell them that you expect them to end whatever feud exists between them, here and now. Shamefaced, they agree, and you order them to show you how friendly they can be with each other.\n\nLeaning back in your chair, you watch as the two servants kiss, their hands fumbling uncertainty up and down each other’s body. Then, once you’re properly excited from their ‘show,’ you order them to work together, to make up to you for your trouble and broken possessions.","You decide that it’s not your duty to dig into the enmities between your servants, or to investigate and second guess every punishable offense  they commit. That in mind, you tell your headgirl to continue punishing $name if $he seems responsible for a mistake, the same as she would any of your other servants."],
+mercevent = ["$name come to you with his contract which is expired. ", "You are agree to prolong contract longer", "You are refuse to prolong contract and $name go away."],
 }
 
 var eventsdict = {
+mercevent = {function = 'mercevent', reqs = "person.traits.has('Mercenary') && person.metrics.ownership >= variables.merccontractlength"},
 play = {function = 'play', reqs = "person.age in ['teen', 'child'] && person.mindage != 'adult'" },
 spendtime = {function = 'spendtime', reqs = "person.age in ['teen', 'adult'] && person.mindage != 'child'" },
 horny = {function = 'horny', reqs = "person.lust >= 50 && person.consent == true" },
@@ -217,11 +219,13 @@ func play(stage = 0):
 		person.conf += rand_range(0,10)
 		person.loyal += rand_range(10,15)
 		person.stress += -rand_range(15,25)
+		person.mood += rand_range(20,30)
 	elif stage == 2:
 		person.wit += rand_range(0,10)
 		person.charm += rand_range(0,10)
 		person.loyal += rand_range(10,15)
 		person.obed += rand_range(15,25)
+		person.mood += rand_range(10,20)
 		person.learningpoints += round(rand_range(3,6))
 	elif stage == 3:
 		person.lust = -rand_range(5,10)
@@ -248,11 +252,13 @@ func spendtime(stage = 0):
 		person.conf += rand_range(0,10)
 		person.loyal += rand_range(10,15)
 		person.obed += rand_range(15,25)
+		person.mood += rand_range(15,20)
 	elif stage == 2:
 		person.wit += rand_range(0,10)
 		person.charm += rand_range(0,10)
 		person.loyal += rand_range(10,15)
 		person.stress += -rand_range(15,25)
+		person.mood += rand_range(5,10)
 	elif stage == 3:
 		person.lastsexday = globals.resources.day
 		person.lust = -rand_range(15,25)
@@ -277,6 +283,7 @@ func horny(stage = 0):
 		person.lust = -rand_range(15,25)
 		person.loyal += rand_range(5,10)
 		person.stress += -rand_range(15,25)
+		person.mood += rand_range(10,20)
 		globals.resources.mana += rand_range(3,5)
 		if person.race == "Drow":
 			globals.resources.mana += 1
@@ -366,6 +373,7 @@ func abortion(stage = 0):
 		person.loyal += rand_range(10,15)
 		person.stress -= rand_range(10,20)
 		globals.player.energy -= 25
+		person.mood += rand_range(5,10)
 	elif stage == 4:
 		person.loyal -= rand_range(10,15)
 		person.stress += rand_range(20,40)
@@ -384,10 +392,12 @@ func vacation(stage = 0):
 		person.away.duration = 4
 		person.away.at = 'vacation'
 		person.loyal += rand_range(10,15)
+		person.mood += rand_range(25,40)
 	elif stage == 2:
 		globals.resources.gold -= 50
 		person.loyal += rand_range(5,10)
 		person.obed += rand_range(10,15)
+		person.mood += rand_range(10,20)
 	elif stage == 3:
 		person.loyal += -rand_range(5,10)
 		person.stress += rand_range(10,20)
@@ -406,6 +416,7 @@ func accident(stage = 0):
 		person.fear += 35
 	elif stage == 2:
 		person.loyal += rand_range(3,6)
+		person.mood += rand_range(5,10)
 	buttons = tempbuttons
 	showevent()
 
@@ -426,6 +437,7 @@ func strangerdisrespect(stage = 0):
 		person.loyal -= rand_range(10,15)
 		person.obed -= rand_range(15,25)
 		person.lewdness += rand_range(3,6)
+		person.mood -= rand_range(25,30)
 	elif stage == 3:
 		globals.state.reputation.wimborn -= rand_range(3,5)
 		person.obed += rand_range(10,20)
@@ -441,10 +453,12 @@ func escape(stage = 0):
 	if stage == 1:
 		person.loyal += rand_range(7,15)
 		person.obed += rand_range(10,15)
+		person.mood += rand_range(5,10)
 		globals.player.energy -= 25
 	elif stage == 2:
 		person.obed += rand_range(20,35)
 		person.stress += rand_range(15,25)
+		person.mood -= rand_range(5,10)
 		person.loyal += rand_range(3,7)
 		globals.player.energy -= 25
 	elif stage == 3:
@@ -503,20 +517,24 @@ func gift(stage = 0):
 	if stage == 1:
 		person.loyal += rand_range(5,10)
 		person.obed += rand_range(10,15)
+		person.mood += rand_range(15,20)
 		globals.resources.gold -= 50
 	elif stage == 2:
 		person.obed += -rand_range(20,35)
 		person.loyal += -rand_range(2,5)
+		person.mood -= rand_range(20,30)
 	elif stage == 3:
 		if person.consent == false:
 			person.obed += -rand_range(20,40)
 			person.loyal += -rand_range(5,10)
+			person.mood -= rand_range(35,40)
 			showntext += "$name is disgusted by your implications and leaves infuriated. "
 		else:
 			person.lastsexday = globals.resources.day
 			showntext += "You spread your legs and bare your crotch, inviting $name over to which $he readily responds. After couple pleasant minutes of $name's eager mouth work you pass $him the requested money and return to your work. "
 			person.obed += rand_range(10,25)
 			person.lust = rand_range(10,15)
+			person.mood += rand_range(15,20)
 			person.sexuals.affection += round(rand_range(1,3))
 			globals.resources.gold -= 50
 			globals.resources.mana += rand_range(3,6)
@@ -579,6 +597,7 @@ func teenagersflirt(stage = 0):
 		globals.player.energy -= 25
 		person.loyal += rand_range(7,15)
 		person.obed += rand_range(10,15)
+		person.mood += rand_range(10,20)
 	elif stage == 2:
 		globals.player.energy -= 25
 		person.metrics.randompartners += round(rand_range(3,5))
@@ -600,6 +619,7 @@ func teenagersflirt(stage = 0):
 			person.stress += rand_range(15,25)
 			person.loyal += -rand_range(10,20)
 			person.obed += -rand_range(30,50)
+			person.mood -= rand_range(25,40)
 		showntext += "After short time the boys shower the $child in semen. Satisfied with your hospitality, they leave happy. "
 		globals.resources.mana += rand_range(3,6)
 		if person.race == "Drow":
@@ -639,6 +659,7 @@ func passiveevent(stage = 0):
 		person.loyal += -rand_range(10,20)
 		person.obed += -rand_range(15,30)
 		globals.player.energy -= 25
+		person.mood -= rand_range(35,50)
 	elif stage == 3:
 		person.stress += rand_range(25,50)
 	buttons = tempbuttons
@@ -743,9 +764,13 @@ func gardenevent(stage = 0):
 		1:
 			person.loyal += 10
 			slave2.loyal += 10
+			person.mood += rand_range(15,20)
+			slave2.mood += rand_range(15,20)
 		2:
 			person.stress += 25
 			slave2.stress += 25
+			person.mood -= rand_range(15,20)
+			slave2.mood -= rand_range(15,20)
 			globals.addrelations(person, slave2, -150)
 	showntext = eventstext[currentevent][stage]
 	buttons = tempbuttons
@@ -763,10 +788,14 @@ func loverequestevent(stage = 0):
 		1:
 			person.loyal += 10
 			slave2.loyal += 5
+			person.mood += rand_range(15,20)
+			slave2.mood += rand_range(15,20)
 			globals.addrelations(person, slave2, 50)
 		2:
 			person.stress += 25
 			slave2.stress += 25
+			person.mood -= rand_range(25,40)
+			slave2.mood -= rand_range(25,40)
 			globals.addrelations(person, slave2, -150)
 		3:
 			globals.itemdict.amnesiapot.amount -= 1
@@ -786,16 +815,22 @@ func standupevent(stage = 0):
 		1:
 			person.loyal += 10
 			slave2.loyal += 10
+			person.mood += rand_range(15,20)
+			slave2.mood += rand_range(15,20)
 			globals.addrelations(person, slave2, 50)
 		2:
 			person.stress += 40
 			slave2.stress += 40
 			person.loyal -= 20
 			slave2.loyal -= 200
+			person.mood -= rand_range(40,60)
+			slave2.mood -= rand_range(40,60)
 			globals.addrelations(person, slave2, -150)
 		3:
 			person.stress += 10
 			slave2.stress += 10
+			person.mood -= rand_range(15,20)
+			slave2.mood -= rand_range(15,20)
 	showntext = eventstext[currentevent][stage]
 	buttons = tempbuttons
 	showevent()
@@ -810,10 +845,14 @@ func gossipevent(stage = 0):
 		1:
 			person.loyal += 10
 			slave2.loyal += 10
+			person.mood += rand_range(5,15)
+			slave2.mood += rand_range(5,15)
 			globals.addrelations(person, slave2, 50)
 		2:
 			person.stress += 25
 			slave2.stress += 25
+			person.mood -= rand_range(15,20)
+			slave2.mood -= rand_range(15,20)
 			globals.addrelations(person, slave2, -150)
 		3:
 			pass
@@ -856,10 +895,13 @@ func thiefevent(stage = 0):
 			person.loyal += 15
 			slave2.loyal -= 5
 			slave2.stress += 20
+			person.mood += rand_range(15,20)
+			slave2.mood -= rand_range(15,20)
 			globals.addrelations(person, slave2, 100)
 		2:
 			person.stress += 25
 			person.loyal -= 5
+			person.mood -= rand_range(15,20)
 		3:
 			person.obed -= 25
 			globals.addrelations(person, slave2, -100)
@@ -877,16 +919,22 @@ func assaultevent(stage = 0):
 		1:
 			person.loyal += 15
 			slave2.stress += 30
+			person.mood += rand_range(15,20)
+			slave2.mood -= rand_range(25,40)
 			globals.addrelations(person, slave2, 100)
 		2:
 			person.stress += 50
 			slave2.loyal += 15
+			person.mood -= rand_range(35,50)
+			slave2.mood += rand_range(15,20)
 			globals.addrelations(person, slave2, -50)
 			startsex = true
 			startsextype = 'rape2'
 		3:
 			person.stress += 10
 			slave2.stress += 10
+			person.mood -= rand_range(15,20)
+			slave2.mood -= rand_range(15,20)
 			globals.addrelations(person, slave2, 100)
 			startsex = true
 			startsextype = 'rapeboth'
@@ -907,17 +955,40 @@ func sabotagevent(stage = 0):
 		1:
 			person.loyal -= 10
 			person.stress += 25
+			person.mood -= rand_range(25,40)
+			slave2.mood += rand_range(15,20)
 			globals.addrelations(person, slave2, -100)
 		2:
 			slave2.obed += 25
 			slave2.stress += 25
+			person.mood += rand_range(10,15)
+			slave2.mood -= rand_range(20,30)
 			globals.addrelations(person, slave2, -50)
 		3:
 			person.stress += 20
 			slave2.stress += 20
+			person.mood -= rand_range(15,20)
+			slave2.mood -= rand_range(15,20)
 			globals.addrelations(person, slave2, 100)
 		4:
 			globals.addrelations(person, slave2, -100)
 	showntext = eventstext[currentevent][stage]
+	buttons = tempbuttons
+	showevent()
+	
+func mercevent(stage = 0):
+	var tempbuttons = null
+	showntext = eventstext[currentevent][stage]
+	if stage == 0:
+		price = person.calculateprice() * 0.8
+		showntext += "[color=yellow]You are required " + str(round(price)) + " gold for $name's contract. [/color]"
+		tempbuttons = [['Reject', 2]]
+		if globals.resources.gold+1 >= price:
+			tempbuttons.append( ['Pay', 1])
+	if stage == 1:
+		globals.resources.gold -= price
+		person.metrics.ownership = 0
+	elif stage == 2:
+		globals.slaves.remove(globals.slaves.find(person))
 	buttons = tempbuttons
 	showevent()

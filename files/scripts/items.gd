@@ -173,7 +173,7 @@ aphrodisiac = {
 	recipe = 'recipeaphrodisiac',
 	cost = 150,
 	type = 'potion',
-	toxicity = 10,
+	toxicity = 15,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
@@ -201,7 +201,7 @@ hairgrowthpot = {
 	recipe = 'recipehairgrowth',
 	cost = 120,
 	type = 'potion',
-	toxicity = 5,
+	toxicity = 15,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
@@ -215,7 +215,7 @@ maturingpot = {
 	recipe = 'recipematuringpot',
 	cost = 200,
 	type = 'potion',
-	toxicity = 20,
+	toxicity = 40,
 	reqs = 'globals.state.mainquest >= 6',
 	weight = 1,
 	amount = 0
@@ -229,7 +229,7 @@ youthingpot = {
 	recipe = 'recipeyouthingpot',
 	cost = 200,
 	type = 'potion',
-	toxicity = 20,
+	toxicity = 40,
 	reqs = 'globals.state.mainquest >= 6',
 	weight = 1,
 	amount = 0
@@ -243,7 +243,7 @@ regressionpot = {
 	recipe = '',
 	cost = 400,
 	type = 'potion',
-	toxicity = 35,
+	toxicity = 50,
 	reqs = false,
 	weight = 1,
 	amount = 0
@@ -271,7 +271,7 @@ amnesiapot = {
 	recipe = 'recipeamnesiapot',
 	cost = 200,
 	type = 'potion',
-	toxicity = 20,
+	toxicity = 25,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
@@ -285,7 +285,7 @@ lactationpot = {
 	recipe = 'recipelactationpot',
 	cost = 100,
 	type = 'potion',
-	toxicity = 10,
+	toxicity = 20,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
@@ -299,7 +299,7 @@ oblivionpot = {
 	recipe = 'recipeoblivionpot',
 	cost = 300,
 	type = 'potion',
-	toxicity = 30,
+	toxicity = 50,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 2',
 	weight = 1,
 	amount = 0
@@ -327,7 +327,7 @@ stimulantpot = {
 	recipe = 'recipestimulantpot',
 	cost = 150,
 	type = 'potion',
-	toxicity = 5,
+	toxicity = 20,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
@@ -341,7 +341,7 @@ deterrentpot = {
 	recipe = 'recipedeterrentpot',
 	cost = 150,
 	type = 'potion',
-	toxicity = 5,
+	toxicity = 20,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
@@ -355,7 +355,7 @@ minoruspot = {
 	recipe = 'recipeminoruspot',
 	cost = 250,
 	type = 'potion',
-	toxicity = 10,
+	toxicity = 30,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
@@ -369,7 +369,7 @@ majoruspot = {
 	recipe = 'recipemajoruspot',
 	cost = 250,
 	type = 'potion',
-	toxicity = 10,
+	toxicity = 30,
 	reqs = 'globals.state.mansionupgrades.mansionalchemy >= 1',
 	weight = 1,
 	amount = 0
@@ -598,6 +598,8 @@ trinkets = {
 	weight = 1,
 	amount = 0
 	},
+	
+	
 	
 	######################################GEAR
 clothcommon = {
@@ -1114,7 +1116,7 @@ weaponhammer = {
 },
 weaponkatana = {
 	code = 'weaponkatana',
-	name = "Easterm Sword",
+	name = "Eastern Sword",
 	icon = "res://files/images/items/9.png",
 	description = "A long sword originates from eastern lands. \n[color=yellow]Requirements: 3 Agility[/color] ",
 	effect = [{type = 'incombat', effect = 'damage', effectvalue = 9, descript = "+9 Damage"}, {type = 'onequip', effect = 'end', effectvalue = 1, descript = '+1 Endurance'}],
@@ -1439,7 +1441,18 @@ func obedmod(value):
 	person.stats.obed_mod += value
 	return text
 
-	
+#caution: abilities gained from items should not be acquirable by other means
+func abil(value):
+	if value.ends_with('-'):
+		value = toggleStrNeg(value)
+		person.ability.erase(value)
+		person.abilityactive.erase(value)
+	else:
+		if !person.ability.has(value):
+			person.ability.append(value)
+		if !person.abilityactive.has(value):
+			person.abilityactive.append(value)
+
 #cursed gear start
 
 func cursedobedmod(value):
@@ -1499,27 +1512,27 @@ func kimonoeffect(person):
 func livingsuiteffect(person):
 	person.lust += 4
 	person.lewdness += 1
-	return "$name is being stimulated by wearing [color=yellow]Living suit[/color] and $his lust grows.\n\n"
+	return "$name is being stimulated by wearing a [color=yellow]Living suit[/color] and $his lust grows.\n"
 
 func peteffect(person):
-	var text = person.dictionary("$name wears pet suit ")
+	var text = "$name wears a pet suit "
 	person.obed += rand_range(8,16)
 	if person.conf >= 40 && person.traits.has('Submissive') == false:
-		text += person.dictionary("and is very unhappy about it, although $his obedience grows.\n")
+		text += "and is very unhappy about it, although $his obedience grows.\n"
 		person.stress += rand_range(5,10)
 		person.conf += rand_range(-2,-4)
 	else:
-		text += person.dictionary("and $his obedience grows.\n")
+		text += "and $his obedience grows.\n"
 	return text
 
 func mikoeffect(person):
-	var text = person.dictionary("$name's miko outfit helps $him to collect $his thoughts and calm down.\n")
+	var text = "$name's miko outfit helps $him to collect $his thoughts and calm down.\n"
 	person.stress += rand_range(-3,-5)
 	person.lust -= rand_range(4,6)
 	return text
 
 func bedlaheffect(person):
-	var text = person.dictionary("$name's revealing clothes teach $him how to better present $himself to others. \n")
+	var text = "$name's revealing clothes teach $him how to better present $himself to others. \n"
 	person.charm += rand_range(1,3)
 	return text
 
@@ -1775,6 +1788,8 @@ func beautyeffect():
 		text = person.dictionary('You order $name to apply Beauty Mixture to $his face, which will make $his skin smoother and hides visible flaws.')
 	if person.effects.has('beautypot') == false && rand_range(0,100) >= 50:
 		person.beautybase += 1
+	person.stats.weight_base += 10
+	person.stats.weight_cur += 5
 	person.add_effect(globals.effectdict.beautypot)
 	return text
 
@@ -1882,7 +1897,11 @@ func unequipitem(itemid, person = person, notplayer = false):
 	person.gear[item.type] = null
 	for i in item.effects:
 		if i.type == 'onequip':
-			call(i.effect, -i.effectvalue)
+			if typeof(i.effectvalue) == TYPE_STRING:
+				call(i.effect, toggleStrNeg(i.effectvalue))
+			else:
+				call(i.effect, -i.effectvalue)
+	person.health += 0
 	if notplayer:
 		globals.main.get_node('explorationnode').enemygear.erase(itemid)
 	elif backpack == true:
@@ -1895,13 +1914,22 @@ func unequipitemraw(item, person = person):
 	person.gear[item.type] = null
 	for i in item.effects:
 		if i.type == 'onequip':
-			call(i.effect, -i.effectvalue)
+			if typeof(i.effectvalue) == TYPE_STRING:
+				call(i.effect, toggleStrNeg(i.effectvalue))
+			else:
+				call(i.effect, -i.effectvalue)
 	item.owner = null
 
 func unequipall(person):
 	for i in person.gear.values():
 		if i != null:
 			unequipitem(i, person)
+
+func toggleStrNeg(value):
+	if value.ends_with('-'):
+		return value.erase(value.length()-1, 1)
+	else:
+		return value + '-'
 
 func sortitems(first, second):
 	var type = ['potion','ingredient']

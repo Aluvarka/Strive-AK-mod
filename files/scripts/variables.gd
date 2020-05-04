@@ -1,5 +1,5 @@
 extends Node
-#warning-ignore-all:unused_class_variable
+
 var basehealth = 50.0
 var healthperend = 25.0
 var geardropchance = 15.0
@@ -8,9 +8,11 @@ var sellingitempricemod = 0.2
 var basefoodconsumption = 10.0
 var skillpointsperlevel = 2.0
 var timeforinteraction = 20.0
+var timeformeetinteraction = 10.0
 var consumerope = 1.0
 var learnpointsperstat = 3.0
 var attributepointsperupgradepoint = 1.0
+var specializationchance = 5.0
 
 
 
@@ -18,18 +20,21 @@ var playerstartbeauty = 40.0
 var characterstartbeauty = 40.0
 var basesexactions = 1.0
 var chancetoheal = 5
-var traitperlvlup = 3
-var attperstatspoints = 0
+var traitperlvlup = 1
+var attperstatspoints = 30
+var dailyeventsamount = 5
+var dailyeventstime = 2
+var merccontractlength = 7
 var basenonsexactions = 1.0
 var playerbonusstatpoint = 2.0
 var banditishumanchance = 70.0
 
 #Pregnancies
 
-var pregduration = 31.0
-var growuptimechild = 15.0
-var growuptimeteen = 20.0
-var growuptimeadult = 25.0
+var pregduration = 1.0
+var growuptimechild = 1.0
+var growuptimeteen = 2.0
+var growuptimeadult = 2.0
 var traitinheritchance = 80.0
 var babynewtraitchance = 20.0
 
@@ -74,11 +79,11 @@ var oldemily = false
 
 
 var gradepricemod = { # grade and age mods will be added as bonus to base price which starts at 1 [baseprice*(1+value)]
-	"slave": -0.2, poor = 0, commoner = 0.2, rich = 0.5, noble = 1
+	"slave": -0.2, poor = 0.0, commoner = 0.2, rich = 0.5, noble = 1.0
 	}
 
 var agepricemods = {
-	child = 0, teen = 0, adult = 0
+	child = 0.0, teen = 0.0, adult = 0.0
 }
 
 
@@ -90,49 +95,69 @@ var resident_farm_limit = [2,5,8,12]
 
 
 var list = {
-basehealth = {descript = "Character's health before modifiers", default = 50, min = 1, max = 1000},
-healthperend = {descript = "Bonus health per point of endurance",default = 25, min = 0, max = 1000},
-geardropchance = {descript = "Percent chance of getting enemy's gear on defeat", default = 15, min = 0, max = 100},
-pregduration = {descript = "Basic pregnancy duration in days", default = 31, min = 1, max = 1000},
-enchantitemprice = {descript = "Selling price modifier for enchanted gear", default = 1.5, min = 0, max = 10},
-sellingitempricemod = {descript = "Selling price modifier for all items", default = 0.2, min = 0, max = 1},
-basefoodconsumption = {descript = "Basic food consumption for characters per day", default = 10, min = 1, max = 100},
-skillpointsperlevel = {descript = "Attribute points gained on levelup", default = 2, min = 1, max = 10},
-timeforinteraction = {descript = "Number of actions you can perform during interaction sequence", default = 20, min = 1, max = 50},
-consumerope  = {descript = "Number of ropes to be consumed when capturing a slave in the wild", default = 1, min = 0, max = 5,},
-learnpointsperstat = {descript = "Number of skill points required to increase mental stat by 1", default = 3, min = 1, max = 100},
-chancetoheal = {descript = "Size of chance to heal injury", default = 5, min = 1, max = 85},
-traitperlvlup = {descript = "Gain new trait every N levels", default = 3, min = 1, max = 100},
-attperstatspoints = {descript = "If > 0: change exchange from mansion upgrade points to person learning points. Recommended value betwen: 20 to 30, 30 is nice", default = 0, min = 0, max = 150},
-playerstartbeauty = {descript = "Player's starting beauty stat"},
-characterstartbeauty = {descript = "Starting slave's starting beauty stat"},
-basesexactions = {descript = 'Number of sex actions per day (before bonus from endurance)'},
-basenonsexactions = {descript = 'Number of non-sex actions per day (before bonus) '},
-growuptimechild = {descript = 'Time required for baby to mature'},
-growuptimeteen = {descript = 'Time required for baby to mature'},
-growuptimeadult = {descript = 'Time required for baby to mature'},
-traitinheritchance = {descript = "Chance to inherit a parent's trait"},
-babynewtraitchance = {descript = "Chance to gain a new trait"},
-damageperstr = {descript = 'Raw damage per strength'},
-speedperagi = {descript = 'Raw speed per agility'},
-speedbase = {descript = 'Base speed for all characters'},
-baseattack = {descript = 'Base attack for all characters'},
-priceperlevel = {descript = 'Slave price modificator per level'},
-priceperbasebeauty = {descript = 'Slave price modificator per beauty'},
-priceperbonusbeauty = {descript = 'Slave price modificator per bonus beauty'},
-pricebonusvirgin = {descript = 'Slave price modificator for virgins'},
-pricebonusfuta = {descript = 'Slave price modificator for futa'},
-pricebonusbadtrait = {descript = 'Slave price modificator for bad traits'},
-pricebonustoxicity = {descript = 'Slave price modificator for high toxicity'},
-priceuncivilized = {descript = 'Slave price modificator for uncivilized trait'},
-priceminimum = {descript = 'Minimum slave buy price'},
-priceminimumsell = {descript = 'Minimum slave sell price'},
-oldemily = {descript = 'Use old Emily sprite'},
-
-playerbonusstatpoint = {descript = 'Bonus player stat points during char creation'},
-basecarryweight = {descript = 'Base carry weight'},
-carryweightperstrplayer = {descript = 'Bonus carry weight from player strength'},
-baseslavecarryweight = {descript = 'Bonus carry weight for having a slave in party'},
-slavecarryweightperstr = {descript = "Bonus carry weight per slave's point of strength"},
-
+	'Character Creation & Stats' : {
+		basehealth = {descript = "Character's health before modifiers", min = 1.0, max = 1000.0},
+		healthperend = {descript = "Bonus health per point of endurance", min = 0.0, max = 1000.0},
+		playerbonusstatpoint = {descript = "Bonus player stat points during char creation", min = 0.0, max = 1000.0},
+		basefoodconsumption = {descript = "Basic food consumption for characters per day", min = 0.0, max = 100.0},
+		skillpointsperlevel = {descript = "Attribute points gained on level-up", min = 0.0, max = 100.0},
+		learnpointsperstat = {descript = "Number of skill points required to increase mental stat by 1", min = 1.0, max = 100.0},
+		attributepointsperupgradepoint = {descript = "Number of attribute points required to increase upgrade points by 1", min = 1.0, max = 100.0},
+		specializationchance = {descript = "Percent chance of characters having a specialization", min = 0.0, max = 100.0},
+		banditishumanchance = {descript = "Percent chance of bandits being human", min = 0.0, max = 100.0},
+		playerstartbeauty = {descript = "Player's starting beauty stat", min = 0.0, max = 100.0},
+		characterstartbeauty = {descript = "Starting slave's starting beauty stat", min = 0.0, max = 100.0},
+		oldemily = {descript = "Use old Emily sprite"},
+		luxuryreqs = {descript = "Luxury required to satisfy slaves per grade", min = 0.0, max = 60.0},
+		chancetoheal = {descript = "Size of chance to heal injury", default = 5, min = 1, max = 85},
+		traitperlvlup = {descript = "Gain new trait every N levels", default = 3, min = 1, max = 100},
+		attperstatspoints = {descript = "If > 0: change exchange from mansion upgrade points to person learning points. Recommended value betwen: 20 to 30, 30 is nice", default = 0, min = 0, max = 150},		
+		dailyeventsamount = {descript = "Amount of daily events", default = 1, min = 1, max = 99},
+		dailyeventstime = {descript = "After how many days happened new event: random from min to max(min*2) ", default = 5, min = 1, max = 100},
+		merccontractlength = {descript = "Length of mercenary contract, you can refresh contract again after N time", default = 7, min = 1, max = 1000},
+	},
+	'Interactions' : {
+		basesexactions = {descript = "Number of sex actions per day (before bonus from endurance)", min = 0.0, max = 1000.0},
+		basenonsexactions = {descript = "Number of non-sex actions per day (before bonus from endurance) ", min = 0.0, max = 1000.0},
+		timeforinteraction = {descript = "Number of actions you can perform during sex interaction sequence", min = 10.0, max = 1000.0},
+		timeformeetinteraction = {descript = "Number of actions you can perform during meet interaction sequence", min = 10.0, max = 1000.0},
+	},
+	'Pregnancies' : {
+		pregduration = {descript = "Basic pregnancy duration in days", min = 1.0, max = 1000.0},
+		growuptimechild = {descript = "Time required for baby to mature", min = 1.0, max = 1000.0},
+		growuptimeteen = {descript = "Time required for baby to mature", min = 1.0, max = 1000.0},
+		growuptimeadult = {descript = "Time required for baby to mature", min = 1.0, max = 1000.0},
+		traitinheritchance = {descript = "Chance to inherit a parent's trait", min = 0.0, max = 100.0},
+		babynewtraitchance = {descript = "Chance to gain a new trait", min = 0.0, max = 100.0},
+	},
+	'Combat' : {
+		damageperstr = {descript = "Raw damage per strength", min = 0.0, max = 100.0},
+		speedperagi = {descript = "Raw speed per agility", min = 0.0, max = 100.0},
+		speedbase = {descript = "Base speed for all characters", min = 0.0, max = 100.0},
+		baseattack = {descript = "Base attack for all characters", min = 0.0, max = 100.0},
+	},
+	'Slave Price' : {
+		priceperlevel = {descript = "Slave price modifier per level", min = 0.0, max = 1000.0},
+		priceperbasebeauty = {descript = "Slave price modifier per beauty", min = 0.0, max = 1000.0},
+		priceperbonusbeauty = {descript = "Slave price modifier per bonus beauty"},
+		pricebonusvirgin = {descript = "Slave price modifier for virgins", min = -10.0, max = 10.0},
+		pricebonusfuta = {descript = "Slave price modifier for futa", min = -10.0, max = 10.0},
+		pricebonusbadtrait = {descript = "Slave price modifier for bad traits", min = -10.0, max = 10.0},
+		pricebonustoxicity = {descript = "Slave price modifier for high toxicity", min = -10.0, max = 10.0},
+		priceuncivilized = {descript = "Slave price modifier for uncivilized trait", min = -10.0, max = 10.0},
+		priceminimum = {descript = "Minimum slave buy price", min = 0.0, max = 1000.0},
+		priceminimumsell = {descript = "Minimum slave sell price", min = 0.0, max = 1000.0},
+		gradepricemod = {descript = "Slave price modifier per grade", min = -10.0, max = 10.0},
+		agepricemods = {descript = "Slave price modifier per age", min = -10.0, max = 10.0},
+	},
+	'Items & Backpack' : {
+		geardropchance = {descript = "Percent chance of getting enemy's gear on defeat", min = 0.0, max = 100.0},
+		consumerope  = {descript = "Number of ropes to be consumed when capturing a slave in the wild", min = 0.0, max = 5.0},
+		sellingitempricemod = {descript = "Selling price modifier for all items", min = 0.1, max = 1.0},
+		enchantitemprice = {descript = "Selling price modifier for enchanted gear", min = 1.0, max = 10.0},
+		basecarryweight = {descript = "Base carry weight", min = 0.0, max = 1000.0},
+		carryweightperstrplayer = {descript = "Bonus carry weight from player strength", min = 0.0, max = 1000.0},
+		baseslavecarryweight = {descript = "Bonus carry weight for having a slave in party", min = 0.0, max = 1000.0},
+		slavecarryweightperstr = {descript = "Bonus carry weight per slave's point of strength", min = 0.0, max = 1000.0},
+	},
 }

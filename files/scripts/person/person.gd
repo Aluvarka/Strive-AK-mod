@@ -298,7 +298,7 @@ func levelup():
 
 func xp_set(value):
 	var difference = value - realxp
-	realxp += max(difference/max(level,1),1)
+	realxp += max(float(difference)/max(level,1),1)
 	realxp = round(clamp(realxp, 0, 100))
 	if realxp >= 100 && self == globals.player:
 		levelup()
@@ -493,30 +493,35 @@ func tox_set(value):
 func energy_set(value):
 	value = round(value)
 	var difference = value - stats.energy_cur
-	stats.energy_base = round(max(10,stats.energy_max+(5*(stats.end_base+stats.end_mod))))
-	stats.energy_cur = clamp(stats.energy_cur + difference*(1 + stats.energy_mod/100), 0, stats.energy_base)
+	stats.energy_max = round(max(10,stats.energy_base+(5*(stats.end_base+stats.end_mod))))
+	stats.energy_cur = clamp(stats.energy_cur + difference*(1 + stats.energy_mod/100.0), 0, stats.energy_max)
+	
 	if self == globals.player:
 		globals.resources.energy = 0
 
 var originvalue = {'slave' : 55, 'poor' : 65, 'commoner' : 75, 'rich' : 85, 'atypical' : 85, 'noble' : 100}
 
 func cour_set(value):
-	stats.cour_base = clamp(value, 0, min(stats.cour_max, originvalue[origins]))
+	var difference = max(0, stats.cour_max - originvalue['noble'])
+	stats.cour_base = clamp(value, 0, min(stats.cour_max, originvalue[origins]+difference))
 
 func conf_set(value):
 	var bonus = max(0, stats.conf_max - originvalue['noble'])
 	stats.conf_base = clamp(value, 0, min(stats.conf_max, originvalue[origins]) + bonus)
 
 func wit_set(value):
-	stats.wit_base = clamp(value, 0, min(stats.wit_max, originvalue[origins]))
+	var difference = max(0, stats.wit_max - originvalue['noble'])
+	stats.wit_base = clamp(value, 0, min(stats.wit_max, originvalue[origins]+difference))
 
 func charm_set(value):
-	stats.charm_base = clamp(value, 0, min(stats.charm_max, originvalue[origins]))
+	var difference = max(0, stats.charm_max - originvalue['noble'])
+	stats.charm_base = clamp(value, 0, min(stats.charm_max, originvalue[origins]+difference))
+
 
 func lust_set(value):
 	var difference = value - stats.lust_cur
 	if difference > 0:
-		stats.lust_cur = clamp(stats.lust_cur + difference*(1 + stats.lust_mod/100),stats.lust_min,stats.lust_max)
+		stats.lust_cur = clamp(stats.lust_cur + difference*(1 + stats.lust_mod/100.0),stats.lust_min,stats.lust_max)
 	else:
 		stats.lust_cur = clamp(stats.lust_cur + difference,stats.lust_min,stats.lust_max)
 
@@ -648,6 +653,8 @@ func awareness(hunt = false):
 		number += 9
 	if traits.has('Bestial Instinct'):
 		number += 3
+	if traits.has('Observant'):
+		number += 3
 	return number
 
 
@@ -663,9 +670,9 @@ func health_icon():
 
 func obed_icon():
 	var obed
-	if float(stats.obed_cur)/stats.obed_max > 0.75: 
+	if stats.obed_cur > 80: 
 		obed = load("res://files/buttons/icons/obedience/2.png")
-	elif float(stats.obed_cur)/stats.obed_max > 0.4:
+	elif stats.obed_cur > 40:
 		obed = load("res://files/buttons/icons/obedience/1.png")
 	else:
 		obed = load("res://files/buttons/icons/obedience/3.png")
@@ -831,8 +838,6 @@ func calculateluxury():
 
 func calculateprice():
 	var price = 0
-	if traits.has('Vigorous') == true:
-		price += 50
 	var bonus = 1
 	price = beautybase*variables.priceperbasebeauty + beautytemp*variables.priceperbonusbeauty
 	price += (level-1)*variables.priceperlevel
@@ -854,8 +859,9 @@ func calculateprice():
 			price += 35
 		if i.tags.find('goodthing') >= 0:
 			price += 25
-	if self.toxicity >= 60:
+	if self.toxicity >= 60 && traits.has('Mercenary') != true:
 		bonus -= variables.pricebonustoxicity
+	
 	
 	if variables.gradepricemod.has(origins):
 		bonus += variables.gradepricemod[origins]
@@ -863,14 +869,18 @@ func calculateprice():
 		bonus += variables.agepricemods[age]
 	
 	
+	if traits.has('Vigorous') == true:
+		price += 50
 	if traits.has('Uncivilized'):
 		bonus -= variables.priceuncivilized
-	if traits.has('Melancholia') == true:
+	if traits.has('Melancholia') == true && traits.has('Mercenary') != true:
 		price -= 75
-	if traits.has('Broken mind') == true:
+	if traits.has('Broken mind') == true && traits.has('Mercenary') != true:
 		price = price/3
-	if traits.has('Obese') == true:
+	if traits.has('Obese') == true && traits.has('Mercenary') != true:
 		price = price*0.9
+	if traits.has('Mercenary') == true:
+		price += 325*(level)
 	
 	
 	price = price*bonus
@@ -896,6 +906,8 @@ func sellprice(alternative = false):
 	price = max(round(price), variables.priceminimumsell)
 	if globals.state.spec == 'Slaver' && fromguild == false:
 		price *= 2
+	if traits.has('Mercenary') == true:
+		price = 1
 	return price
 
 func death():

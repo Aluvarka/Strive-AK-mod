@@ -3,7 +3,7 @@
 extends Node
 
 var effectdict = {}
-var guildslaves = {wimborn = [], gorn = [], frostford = [], umbra = []}
+var guildslaves = {wimborn = [], gorn = [], frostford = [], umbra = [], wimbornmerc = [], gornmerc = [], frostfordmerc = [], umbramerc = []}
 var gameversion = '0.5.25'
 var state = progress.new()
 var developmode = false
@@ -139,6 +139,8 @@ func _init():
 		developmode = true
 	randomize()
 	loadsettings()
+	if rules.fullscreen == true:
+		OS.set_window_fullscreen(true)
 	effectdict = effects.effectlist 
 #	var tempvars = load("res://mods/variables.gd").duplicate()
 #	var tempnode = Node.new()
@@ -276,7 +278,7 @@ func loadimage(path):
 		return path
 	if path == null:
 		return
-	if path.find('res:') >= 0:
+	if ResourceLoader.exists(path):
 		return load(path)
 	var image = Image.new()
 	if File.new().file_exists(path):
@@ -777,20 +779,25 @@ func impregnation(mother, father = null, anyfather = false):
 	baby.cleartraits()
 	
 	var traitpool = father.traits + mother.traits
-	var tabutraitpool = ['Masochist','Deviant','Slutty','Pervert','Sex-crazed','Likes it rough','Enjoys Anal','Grateful','Broken mind','Melancholia','Love childs','Obese','Broken limb','Cracked rib','Heavy injured','Bruised','Baker','Magician','Warrior','Hunter','Athlete','Sadness','Mute','Bisexual','Homosexual','Sickness','Devoted','Uncivilized']
-	for i in traitpool:
-		traitpool.sort();
-		tabutraitpool.sort();
-		for ii in tabutraitpool:
-			if i == ii: 
-				traitpool.remove(i)
-				continue
+	var tabupool = ['Masochist','Deviant','Mercenary','Slutty','Pervert','Sex-crazed','Likes it rough','Enjoys Anal','Grateful','Broken mind','Melancholia','Love childs','Obese','Broken limb','Cracked rib','Heavy injured','Bruised','Baker','Magician','Warrior','Hunter','Athlete','Sadness','Mute','Bisexual','Homosexual','Sickness','Devoted','Uncivilized','Brute']
+	for ii in traitpool:
+		for i in tabupool:
+			traitpool.sort()
+			tabupool.sort()
+			if i in traitpool:
+				traitpool.remove(ii)
+				continue;
 			else:
-		if rand_range(0,100) <= variables.traitinheritchance:
-			baby.add_trait(i)
-	
+				if rand_range(0,100) <= variables.traitinheritchance:
+					baby.add_trait(ii)
 	if rand_range(0,100) <= variables.babynewtraitchance:
-		baby.add_trait(globals.origins.traits('any').name)
+		var value = rand_range(0,100)
+		if value <= 33:
+			baby.add_trait(globals.origins.traits('third').name)
+		elif value >= 33 && value <= 67:
+			baby.add_trait(globals.origins.traits('any').name)
+		else:
+			baby.add_trait(globals.origins.traits('hidden').name)
 	
 	connectrelatives(mother, baby, 'mother')
 	if realfather != -1:
@@ -1268,7 +1275,7 @@ func load_game(text):
 	resources = dict2inst(currentline.resources)
 	player = dict2inst(currentline.player)
 	state = dict2inst(currentline.state)
-	guildslaves = {wimborn = [], gorn = [], frostford = [], umbra = []}
+	guildslaves = {wimborn = [], gorn = [], frostford = [], umbra = [], wimbornmerc = [], gornmerc = [], frostfordmerc = [], umbramerc = []}
 	if currentline.has('guildslaves'):
 		for g in currentline.guildslaves:
 			for i in currentline.guildslaves[g]:
@@ -1293,11 +1300,9 @@ func load_game(text):
 		spelldict[i].learned = true
 	state.spelllist = {}
 	if globals.state.sebastianorder.taken == true:
-		state.sebastianslave = person.new()
 		state.sebastianslave = dict2inst(currentline.sebastianslave)
 	state.babylist.clear()
 	for i in currentline.slaves:
-		newslave = person.new()
 		if i['@path'].find('.gdc') >= 0:
 			i['@path'] = i['@path'].replace('.gdc', '.gd')
 		newslave = dict2inst(i)
@@ -1305,7 +1310,6 @@ func load_game(text):
 			newslave.beautybase = round(i.face.beauty)
 		slaves.append(newslave)
 	for i in currentline.babylist:
-		newslave = person.new()
 		if i['@path'].find('.gdc'):
 			i['@path'] = i['@path'].replace('.gdc', '.gd')
 		newslave = dict2inst(i)
@@ -1448,3 +1452,60 @@ func checkfurryrace(text):
 		else:
 			text = 'Halfkin ' + text
 	return text
+
+var errorText = [
+	"OK",
+	"Generic",
+	"Unavailable",
+	"Unconfigured",
+	"Unauthorized",
+	"Parameter Range",
+	"Out of memory",
+	"File: not found",
+	"File: Bad drive",
+	"File: Bad path",
+	"File: No permission",
+	"File: Already in use",
+	"File: Can't open",
+	"File: Can't write",
+	"File: Can't read",
+	"File: Unrecognized",
+	"File: Corrupt",
+	"File: Missing dependencies",
+	"File: End of file",
+	"Can't open",
+	"Can't create",
+	"Query failed",
+	"Already in use",
+	"Locked",
+	"Timeout",
+	"Can't connect",
+	"Can't resolve",
+	"Connection",
+	"Can't acquire resource",
+	"Can't fork",
+	"Invalid data",
+	"Invalid parameter",
+	"Already exists",
+	"Does not exist",
+	"Database: can't read",
+	"Database: can't write",
+	"Compilation failed",
+	"Method not found",
+	"Link failed",
+	"Script failed",
+	"Cyclic link",
+	"Invalid declaration",
+	"Duplicate symbol",
+	"Parse",
+	"Busy",
+	"Skip",
+	"Help",
+	"Bug"
+]
+
+func printErrorCode(msg, code=ERR_BUG, showOK = false):
+	if code != OK:
+		print("ERROR: ", msg, "  Error code(", code, "): ", errorText[code])
+	elif showOK: 
+		print("OK: ", msg)

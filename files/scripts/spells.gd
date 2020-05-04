@@ -271,7 +271,7 @@ func sedationeffect():
 	var spell = globals.spelldict.sedation
 	globals.resources.mana -= spellcost(spell)
 	if person.effects.has('sedated'):
-		text = "You cast Sedation spell on the $name but it appears $he is already under its effect. "
+		text = "You cast Sedation spell on $name, but it appears $he is already under its effect. "
 		return person.dictionary(text)
 	person.add_effect(globals.effectdict.sedated)
 	person.stress -= rand_range(20,30) + globals.player.smaf*6
@@ -295,7 +295,7 @@ func healeffect():
 		else:
 			text = "After you finish casting the healing spell, your wounds close up. "
 	else:
-		text = "It does not seems like $name was injured in first place. "
+		text = "It seems like $name was not injured in first place. "
 	text = person.dictionary(text)
 	return text
 
@@ -340,7 +340,7 @@ func entrancementeffect():
 		text = "Light gradually fades from $name's eyes, and $his gaze becomes downcast. $He seems ready to accept whatever you tell $him. "
 		person.add_effect(globals.effectdict.entranced)
 	else:
-		text = "It seems, $name is already entranced. "
+		text = "It seems like $name is already entranced. "
 	return person.dictionary(text)
 
 func feareffect():

@@ -1,9 +1,9 @@
 
-Add abduction branch if u select to keep Emily
+Add abduction branch if u select to keep Emily *On hiatus
 
-Stats degrading system
+Stats degrading system *On hiatus
 
-more races? 
+more races? *On hiatus
 
 moar traits +++
 
@@ -11,114 +11,110 @@ add athletic trait +5% health, + end,str or agi +++
 
 gifts and "exited" trait\ changed to Happy-go-lucky ++=
 
-more racial features ===
+more racial features === *On hiatus
 
-Cursed gear ++=
+Cursed gear ++= *On hiatus
 
 SHAVED!
 
 Cleptomania ++=
 
-Moar quests! +==
+Moar quests! +== *On hiatus
 
-todo: bdsm costume
+todo: bdsm costume +++
 
-more weapons/items +==
+more weapons/items +== *On hiatus
 
-need pics for ^ and ^ +==
+need pics for ^ and ^ +== *On hiatus
 
 add chance to modify beauty by 1 and apply "beauty mix effect"(like bandage) +++
 
-add to every slave trigger which reflect their status like: in harem; selled; escaped; and then add chance to meet/buy them again by rnd.
+add to every slave trigger which reflect their status like: in harem; selled; escaped; and then add chance to meet/buy them again by rnd. *On hiatus
 
-change slave generator to spawn more skin colors
+change slave generator to spawn more skin colors *On hiatus
 
-Well simple checking "is slave away/in jail" and change job to rest FIXED
+random enemies ++= *On hiatus
 
-random enemies ++=
+more encounters:  *On hiatus
 
-more encounters: 
+include empty ++= *On hiatus
 
-include empty ++=
+include hunting+food ++= *On hiatus
 
-include hunting+food ++=
-
-add: party/adventurers encounter with good items +++ need balance but looking good, delete from some places
+add: party/adventurers encounter with good items +++ need balance but looking good, deleted from some places *On hiatus
 
 crabe +==
 
 randompotionencounter ===
 
-ambush encounter +==
+ambush encounter +== *On hiatus
 
 heavy work: +~50% gold from work but minus ~40 energy ===
 
-request: Can you bring back a portrait / body folder choise window?
-
-idea: autosort slaves sheet by "sleep in" you>personal>communal>farm>jail (mb autosort button)
+idea: autosort slaves sheet by "sleep in" you>personal>communal>farm>jail (mb autosort button) *On hiatus
 
 add +random mental points per lvl up(ready?) +++ REVERSED
 
-Allow child to be born without sexual traits ===?
+Allow child to be born without sexual traits, also in black list added few other traits. Need further modif. and testing. ++=
 
-Add replacing slavers pic with slave body if exist --- no way, no no need at all
+Add replacing slavers pic with slave body if exist --- no way, no no need at all *On hiatus
 
-Add description for dripping milk ++=
+Add description for dripping milk ++= 
 
-Whipping and others can leave bruising(based on strenght&) and also -1hp
+Whipping and others can leave bruising(based on strenght&) and also -1hp ===
 
 Invigorate can be casted only once-per-day and refill 100% for person and (5)0% for u +++
 
 Work profit divide/multiply by worker left energy, also - energy for physical works +++
 
-Separate from main files mini mod(module), which allowed to send for “adventures” different girls. Sended has Away status, success calculate before sending. Remind to player about possibility of “adventure”(?). 
+Separate from main files mini mod(module), which allowed to send for “adventures” different girls. Sended has Away status, success calculate before sending. Remind to player about possibility of “adventure”(?).  *On hiatus
 
-Module “Three cards” expanding daily events up to 3. Can be built in Mansion. Amount of events and frequency can be changed through Constants. 
+Module “Three cards” expanding daily events up to 3. Can be built in Mansion. Amount of events and frequency can be changed through Constants.  *On hiatus
 
-Expand person origins to: 0 free will, 1 slave, 2 former slave, 3 hireling/paid employer, 4 player.
+Expand person origins to: 0 free will, 1 slave, 2 former slave, 3 hireling/paid employer, 4 player. --- Better to use brand system. *On hiatus
 
-Need to add new line in Person and changes in whole system =/
+Need to add new line in Person and do changes in whole system =/ *On hiatus
 
-As alternative: base Free person on new pseudobrand. thats more better bc leave stats unaffected.
+As alternative: base Free person on new pseudobrand. thats more better bc leave stats unaffected. +==
 
 Add "personal pathronage" for nurture girl in to dom/sub by headgirl, through onendday(easy) or daily events(hard)? Can be done through separate work(new work), which avalible if headgirl exist. ===
 
-Rework grade system: stats now didn’t depend on grade, now they depend on startvalue+racebonus+rndvalue. Need changes in stat maximum. Can be heavily base on race and attributes, like strong=courageous magical=witted(more like attributes/stats combination)
+Rework grade system: stats now didn’t depend on grade, now they depend on startvalue+racebonus+rndvalue. Need changes in stat maximum. Can be heavily base on race and attributes, like strong=courageous magical=witted(more like attributes/stats combination) ===
 
-Caravans! +++ Add trading with caravans. ++=
-Buy without looking. ===
+Caravans! +++ Add trading with caravans. ++= *On hiatus
+Buy without looking. === *On hiatus
 
-High chance ambushes. +==
+High chance ambushes. +== *On hiatus
 
-Guild quests with more randomized requests.
+Guild quests with more randomized requests. *On hiatus
 
-If parents not same race then kids or 50% same as parents or Mixed race. 
+If parents not same race then kids or 50% same as parents or Mixed race. Mb mix parent appearance.
 
-^New race Mixed - childs of diff races
+^New race Mixed - childs of diff races. *Impossibru
 
-Adventure mode module. Like went to wild for long journey, really long, need to change and create lot of things.
+Adventure mode module. Like went to wild for long journey, really long, need to change and create lot of things. *On hiatus
 
 Randomly generate number from 1 to X on which base Persons personality with own dialogue styles and backgrounds(little stories about). ===
 
-Change food buying system, every person check if autobuying enambled then buy food for himself. If cook exist then buying cost base on cooks skill, or just like 4/5 of cost. ===
+Change food buying system, every person check if autobuying enambled then buy food for himself. If cook exist then buying cost base on cooks skill, or just like 4/5 of cost.  *On hiatus
 
 Fix autobuying supply system, if market seller exist and box checked then buy supply like 4xResident. === 
 
-Fix lamias legs.(?) Idk what wrong.
+Fix lamias legs.(?) *Idk what wrong.
 
-Event for EVERY new char, what happened during first(two?) week(s), where they can recieve 23% - good 44% neutral 23% - bad trait,
+Event for EVERY new char, what happened during first(two?) week(s), where they can recieve 23% - good 44% neutral 23% - bad trait, ===
 
-Allow check to go outside.(?) ===
+Allow check to go outside.(?) === *On hiatus.
 
-Add trait for experienced managing. Add professions??? === 
+Add trait for experienced managing. Add professions??? === *On hiatus
 
-I suggest that "forced" partners will not make any requests. They dont want whole thing at all, then why they want smth?
+I suggest that "forced" partners will not make any requests. They dont want whole thing at all, then why they want smth? === *On hiatus
 
-Also maybe "low obedience" partners dont make impossible requests(eg. they want do smth but refuse to do anything).
+Also maybe "low obedience" partners dont make impossible requests(eg. they want do smth but refuse to do anything). *On hiatus
 
-Provide more racial features in all ways. ===
+Provide more racial features in all ways. === *On hiatus
 
-Add "mutate" related traits which can be obtained only through suffering. ===
+Add "mutate" related traits which can be obtained only through suffering. === *On hiatus
 
-Add molesting punishment. With orgasms for lust >=80. ===
+Add molesting punishment. With orgasms for lust >=80. === *On hiatus
 

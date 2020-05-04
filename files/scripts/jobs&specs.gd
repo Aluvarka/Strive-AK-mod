@@ -556,7 +556,7 @@ func forage(person):
 	if person.smaf * 3 + 2 >= rand_range(0,100):
 		text += "$name has found nature's essence. \n"
 		globals.itemdict.natureessenceing.amount += 1
-	food = min(food, (person.sstr+person.send)*20+25)
+	food = min(food, max(person.sstr+person.send, -1)*20+25)
 	if person.spec == 'ranger':
 		food *= 1.25
 	food = round(food)
@@ -576,7 +576,7 @@ func hunt(person):#agility, strength, endurance, courage
 		food = food*1.3
 	if person.spec in ['ranger','trapper']:
 		food *= 1.25
-	food = round(min(food, (person.sstr+person.send)*30+40))
+	food = round(min(food, max(person.sstr+person.send, -1)*30+40))
 	globals.itemdict.supply.amount += round(food/12)
 	person.xp += food/7
 	text += "In the end $he brought [color=aqua]" + str(round(food)) + "[/color] food and [color=yellow]" + str(round(food/12)) + "[/color] supplies. \n"
@@ -789,7 +789,7 @@ func storewimborn(person):
 		bonus += 0.3
 		supplyPrice += 1
 	var gold = rand_range(1,5) + (person.charm + person.wit) / 2
-	gold = round(gold * min(0.30 * (globals.originsarray.find(person.origins) + 1), 1) * bonus)
+	gold = round(gold * min(0.10 * (globals.originsarray.find(person.origins) + 7), 1) * bonus)
 
 	var supplySold = min(floor(gold / supplyPrice), globals.itemdict.supply.amount - globals.state.supplykeep)
 	if supplySold > 0:
@@ -802,12 +802,14 @@ func storewimborn(person):
 		globals.itemdict.supply.amount += supplySold
 		text += "With the money earned $he purchased [color=yellow]" + str(supplySold) + "[/color] supply units. "
 		supplySold = -supplySold
+	else:
+		supplySold = 0
 
 	gold = round(gold)
 	person.energy -= round(rand_range(20,35))
 	person.xp += gold / 4
 	person.stress += rand_range(5,10)
-	text = text + "$He earned "+str(gold)+" gold by the end of day.\n"
+	text += "$He returned with [color=yellow]"+str(gold)+"[/color] gold by the end of day.\n"
 	var dict = {text = text, gold = gold, supplies = -supplySold}
 	return dict
 
@@ -986,7 +988,7 @@ func fucktoywimborn(person):
 
 func maid(person):
 	var text = ""
-	var temp = 5.5 + (person.sagi+person.send)*6
+	var temp = 5.5 + max(0, person.sagi+person.send)*6
 	person.xp += temp/4
 	globals.state.condition = temp
 	text = "$name spent the day cleaning around the mansion. \n"

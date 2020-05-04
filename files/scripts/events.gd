@@ -273,6 +273,8 @@ func emilymansion(stage = 0):
 	for i in globals.slaves:
 		if i.unique == 'Emily':
 			emily = i
+	if emily == null:
+		return
 	if stage == 0:
 		text = textnode.EmilyMansion
 		sprite = [['emilyhappy','pos1','opac']]
@@ -486,6 +488,8 @@ func emilyreturn():
 	for i in globals.slaves:
 		if i.unique == 'Emily':
 			emily = i
+	if emily == null:
+		return
 	emily.away.at = ''
 	emily.away.duration = 0
 	var text = textnode.EmilyReturn
@@ -566,6 +570,7 @@ func tishadorms(stage=0):
 			text += textnode.TishaDormsEmilyPresent
 			text += textnode.TishaDormsInfo
 			globals.state.sidequests.emily = 13
+			globals.main.get_node("outside").mageorder()
 			state = true
 		else:
 			if globals.spelldict.domination.learned == true && globals.spells.spellcost(globals.spelldict.domination) <= globals.resources.mana:
@@ -579,6 +584,7 @@ func tishadorms(stage=0):
 		text += textnode.TishaDormsInfo
 		state = true
 	elif stage == 3:
+		globals.state.reputation.wimborn -= 2
 		text = textnode.TishaDormsThreat
 		text += textnode.TishaDormsInfo
 		state = true
@@ -590,7 +596,7 @@ func tishadorms(stage=0):
 	if stage >= 2:
 		globals.state.sidequests.emily = 13
 		globals.main.get_node("outside").mageorder()
-	globals.main.dialogue(state,self,text,buttons)
+	globals.main.dialogue(state,self,text,buttons,sprite)
 
 func tishabackstreets(stage = 0):
 	var emily
@@ -714,9 +720,6 @@ func tishagornguild(stage = 0):
 		buttons.append({text ='Not bother her',function = 'tishagornguild', args = 10})
 	elif stage == 9:
 		globals.main.closescene()
-		for i in globals.slaves:
-			if i.unique == "Emily":
-				i.tags.erase('nosex')
 		text = textnode.TishaOfferJob
 		sprite = [['tishanakedhappy', 'pos1']]
 		var person = globals.characters.create("Tisha")
@@ -731,16 +734,12 @@ func tishagornguild(stage = 0):
 		state = true
 		globals.state.sidequests.emily = 16
 		globals.resources.upgradepoints += 10
-		for i in globals.slaves:
-			if i.unique == 'Emily':
-				i.consent = true
-				i.tags.erase("nosex")
+		emily.consent = true
+		emily.tags.erase("nosex")
 	elif stage == 10:
 		globals.main.closescene()
 		sprite = [['tishaneutral', 'pos1']]
-		for i in globals.slaves:
-			if i.unique == "Emily":
-				i.tags.erase('nosex')
+		emily.tags.erase('nosex')
 		text = textnode.TishaLeave
 		state = true
 		globals.state.sidequests.emily = 16
@@ -1850,7 +1849,7 @@ func finalemelissa(stage = 0):
 		globals.main.music_set('stop')
 		finaleperson.removefrommansion()
 	elif stage == 3:
-		text = textnode.MainQuestFinaleGoodReleaseHade2
+		text = finaleperson.dictionary(textnode.MainQuestFinaleGoodReleaseHade2)
 		globals.main.closescene()
 		var sprite = [["melissaworried", 'pos1', 'opac']]
 		buttons.append({text = finaleperson.dictionary("Rush to $name"), function = 'ending'})
@@ -1919,6 +1918,8 @@ func calirun():
 	for i in globals.slaves:
 		if i.unique == 'Cali':
 			cali = i
+	if cali == null:
+		return
 	globals.slaves.erase(cali)
 	globals.main.dialogue(true,self,'During the night Cali has escaped from the mansion in unknown direction.')
 
@@ -2539,6 +2540,8 @@ func calireturn():
 	for i in globals.slaves:
 		if i.unique == 'Cali':
 			cali = i
+	if cali == null:
+		return
 	var sprite = [['calihappy','pos1']]
 	cali.away.at = ''
 	cali.away.duration = 0

@@ -426,7 +426,8 @@ func levelreqs():
 func levelup(command):
 	globals.jobs.call(command, person)
 	globals.get_tree().get_current_scene().close_dialogue()
-	get_parent().slavetabopen()
+	if command != 'vacation':
+		get_parent().slavetabopen()
 
 
 func action(actionname):

@@ -111,6 +111,7 @@ var traits = {
       "loyal": 0
     },
     "tags": [
+      "sexual",
       "mental",
       "perversy",
       "secondary",
@@ -569,6 +570,7 @@ var traits = {
       "lust": 0
     },
     "tags": [
+      "sexual",
       "secondary",
       "mental",
       "perversy",
@@ -1236,7 +1238,7 @@ var traits = {
       "secondary"
     ],
     "conflict": [
-	  "Alopecia",
+	
     ]
   },
   "Claws and Fangs": {
@@ -1456,25 +1458,133 @@ var traits = {
       ""
     ]
   },
-  "Alopecia": {
-    "name": "Alopecia",
-    "description": "$name was born with bale skin instead of racial coverage on body. \n\n[color=red]Doesn't have fur or scales. [/color]",
+  "Curious": {
+    "name": "Curious",
+    "description": "$name got sick and now not feeling well. \n\n[color=red]Max Energy -10. Heal at time. [/color]",
     "effect": {
-      "code": "alopecia",
-      "stress_mod": -0.1,
+      "code": "curious",
+      "wit_max": 10,
+      "wit_base": 15,
+      "wit": 0,
     },
     "tags": [
       "secondary",
-	  "racial",
-	  "wolfish",
-      "feline",
-      "fox",
-	  "harpy",
-	  "tanuki",
-	  "bunny",
+	  "goodthing",
+	  "mental",
+      "third"
+    ],
+    "conflict": [
+      ""
+    ]
+  },
+  "Observant": {
+    "name": "Observant",
+    "description": "$name was born with bale skin instead of racial coverage on body. \n\n[color=red]Doesn't have fur or scales. [/color]",
+    "effect": {
+      "code": "observant",
+    },
+    "tags": [
+      "secondary",
+	  "third",
+	  "mental",
+	  "goodthing"
     ],
     "conflict": [
       "Wolf Hide",
+    ]
+  },
+  "Valiant": {
+    "name": "Valiant",
+    "description": "$name got sick and now not feeling well. \n\n[color=red]Max Energy -10. Heal at time. [/color]",
+    "effect": {
+      "code": "valiant",
+      "cour_min": 55,
+      "cour_max": 20,
+      "fear_mod": -0.25,
+      "cour": 0,
+    },
+    "tags": [
+      "secondary",
+	  "mental",
+      "third",
+	  "goodthing"
+    ],
+    "conflict": [
+      ""
+    ]
+  },
+  "Dimwitted": {
+    "name": "Dimwitted",
+    "description": "$name got sick and now not feeling well. \n\n[color=red]Max Energy -10. Heal at time. [/color]",
+    "effect": {
+      "code": "dimwitted",
+      "wit_max": -50,
+      "wit_base": -35,
+      "wit": 0,
+    },
+    "tags": [
+      "secondary",
+	  "mental",
+      "third",
+	  "detrimental"
+    ],
+    "conflict": [
+      ""
+    ]
+  },
+  "Closed": {
+    "name": "Closed",
+    "description": "$name got sick and now not feeling well. \n\n[color=red]Max Energy -10. Heal at time. [/color]",
+    "effect": {
+      "code": "closed",
+      "wit_max": 10,
+      "wit_base": 15,
+      "wit": 0,
+    },
+    "tags": [
+      "secondary",
+	  "mental",
+      "third"
+    ],
+    "conflict": [
+      ""
+    ]
+  },
+  "Proud": {
+    "name": "Proud",
+    "description": "$name got sick and now not feeling well. \n\n[color=red]Max Energy -10. Heal at time. [/color]",
+    "effect": {
+      "code": "proud",
+      "conf_max": 20,
+      "conf_base": 15,
+	  "loyal_mod": -0.3,
+      "conf": 0,
+    },
+    "tags": [
+      "secondary",
+      "third"
+    ],
+    "conflict": [
+      ""
+    ]
+  },
+  "Lazy": {
+    "name": "Lazy",
+    "description": "$name got sick and now not feeling well. \n\n[color=red]Max Energy -10. Heal at time. [/color]",
+    "effect": {
+      "code": "lazy",
+      "stress_mod": 0.10,
+      "cour_max": -20,
+      "wit_max": -10,
+      "cour": 0,
+    },
+    "tags": [
+      "secondary",
+      "third",
+	  "detrimental"
+    ],
+    "conflict": [
+      ""
     ]
   },
   "Shy": {
@@ -1508,6 +1618,7 @@ var traits = {
       "secondary",
       "mental",
       "physical",
+	  "hidden"
     ],
     "conflict": [
       ""
@@ -1560,5 +1671,37 @@ var traits = {
     "conflict": [
       ""
     ]    
+  },
+  "Mercenary": {
+    "name": "Mercenary",
+    "description": "$name is sell his abilities for a tidy sum. \n\n[color=aqua]Will go away when contract is expired. [/color]",
+    "effect": {
+      "code": "mercenary",
+      "conf_min": 40,
+      "cour_min": 40,
+	  "loyal_max": 0,
+    },
+    "tags": [
+      "secondary",
+	  "hireling"
+    ],
+    "conflict": [
+      ""
+    ]    
+  },
+  "Good genetics": {
+    "name": "Good genetics",
+    "description": "$name ancestors grant $him good genes. \n\n[color=aqua] +1 to one of attributes. [/color]",
+    "effect": {
+      "code": "good_genetics",
+    },
+    "tags": [
+      "third",
+      "secondary",
+      "goodthing"
+    ],
+    "conflict": [
+      ""
+    ]
   }
 }

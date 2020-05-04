@@ -151,8 +151,6 @@ func _ready_system_check():
 		globals.rules.custommouse = false
 		$htmlwarn.popup()
 		
-	if globals.rules.fullscreen == true:
-		OS.set_window_fullscreen(true)
 		
 func _on_htmlwarnclose_pressed():
 	$htmlwarn.hide()
@@ -170,10 +168,17 @@ func _ready_adult_warning():
 	else:
 		$warning.visible = false
 		$TextureFrame.visible = true
+	yield(get_tree().create_timer(0.1), "timeout")
+	if OS.is_window_fullscreen() && OS.get_window_position() != Vector2(0,0):
+		OS.set_window_fullscreen(false)
+		OS.set_window_fullscreen(true)
 
 func _on_warningconfirm_pressed():
 	get_node("TextureFrame").visible = true
 	$warning.visible = false	
+	if OS.is_window_fullscreen() && OS.get_window_position() != Vector2(0,0):
+		OS.set_window_fullscreen(false)
+		OS.set_window_fullscreen(true)
 
 func _on_warningcancel_pressed():
 	_on_exit_pressed()
@@ -618,7 +623,8 @@ func _on_quickstart_pressed():
 
 	#Select random start location
 	var locationArray = locationDict.keys()
-	startingLocation = locationArray[rand_range(0, locationArray.size())]
+	#startingLocation = locationArray[rand_range(0, locationArray.size())]
+	startingLocation = 'wimborn'
 	
 	#Generate random Player
 	if isSandbox: #Randomize from sandbox full race list
@@ -1358,7 +1364,8 @@ func _on_slaveconfirm_pressed():
 	
 	#Finish processing slave
 	startSlave.cleartraits() #Clear traits, reset basics	
-	
+	startSlave.health = 1000
+
 	#Generate mental stats
 	for i in ['conf','cour','wit','charm']:
 		startSlave[i] = rand_range(30,35)	
@@ -1391,6 +1398,7 @@ func _on_slaveconfirm_pressed():
 	globals.slaves = startSlave	#A bit deceptive as it assigns 'person' to 'array', works because of 'setget'
 	
 	
+	player.health = 1000
 	#Apply player racial bonuses
 	if player.race == 'Elf':
 		player.stats.maf_base += 1
@@ -1399,16 +1407,16 @@ func _on_slaveconfirm_pressed():
 	elif player.race == 'Orc':
 		globals.state.reputation.gorn += 30
 	elif player.race == 'Demon':
-		for i in globals.state.reputation.values():
-			i -= 10
+		for i in globals.state.reputation:
+			globals.state.reputation[i] -= 10
 		player.skillpoints += 1
 	elif player.race == 'Taurus':
 		player.stats.end_base += 1
 	elif player.race.find("Beastkin") >= 0:
 		globals.state.reputation.frostford += 30
 	elif player.race.find("Halfkin") >= 0:
-		for i in globals.state.reputation.values():
-			i += 15
+		for i in globals.state.reputation:
+			globals.state.reputation[i] += 15
 	else:
 		globals.state.reputation.wimborn += 30
 	
@@ -1438,6 +1446,10 @@ func _on_slaveconfirm_pressed():
 	globals.guildslaves.gorn = []
 	globals.guildslaves.frostford = []
 	globals.guildslaves.umbra = []
+	globals.guildslaves.wimbornmerc = []
+	globals.guildslaves.gornmerc = []
+	globals.guildslaves.frostfordmerc = []
+	globals.guildslaves.umbramerc = []
 	
 	#Apply Game-mode specific bonuses
 	if isSandbox == false:
