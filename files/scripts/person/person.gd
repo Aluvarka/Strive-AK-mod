@@ -182,7 +182,11 @@ var stats = {
 	weight_cur = 60,
 	weight_base = 60,
 	weight_min = 0,
-	weight_max = 200
+	weight_max = 200,
+	cour_min = 0,
+	conf_min = 0,
+	wit_min = 0,
+	charm_min = 0
 }
 var health setget health_set,health_get
 var energy setget energy_set,energy_get
@@ -298,6 +302,10 @@ func levelup():
 
 func xp_set(value):
 	var difference = value - realxp
+	if traits.has("Clever") == true:
+		difference = difference*1.25
+	elif traits.has("Curious") == true:
+		difference = difference*1.1
 	realxp += max(float(difference)/max(level,1),1)
 	realxp = round(clamp(realxp, 0, 100))
 	if realxp >= 100 && self == globals.player:
@@ -503,19 +511,19 @@ var originvalue = {'slave' : 55, 'poor' : 65, 'commoner' : 75, 'rich' : 85, 'aty
 
 func cour_set(value):
 	var difference = max(0, stats.cour_max - originvalue['noble'])
-	stats.cour_base = clamp(value, 0, min(stats.cour_max, originvalue[origins]+difference))
+	stats.cour_base = clamp(value, stats.cour_min, min(stats.cour_max, originvalue[origins]+difference))
 
 func conf_set(value):
 	var bonus = max(0, stats.conf_max - originvalue['noble'])
-	stats.conf_base = clamp(value, 0, min(stats.conf_max, originvalue[origins]) + bonus)
+	stats.conf_base = clamp(value, stats.conf_min, min(stats.conf_max, originvalue[origins]) + bonus)
 
 func wit_set(value):
 	var difference = max(0, stats.wit_max - originvalue['noble'])
-	stats.wit_base = clamp(value, 0, min(stats.wit_max, originvalue[origins]+difference))
+	stats.wit_base = clamp(value, stats.wit_min, min(stats.wit_max, originvalue[origins]+difference))
 
 func charm_set(value):
 	var difference = max(0, stats.charm_max - originvalue['noble'])
-	stats.charm_base = clamp(value, 0, min(stats.charm_max, originvalue[origins]+difference))
+	stats.charm_base = clamp(value, stats.charm_min, min(stats.charm_max, originvalue[origins]+difference))
 
 
 func lust_set(value):
@@ -535,7 +543,7 @@ func mood_set(value):
 
 func weight_set(value):
 	var difference = stats.weight_base - stats.weight_cur
-	var plusweight = true
+	var plusweight = false
 	var heightbonus = 1.0
 	var malebonus = 1.0
 	var agebonus = 1.0
@@ -550,7 +558,7 @@ func weight_set(value):
 		plusweight = true
 	stats.weight_base = min(stats.weight_base, stats.weight_max)
 	result = (stats.weight_base/agebonus)*malebonus*heightbonus
-	if plusweight:
+	if plusweight == true:
 		self.stats.weight_cur = stats.weight_base + difference
 	else:
 		self.stats.weight_cur = result
@@ -654,7 +662,7 @@ func awareness(hunt = false):
 	if traits.has('Bestial Instinct'):
 		number += 3
 	if traits.has('Observant'):
-		number += 3
+		number += 8
 	return number
 
 

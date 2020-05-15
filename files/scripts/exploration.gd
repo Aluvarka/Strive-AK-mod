@@ -1456,6 +1456,7 @@ func capturedecide(stage): #1 - no reward, 2 - material, 3 - sex, 4 - join
 		else:
 			rewardslave.obed = 85
 			rewardslave.stress = 10
+			rewardslave.brand = 'freewill'
 			globals.slaves = rewardslave
 			text = "$name observes you for some time, measuring your words, but to your surprise, $he complies either out of symphathy, or out of desperate life $he had to carry. "
 	main.dialogue(true,self,rewardslave.dictionary(text))

@@ -602,7 +602,7 @@ func action(actionname):
 	if get_parent().get_node("stats/customization/rules/publiccheckbox").is_pressed() == true && globals.slaves.size() > 1 && !actionname in ['date','gift','praise','sex']:
 		text = text + "Other servants watch your actions closely."
 		for i in globals.slaves:
-			if i.traits.has('Loner') == false && i.away.duration < 1:
+			if i.traits.has('Lone wolf') == false && i.away.duration < 1:
 				i.obed += max(rand_range(5,15)-i.conf/10,0)
 			if actionname in ['tickling','spanking','whiping','hotwax','woodenhorse']:
 				i.lust = rand_range(5,10)

@@ -65,7 +65,7 @@ func newslave(race, age, sex, origins = 'slave'):
 			person.sexuals.actions[ii] = 0
 	person.memory = person.origins
 	person.masternoun = ''
-	if randf() < variables.specializationchance/100.0 || person.traits.find("Mercenary") >= 0:
+	if randf() < variables.specializationchance/100.0 || person.traits.has('Mercenary') == true:
 		globals.currentslave = person
 		var possible = []
 		for i in globals.specarray:

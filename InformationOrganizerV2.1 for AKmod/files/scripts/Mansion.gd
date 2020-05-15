@@ -729,7 +729,7 @@ func _on_end_pressed():
 			if person.sleep != 'jail' && person.sleep != 'farm':
 				if person.work in corejobs:
 					
-					if person.work != 'rest' && person.energy < 30:
+					if person.work != 'rest' && person.energy < person.stats.energy_max*0.25:
 						person.work = 'rest'
 
 					for i in globals.slaves:
@@ -856,11 +856,18 @@ func _on_end_pressed():
 					consumption = consumption*3
 
 			if globals.resources.food >= consumption:
+				var difference = person.stats.weight_base - person.stats.weight_cur
+				var currentweight = person.personweight
+				var plump = person.stats.weight_base*1.25
+				var obese = person.stats.weight_base*1.60
+				var underweight = person.stats.weight_base/1.3
+				var tempweight = 0
 				person.loyal += rand_range(0,1)
 				person.obed += person.loyal/5 - (person.cour+person.conf)/10
 				globals.resources.food -= consumption
+				person.stats.weight_cur += 1*(person.energy/100-1)
 				if person.rules.betterfood == true && person.sleep != 'jail' && person.energy > person.stats.energy_max/1.3 && globals.resources.day - person.lastsexday >= 3  && (headgirl != null && globals.state.headgirlbehavior != 'strict'):
-					if person.traits.has("Plump") && !person.traits.has("Obese") && rand_range(0,100) <= 5:
+					if person.traits.has("Plump") && currentweight >= obese:
 						person.trait_remove("Plump")
 						if person.traits.find("Baker") <= 0:
 							person.stats.energy_max += 10
@@ -872,7 +879,7 @@ func _on_end_pressed():
 							person.asssize = globals.sizearray[globals.sizearray.find(person.asssize)+1]
 						if headgirl != null:
 							text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=red]$name reports, that ') + person.dictionary('$name gaining weight. [/color]\n'))
-					elif rand_range(0,100) <= 3 && !person.traits.has("Plump") && !person.traits.has("Obese"):
+					elif currentweight >= plump && currentweight < obese:
 						person.add_trait("Plump")
 						if person.traits.find("Baker") <= 0:
 							person.stats.energy_max -= 10
@@ -883,7 +890,7 @@ func _on_end_pressed():
 						if headgirl != null:
 							text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=yellow]$name reports, that ') + person.dictionary('$name gaining weight. [/color]\n'))
 				elif person.rules.betterfood == false && person.sleep != 'farm' || person.energy < person.stats.energy_max/1.3 && person.sleep != 'farm' || headgirl != null && globals.state.headgirlbehavior == 'strict':
-					if person.traits.has("Plump") && rand_range(0,100) <= 10:
+					if person.traits.has("Plump") && currentweight < plump:
 						person.trait_remove("Plump")
 						if person.traits.find("Baker") <= 0:
 							person.stats.energy_max += 10
@@ -893,7 +900,7 @@ func _on_end_pressed():
 							person.asssize = globals.sizearray[globals.sizearray.find(person.asssize)-1]
 						if headgirl != null:
 							text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=green]$name reports, that ') + person.dictionary('$name losing weight. [/color]\n'))
-					elif person.traits.has("Obese") && rand_range(0,100) <= 8.3:
+					elif person.traits.has("Obese") && currentweight < obese:
 						person.trait_remove("Obese")
 						person.stats.energy_max += 30
 						person.add_trait("Plump")
@@ -906,9 +913,10 @@ func _on_end_pressed():
 						if headgirl != null:
 							text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=green]$name reports, that ') + person.dictionary('$name losing weight. [/color]\n'))
 			else:
-				person.stress += 20
+				person.stress += 15
 				person.health -= rand_range(person.stats.health_max/6,person.stats.health_max/4)
 				person.obed -= max(35 - person.loyal/3,10)
+				person.stats.weight_cur += 1*(person.energy/100-2)
 				if person.health < 1:
 					if person.traits.find("Obese") <= 0 && person.traits.find("Plump") <= 0:
 						text = person.dictionary('[color=#ff4949]$name has died of starvation.[/color]\n')
@@ -1607,12 +1615,13 @@ func nextdayevents():
 		var event
 		var moarevents = variables.dailyeventsamount
 		var timebeetwen = variables.dailyeventstime
+		var timebeetmax = timebeetwen*2
 		while moarevents > 0:
 			event = launchrandomevent()
 			moarevents -= 1
 		if event != null:
-			if variables.dailyeventstime != 5:
-				globals.state.dailyeventcountdown = rand_range(timebeetwen,timebeetwen*2)
+			if moarevents == 0:
+				globals.state.dailyeventcountdown = round(rand_range(timebeetwen, timebeetmax))
 			get_node("dailyevents").show()
 			get_node("dailyevents").currentevent = event
 			get_node("dailyevents").call(event)
@@ -1664,7 +1673,7 @@ func launchrandomevent():
 	var rval
 	var personlist = []
 	for i in globals.slaves:
-		if i.away.duration == 0 && i.sleep != 'jail' && i.sleep != 'farm' && i.attention >= 50:
+		if i.away.duration == 0 && i.sleep != 'jail' && i.sleep != 'farm' && i.attention >= 50 || i.away.duration == 0 && i.traits.has('Mercenary') == true || i.away.duration == 0 && i.traits.has('Hidden Trait') == true:
 			personlist.append(i)
 	while personlist.size() > 0:
 		var number = floor(rand_range(0,personlist.size()))
@@ -1673,6 +1682,14 @@ func launchrandomevent():
 			rval = get_node("dailyevents").getrandomevent(personlist[number])
 			#rval = $dailyevents.getfixedevent('assaultevent')
 			personlist[number].attention = 0
+			break
+		elif personlist[number].traits.has('Mercenary') == true && personlist[number].metrics.ownership >= variables.merccontractlength:
+			get_node("dailyevents").person = personlist[number]
+			rval = get_node("dailyevents").getfixedevent('mercevent')
+			break
+		elif personlist[number].traits.has('Hidden Trait') == true && personlist[number].level >= 3:
+			get_node("dailyevents").person = personlist[number]
+			rval = get_node("dailyevents").getfixedevent('hiddentraitevent')
 			break
 		else:
 			personlist.remove(number)

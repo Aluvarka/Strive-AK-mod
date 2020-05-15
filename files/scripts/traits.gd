@@ -220,7 +220,8 @@ var traits = {
       "detrimental"
     ],
     "conflict": [
-      "Strong"
+      "Strong",
+      "Good genetics" 
     ]
   },
   "Strong": {
@@ -252,7 +253,8 @@ var traits = {
       "detrimental"
     ],
     "conflict": [
-      "Quick"
+      "Quick",
+      "Good genetics"
     ]
   },
   "Quick": {
@@ -283,7 +285,8 @@ var traits = {
       "detrimental"
     ],
     "conflict": [
-      "Responsive"
+      "Responsive",
+      "Good genetics"
     ]
   },
   "Responsive": {
@@ -314,7 +317,8 @@ var traits = {
       "detrimental"
     ],
     "conflict": [
-      "Robust"
+      "Robust",
+      "Good genetics"
     ]
   },
   "Robust": {
@@ -362,7 +366,8 @@ var traits = {
       "detrimental"
     ],
     "conflict": [
-      "Natural Beauty"
+      "Natural Beauty",
+      "Good genetics"
     ]
   },
   "Natural Beauty": {
@@ -383,13 +388,16 @@ var traits = {
     "name": "Coward",
     "description": "$name is of a meek character and has a difficult time handling $himself in physical confrontations. \n\n[color=aqua]Physical punishments build fear quicker,[/color] [color=red] stress in combat grows twice as fast. [/color]",
     "effect": {
+	  "code": "coward",
+	  "cour_max": -20,
+	  "conf_max": -15
     },
     "tags": [
       "detrimental",
       "mental"
     ],
     "conflict": [
-      ""
+      "Valiant"
     ]
   },
   "Alcohol Intolerance": {
@@ -508,7 +516,7 @@ var traits = {
 	  "detrimental"
     ],
     "conflict": [
-	  ""
+      "Good genetics"
     ]
   },
   "Infirm": {
@@ -521,7 +529,7 @@ var traits = {
 	  "detrimental"
     ],
     "conflict": [
-	  ""
+      "Good genetics"
     ]
   },
   "Uncivilized": {
@@ -550,8 +558,7 @@ var traits = {
       "code": "regressed"
     },
     "tags": [
-      "secondary",
-      "mental"
+      "secondary"
     ],
     "conflict": [
       ""
@@ -737,7 +744,7 @@ var traits = {
     },
     "tags": [
       "secondary",
-      "goodthing"
+      "elitething"
     ],
     "conflict": [
       ""
@@ -779,6 +786,7 @@ var traits = {
     },
     "tags": [
       "secondary",
+      "elitething",
     ],
     "conflict": [
       ""
@@ -820,10 +828,10 @@ var traits = {
   },
   "Vigorous": {
     "name": "Vigorous",
-    "description": "$name is very energetic, $he less tired from work than others. \n\n[color=aqua]Max energy +25%; $name faster restore energy from rest. [/color]",
+    "description": "$name is very energetic, $he less tired from work than others. \n\n[color=aqua]Max energy +25; $name faster restore energy from rest. [/color]",
     "effect": {
       "code": "vigorous",
-      "energy_max": 25
+      "energy_base": 25
     },
     "tags": [
       "third",
@@ -857,7 +865,7 @@ var traits = {
   },
   "Thick skinned": {
     "name": "Thick skinned",
-    "description": "$name's hard life hardened $him against any type of stress. \n\n[color=aqua]Recieve stress -10%. Armor +2 [/color]",
+    "description": "$name's hard life hardened $him against any type of stress. \n\n[color=aqua]Praising and scolding ineffective. Recieve stress -10%. Armor +2 [/color]",
     "effect": {
       "code": "thick_skinned",
 	  "stress_mod": -0.1
@@ -865,9 +873,7 @@ var traits = {
     "tags": [
       "third",
       "mental",
-      "secondary",
-      "goodthing",
-	  "lvlup"
+      "secondary"
     ],
     "conflict": [
       ""
@@ -1004,8 +1010,7 @@ var traits = {
       "charm_cur": 5
     },
     "tags": [
-      "physical",
-	  "third"
+      "secondary",
     ],
     "conflict": [
       "Obese"
@@ -1019,8 +1024,6 @@ var traits = {
       "stress_mod": 0.1,
     },
     "tags": [
-      "physical",
-	  "third",
       "detrimental",
       "secondary"
     ],
@@ -1180,7 +1183,7 @@ var traits = {
     "effect": {
       "code": "athlete",
       "end_mod": 1,
-      "energy_max": 10
+      "energy_base": 10
     },
     "tags": [
       "background",
@@ -1204,7 +1207,7 @@ var traits = {
     "tags": [
 	  "gifted",
       "secondary",
-      "goodthing"
+      "goodthing",
     ],
     "conflict": [
       ""
@@ -1219,7 +1222,8 @@ var traits = {
     },
     "tags": [
 	  "gifted",
-      "secondary"
+      "secondary",
+	  "third",
 	  ],
     "conflict": [
       ""
@@ -1412,7 +1416,7 @@ var traits = {
   },
   "Brute": {
     "name": "Brute",
-    "description": "$name is a brutal, strong and slow. \n\n[color=aqua]Health +20, Damage +3. [/color] [color=red]Speed -3, Max Wit -20. [/color]",
+    "description": "$name is a strong, slow and dumb. \n\n[color=aqua]Health +20, Damage +3. [/color] [color=red]Speed -3, Max Wit -20. [/color]",
     "effect": {
       "code": "brute",
       "health_base": 20,
@@ -1447,7 +1451,7 @@ var traits = {
     "description": "$name got sick and now not feeling well. \n\n[color=red]Max Energy -10. Heal at time. [/color]",
     "effect": {
       "code": "sickness",
-      "energy_max": -10,
+      "energy_base": -10,
     },
     "tags": [
       "secondary",
@@ -1460,15 +1464,15 @@ var traits = {
   },
   "Curious": {
     "name": "Curious",
-    "description": "$name got sick and now not feeling well. \n\n[color=red]Max Energy -10. Heal at time. [/color]",
+    "description": "$name was eager to learn and discover something new. \n\n[color=aqua]Max Wit +10, Experience +10%. [/color]",
     "effect": {
       "code": "curious",
-      "wit_max": 10,
-      "wit_base": 15,
-      "wit": 0,
+      "wit_max": 15,
+      "wit_base": 10,
+      "wit": 0
     },
     "tags": [
-      "secondary",
+	  "secondary",
 	  "goodthing",
 	  "mental",
       "third"
@@ -1479,14 +1483,15 @@ var traits = {
   },
   "Observant": {
     "name": "Observant",
-    "description": "$name was born with bale skin instead of racial coverage on body. \n\n[color=red]Doesn't have fur or scales. [/color]",
+    "description": "$name is observant $sex, $he easily catch small thing which evade attention of others. \n\n[color=aqua]Awareness +8. Bonus for headgirl work. [/color]",
     "effect": {
       "code": "observant",
+      "wit_max": 20,
+      "wit_base": 15
     },
     "tags": [
-      "secondary",
+	  "secondary",
 	  "third",
-	  "mental",
 	  "goodthing"
     ],
     "conflict": [
@@ -1495,16 +1500,15 @@ var traits = {
   },
   "Valiant": {
     "name": "Valiant",
-    "description": "$name got sick and now not feeling well. \n\n[color=red]Max Energy -10. Heal at time. [/color]",
+    "description": "$name bravest Among The Brave. \n\n[color=aqua]Courage min 55, Max +25. Fear grew -25%. [/color]",
     "effect": {
       "code": "valiant",
       "cour_min": 55,
-      "cour_max": 20,
-      "fear_mod": -0.25,
-      "cour": 0,
+      "cour_max": 25,
+      "cour_base": 25,
+      "fear_mod": -0.25
     },
     "tags": [
-      "secondary",
 	  "mental",
       "third",
 	  "goodthing"
@@ -1515,12 +1519,12 @@ var traits = {
   },
   "Dimwitted": {
     "name": "Dimwitted",
-    "description": "$name got sick and now not feeling well. \n\n[color=red]Max Energy -10. Heal at time. [/color]",
+    "description": "$name got sick and now not feeling well. \n\n[color=red]Max Wit -25. [/color]",
     "effect": {
       "code": "dimwitted",
-      "wit_max": -50,
+      "wit_max": -25,
       "wit_base": -35,
-      "wit": 0,
+      "wit": 0
     },
     "tags": [
       "secondary",
@@ -1529,17 +1533,42 @@ var traits = {
 	  "detrimental"
     ],
     "conflict": [
-      ""
+      "Curious",
+      "Observant",
+      "Clever",
+      "Retarded"
+    ]
+  },
+  "Retarded": {
+    "name": "Retarded",
+    "description": "$name got sick and now not feeling well. \n\n[color=red]Max Wit -60. [/color]",
+    "effect": {
+      "code": "retarded",
+      "wit_max": -60,
+      "wit_base": -35,
+      "wit": 0
+    },
+    "tags": [
+      "secondary",
+	  "mental",
+      "third",
+	  "detrimental"
+    ],
+    "conflict": [
+      "Curious",
+      "Observant",
+      "Clever",
+      "Dimwitted"
     ]
   },
   "Closed": {
     "name": "Closed",
-    "description": "$name got sick and now not feeling well. \n\n[color=red]Max Energy -10. Heal at time. [/color]",
+    "description": "$name avoid peopls and social interactions, $he feels uncomfortable around people and prefer loneliness. \n\n[color=red]Max Energy -10. Heal at time. [/color]",
     "effect": {
       "code": "closed",
       "wit_max": 10,
       "wit_base": 15,
-      "wit": 0,
+      "wit": 0
     },
     "tags": [
       "secondary",
@@ -1552,31 +1581,33 @@ var traits = {
   },
   "Proud": {
     "name": "Proud",
-    "description": "$name got sick and now not feeling well. \n\n[color=red]Max Energy -10. Heal at time. [/color]",
+    "description": "$name is arrogant and full of self dignity. \n\n[color=aqua]Max Confidence +20. Max Obedience -20, Loyalty and Obedience Grew -30%. [/color]",
     "effect": {
       "code": "proud",
       "conf_max": 20,
       "conf_base": 15,
+      "obed_max": -20,
+      "charm_base": 5,
 	  "loyal_mod": -0.3,
-      "conf": 0,
+	  "obed_mod": -0.3,
     },
     "tags": [
       "secondary",
       "third"
     ],
     "conflict": [
-      ""
+      "Shy"
     ]
   },
   "Lazy": {
     "name": "Lazy",
-    "description": "$name got sick and now not feeling well. \n\n[color=red]Max Energy -10. Heal at time. [/color]",
+    "description": "$name does not like to work, avoids labor, unnecessary movements, does not want to do anything. \n\n[color=red]Max Energy -10, Max Courage -20, Max Wit -10. Stress grew +10%.  [/color]",
     "effect": {
       "code": "lazy",
-      "stress_mod": 0.10,
+      "stress_mod": 0.1,
       "cour_max": -20,
       "wit_max": -10,
-      "cour": 0,
+      "energy_base": -10
     },
     "tags": [
       "secondary",
@@ -1589,7 +1620,7 @@ var traits = {
   },
   "Shy": {
     "name": "Shy",
-    "description": "$name easy to manipulate and scare. \n\n[color=aqua]Obedience +20%. [/color] [color=red]Max Courage and Confidence -25, Stress +25%.[/color]",
+    "description": "$name is easy to manipulate and scare. \n\n[color=aqua]Obedience +20%. [/color] [color=red]Max Courage and Confidence -25, Stress +25%.[/color]",
     "effect": {
       "code": "shyness",
       "cour_max": -25,
@@ -1600,11 +1631,10 @@ var traits = {
     "tags": [
       "third",
 	  "personality",
-      "secondary",
-      "goodthing"
+      "secondary"
     ],
     "conflict": [
-      ""
+      "Proud"
     ]
   },
   "Hidden Trait": {
@@ -1616,8 +1646,7 @@ var traits = {
     "tags": [
       "third",
       "secondary",
-      "mental",
-      "physical",
+      "lvlup",
 	  "hidden"
     ],
     "conflict": [
@@ -1643,7 +1672,7 @@ var traits = {
   },
   "Nine Lives": {
     "name": "Nine Lives",
-    "description": "$name insert text here. \n\n[color=aqua]Can once survive death blow. [/color]",
+    "description": "Whether it be mystical powers or just $his strong health, but $name can survive death strike. \n\n[color=aqua]Can once survive death blow in battle. [/color]",
     "effect": {
       "code": "nine_lives",
     },
@@ -1677,7 +1706,7 @@ var traits = {
     "description": "$name is sell his abilities for a tidy sum. \n\n[color=aqua]Will go away when contract is expired. [/color]",
     "effect": {
       "code": "mercenary",
-      "conf_min": 40,
+      "conf_max": 40,
       "cour_min": 40,
 	  "loyal_max": 0,
     },
