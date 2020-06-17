@@ -779,22 +779,38 @@ func impregnation(mother, father = null, anyfather = false):
 	baby.cleartraits()
 	
 	var traitpool = father.traits + mother.traits
-	var tabupool = ['Masochist','Deviant','Mercenary','Slutty','Pervert','Sex-crazed','Likes it rough','Enjoys Anal','Grateful','Broken mind','Melancholia','Love childs','Obese','Broken limb','Cracked rib','Heavy injured','Bruised','Baker','Magician','Warrior','Hunter','Athlete','Sadness','Mute','Bisexual','Homosexual','Sickness','Devoted','Uncivilized','Brute']
-	for ii in traitpool:
-		for i in tabupool:
-			traitpool.sort()
-			tabupool.sort()
-			if i in traitpool:
-				traitpool.remove(ii)
-				continue;
+	# var tabupool = ['Masochist','Deviant','Mercenary','Slutty','Pervert','Sex-crazed','Likes it rough','Enjoys Anal','Grateful','Broken mind','Melancholia','Love childs','Obese','Broken limb','Cracked rib','Heavy injured','Bruised','Baker','Magician','Warrior','Hunter','Athlete','Sadness','Mute','Bisexual','Homosexual','Sickness','Devoted','Uncivilized','Brute']
+	# for ii in traitpool:
+		# for i in tabupool:
+			# traitpool.sort()
+			# tabupool.sort()
+			# if i in traitpool:
+				# traitpool.remove(ii)
+				# continue;
+			# else:
+				# if rand_range(0,100) <= variables.traitinheritchance:
+					# baby.add_trait(ii)
+	traitpool.sort()
+	var spin = len(traitpool)+1
+	print(spin)
+	var inhtraits = traitpool
+	var final = []
+	while spin > 0:
+		for i in inhtraits:
+			spin -= 1
+			if i == "Masochist" || i == "Deviant" || i == "Mercenary" || i == "Slutty" || i == "Pervert" || i == "Sex-crazed" || i == "Likes it rough" || i == "Enjoys Anal" || i == "Grateful" || i == "Broken mind" || i == "Melancholia" || i == "Love childs" || i == "Obese" || i == "Broken limb" || i == "Cracked rib" || i == "Heavy injured" || i == "Bruised" || i == "Baker" || i == "Magician" || i == "Warrior" || i == "Hunter" || i == "Athlete" ||  i == "Sadness" ||  i == "Mute" ||  i == "Bisexual" ||  i == "Homosexual" ||  i == "Sickness" ||  i == "Devoted" ||  i == "Uncivilized" || i == "Brute":
+				inhtraits.remove(i)
+				continue
 			else:
-				if rand_range(0,100) <= variables.traitinheritchance:
-					baby.add_trait(ii)
+				final.insert(0, i)
+	if spin == 0 && len(final) > 0:
+		for i in final:
+			baby.add_trait(i)
 	if rand_range(0,100) <= variables.babynewtraitchance:
 		var value = rand_range(0,100)
-		if value <= 33:
+		if value <= 25:
 			baby.add_trait(globals.origins.traits('third').name)
-		elif value >= 33 && value <= 67:
+		elif value >= 25 && value <= 50:
 			baby.add_trait(globals.origins.traits('any').name)
 		else:
 			baby.add_trait(globals.origins.traits('hidden').name)
