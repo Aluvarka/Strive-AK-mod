@@ -363,7 +363,7 @@ func newslaveinguild(number, town = 'wimborn'):
 		elif town == 'umbra':
 			racearray = [[globals.randomfromarray(globals.allracesarray),1]]
 		elif town == 'wimbornmerc':
-			racearray = [[globals.getracebygroup("wimborn"),1],['Drow', 2],['Dark Elf', 1.5],['Elf', 2],['Human', 6],['Centaur', 1],['Taurus', 2],['Halfkin Fox', 1.5]]
+			racearray = [[globals.getracebygroup("wimborn"),1],['Dark Elf', 2],['Tribal Elf', 1.5],['Elf', 2],['Human', 6],['Centaur', 1],['Taurus', 2],['Halfkin Fox', 1.5]]
 		elif town == 'gornmerc':
 			racearray = [[globals.getracebygroup("gorn"),1],['Centaur', 1],['Human', 2],['Goblin', 2],['Orc', 5],['Harpy', 1.5],['Lamia',0.5]]
 		elif town == 'frostfordmerc':

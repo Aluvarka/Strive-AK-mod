@@ -846,6 +846,7 @@ func impregnation(mother, father = null, anyfather = false):
 		baby.beautybase = father.beautybase + rand_range(-2,5)
 	else:
 		baby.beautybase = mother.beautybase + rand_range(-2,5)	
+	
 	connectrelatives(mother, baby, 'mother')
 	if realfather != -1:
 		connectrelatives(father, baby, 'father')

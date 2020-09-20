@@ -59,7 +59,7 @@ static func rarerace():
 
 static func anyrace():
 	var text
-	text = ['Human','Elf','Dark Elf','Halfkin Cat','Halfkin Wolf','Halfkin Fox','Halfkin Bunny','Taurus','Demon','Goblin','Ork','Dragonkin','Harpy','Arachna','Lamia','Nereid','Scylla','Seraph','Drow','Slime','Fairy','Centaur','Gnome']
+	text = ['Human','Elf','Tribal Elf','Halfkin Cat','Halfkin Wolf','Halfkin Fox','Halfkin Bunny','Taurus','Demon','Goblin','Ork','Dragonkin','Harpy','Arachna','Lamia','Nereid','Scylla','Seraph','Dark Elf','Slime','Fairy','Centaur','Gnome']
 	if globals.rules.furry == true:
 		text.append('Beastkin Cat')
 		text.append('Beastkin Wolf')
