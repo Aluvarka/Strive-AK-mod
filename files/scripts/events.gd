@@ -952,7 +952,7 @@ func gornpalaceivran(stage):
 		globals.state.sidequests.ivran = 'changed'
 		globals.state.mainquest = 16
 		globals.state.decisions.append('ivrantaken')
-		ivran = globals.newslave('Dark Elf', 'adult', 'female', 'rich')
+		ivran = globals.newslave('Tribal Elf', 'adult', 'female', 'rich')
 		ivran.name = 'Ivran'
 		ivran.surname = ''
 		ivran.beautybase = 75
@@ -3111,6 +3111,7 @@ func zoepassitems(stage = 0):
 		globals.main.closescene()
 		text += "\n\n[color=green]Learned new spell: Summon Tentacles[/color]"
 		zoe.loyal += 10
+		globals.charactergallery.zoe.nakedunlocked = true
 		sprite = [['zoeneutralnaked','pos1','opac']]
 		state = true
 	elif stage == 3:
@@ -3122,6 +3123,7 @@ func zoepassitems(stage = 0):
 		zoe.loyal -= 25
 		zoe.obed -= 60
 		globals.charactergallery.zoe.scenes[0].unlocked = true
+		globals.charactergallery.zoe.nakedunlocked = true
 		if zoe.vagvirgin == true:
 			zoe.vagvirgin = false
 			text += textnode.zoebookwatch2virgin

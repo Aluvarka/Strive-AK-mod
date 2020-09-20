@@ -14,6 +14,7 @@ func _init():
 func traits(tag):
 	var rval = []
 	var traits = traitlist
+	
 	if tag == 'any':
 		for i in traits:
 			if traits[i]['tags'].has('secondary') != true && traits[i]['tags'].has('injury') != true:
@@ -44,7 +45,7 @@ func traits(tag):
 			for i in traits:
 				if traits[i]['tags'].has(tag[0]) && traits[i]['tags'].has(tag[1]):
 					rval.append(traits[i])
-	return rval[rand_range(0, rval.size())]
+	return globals.randomfromarray(rval)
 
 var traitscript = load("res://files/scripts/traits.gd")
 

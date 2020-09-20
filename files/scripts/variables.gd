@@ -8,12 +8,14 @@ var sellingitempricemod = 0.2
 var basefoodconsumption = 10.0
 var skillpointsperlevel = 2.0
 var timeforinteraction = 20.0
+var bonustimeperslavefororgy = 10.0
 var timeformeetinteraction = 10.0
 var consumerope = 1.0
+var ropewearoutrate = 10.0
 var learnpointsperstat = 3.0
 var attributepointsperupgradepoint = 1.0
 var specializationchance = 5.0
-
+var advancedrules = 1
 
 
 var playerstartbeauty = 40.0
@@ -26,15 +28,16 @@ var dailyeventsamount = 5
 var dailyeventstime = 2
 var merccontractlength = 7
 var basenonsexactions = 1.0
+var dailyactionsperslave = 2.0
 var playerbonusstatpoint = 2.0
 var banditishumanchance = 70.0
 
 #Pregnancies
 
-var pregduration = 1.0
-var growuptimechild = 1.0
-var growuptimeteen = 2.0
-var growuptimeadult = 2.0
+var pregduration = 31.0
+var growuptimechild = 15.0
+var growuptimeteen = 20.0
+var growuptimeadult = 25.0
 var traitinheritchance = 80.0
 var babynewtraitchance = 20.0
 
@@ -63,24 +66,15 @@ var priceuncivilized = -0.5
 var priceminimum = 5.0
 var priceminimumsell = 10.0
 
-#globals arrays
-#var starting_pc_races = ['Human', 'Elf', 'Dark Elf', 'Orc', 'Demon', 'Beastkin Cat', 'Beastkin Wolf', 'Beastkin Fox', 'Halfkin Cat', 'Halfkin Wolf', 'Halfkin Fox', 'Taurus']
-#var wimbornraces = ['Human', 'Elf', 'Dark Elf', 'Demon', 'Beastkin Cat', 'Beastkin Wolf','Beastkin Tanuki','Beastkin Bunny', 'Halfkin Cat', 'Halfkin Wolf', 'Halfkin Tanuki','Halfkin Bunny','Taurus','Fairy']
-#var gornraces = ['Human', 'Orc', 'Goblin', 'Gnome', 'Taurus', 'Centaur','Beastkin Cat', 'Beastkin Tanuki','Beastkin Bunny', 'Halfkin Cat','Halfkin Bunny','Harpy']
-#var frostfordraces = ['Human','Elf','Drow','Beastkin Cat', 'Beastkin Wolf', 'Beastkin Fox', 'Beastkin Tanuki','Beastkin Bunny', 'Halfkin Cat', 'Halfkin Wolf', 'Halfkin Fox','Halfkin Bunny', 'Nereid']
-#var allracesarray = ['Human', 'Elf', 'Dark Elf', 'Orc', 'Drow','Beastkin Cat', 'Beastkin Wolf', 'Beastkin Fox','Beastkin Tanuki','Beastkin Bunny', 'Halfkin Cat', 'Halfkin Wolf', 'Halfkin Fox','Halfkin Tanuki','Halfkin Bunny','Taurus', 'Demon', 'Seraph', 'Gnome','Goblin','Centaur','Lamia','Arachna','Scylla', 'Slime', 'Harpy','Dryad','Fairy','Nereid','Dragonkin']
-#var banditraces = ['Human', 'Elf', 'Dark Elf', 'Demon', 'Cat', 'Wolf','Bunny','Taurus','Orc','Goblin']
-#var monsterraces = ['Centaur','Lamia','Arachna','Scylla', 'Slime', 'Harpy','Nereid']
-
 
 #sidecharacters
 
 var oldemily = false
 
-
-var gradepricemod = { # grade and age mods will be added as bonus to base price which starts at 1 [baseprice*(1+value)]
+# grade and age mods will be added as bonus to base price which starts at 1 [baseprice*(1+value)]
+var gradepricemod = {
 	"slave": -0.2, poor = 0.0, commoner = 0.2, rich = 0.5, noble = 1.0
-	}
+}
 
 var agepricemods = {
 	child = 0.0, teen = 0.0, adult = 0.0
@@ -111,15 +105,18 @@ var list = {
 		luxuryreqs = {descript = "Luxury required to satisfy slaves per grade", min = 0.0, max = 60.0},
 		chancetoheal = {descript = "Size of chance to heal injury", default = 5, min = 1, max = 85},
 		traitperlvlup = {descript = "Gain new trait every N levels", default = 3, min = 1, max = 100},
-		attperstatspoints = {descript = "If > 0: change exchange from mansion upgrade points to person learning points. Recommended value betwen: 20 to 30, 30 is nice", default = 0, min = 0, max = 150},		
+		attperstatspoints = {descript = "If > 0: change exchange from mansion upgrade points to person learning points. Recommended value between: 20 to 30, 30 is nice", default = 0, min = 0, max = 150},
 		dailyeventsamount = {descript = "Amount of daily events", default = 1, min = 1, max = 99},
 		dailyeventstime = {descript = "After how many days happened new event: random from min to max(min*2) ", default = 5, min = 1, max = 100},
 		merccontractlength = {descript = "Length of mercenary contract, you can refresh contract again after N time", default = 7, min = 1, max = 1000},
+		advancedrules = {descript = "Advanced rules, set 1 for additional challenges and difficulties. Drastically change some of game experience.", default = 0, min = 0, max = 1},
 	},
 	'Interactions' : {
 		basesexactions = {descript = "Number of sex actions per day (before bonus from endurance)", min = 0.0, max = 1000.0},
-		basenonsexactions = {descript = "Number of non-sex actions per day (before bonus from endurance) ", min = 0.0, max = 1000.0},
+		basenonsexactions = {descript = "Number of non-sex actions per day (before bonus from endurance)", min = 0.0, max = 1000.0},
+		dailyactionsperslave = {descript = "Max number of interactions with a slave in a day", min = 1.0, max = 1000.0},
 		timeforinteraction = {descript = "Number of actions you can perform during sex interaction sequence", min = 10.0, max = 1000.0},
+		bonustimeperslavefororgy = {descript = "Bonus number of actions gained for each slave in an sex orgy interaction sequence", min = 1.0, max = 1000.0},
 		timeformeetinteraction = {descript = "Number of actions you can perform during meet interaction sequence", min = 10.0, max = 1000.0},
 	},
 	'Pregnancies' : {
@@ -153,6 +150,7 @@ var list = {
 	'Items & Backpack' : {
 		geardropchance = {descript = "Percent chance of getting enemy's gear on defeat", min = 0.0, max = 100.0},
 		consumerope  = {descript = "Number of ropes to be consumed when capturing a slave in the wild", min = 0.0, max = 5.0},
+		ropewearoutrate = {descript = "Rate of increase after use of the percent chance of rope wearing out when used", min = 0.0, max = 100.0},
 		sellingitempricemod = {descript = "Selling price modifier for all items", min = 0.1, max = 1.0},
 		enchantitemprice = {descript = "Selling price modifier for enchanted gear", min = 1.0, max = 10.0},
 		basecarryweight = {descript = "Base carry weight", min = 0.0, max = 1000.0},

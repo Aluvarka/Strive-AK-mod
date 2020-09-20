@@ -397,8 +397,11 @@ class combatant:
 			portrait = person.imageportait
 		else:
 			group = 'enemy'
-			portrait = data.icon
-			if person.sex in ['female','futa'] && data.has('iconalt'):
+			if person.imageportait != null && variables.advancedrules == 1:
+				portrait = person.imageportait
+			else:
+				portrait = data.icon
+			if person.sex in ['female','futanari'] && (person.imageportait == null && variables.advancedrules == 0) && data.has('iconalt'):
 				portrait = data.iconalt
 		abilities = person.ability.duplicate()
 		activeabilities = person.abilityactive
@@ -455,7 +458,7 @@ class combatant:
 		if person.preg.duration > variables.pregduration/3:
 			speed = round(speed - speed*0.25)
 			scene.getbuff(scene.makebuff('pregnancy', self, self), self)
-			
+		
 		if person.traits.find("Lucky") >= 0:
 			scene.getbuff(scene.makebuff('inluck', self, self), self)
 			if rand_range(0,100) <= 25:
@@ -478,6 +481,7 @@ class combatant:
 					protection += 10
 				else:
 					protection += 15
+		
 		#Gear
 		
 		
@@ -495,6 +499,15 @@ class combatant:
 						self.geareffects.append(k)
 					if k.type == 'passive':
 						self.passives[k.effect] = k
+					if k.effect == 'restriction':
+						if !self.effects.has('restricted'):
+							print('restricted')
+							scene.getbuff(scene.makebuff('restricted', self, self), self)
+							speed = round(speed - speed*0.25)
+							attack = round(attack - attack*0.33)
+					if k.effect == 'livingunderwear':
+						print('livingstimul')
+						scene.getbuff(scene.makebuff('livingstimul', self, self), self)
 		scene.rebuildbuffs(self)
 	
 	func selectcombatant():
@@ -625,6 +638,7 @@ class combatant:
 			if person == globals.player:
 				if scene.playergroup.size() > 0:
 					person.add_effect(globals.effectdict.escapeddeath)
+					person.health = 1
 				elif scene.playergroup.size() == 0:
 					globals.main.animationfade(1)
 					if OS.get_name() != 'HTML5':
@@ -648,7 +662,7 @@ class combatant:
 					_slave.away.duration = 6
 					_slave.away.at = 'rest'
 					_slave.work = 'rest'
-					scene.combatlog += scene.combatantdictionary(self, self, "\n[color=green][name1] survived deadly blow.[/color]")
+					scene.combatlog += scene.combatantdictionary(self, self, "\n[color=green][name1] survived deathly blow.[/color]")
 					globals.state.playergroup.erase(person.id)
 				else:
 					scene.combatlog += "\n[color=#ff4949]" + _slave.name + " has died. [/color]"
@@ -777,7 +791,7 @@ func physdamage(caster, target, skill):
 	if target.passives.has('defenseless'):
 		armor = 0
 		protection = 1
-	if target.passives.has("armorbreaker"):
+	if caster.passives.has("armorbreaker"):
 		armor = max(0, armor-8)
 	if caster.passives.has('exhaust'):
 		power = power * 0.66
@@ -897,10 +911,7 @@ func useskills(skill, caster = null, target = null, retarget = false):
 	else:
 		group = 'enemy'
 	var skillcounter = 1
-	if caster.passives.has('doubleattack') && rand_range(0,100) < caster.passives.doubleattack.effectvalue && skill.type == 'physical':
-		skillcounter += 1
-		text += "[color=yellow]Double attack![/color] "
-	elif caster.passives.has('doubleattack5') && rand_range(0,100) <= caster.passives.doubleattack5.effectvalue && skill.type == 'physical':
+	if caster.passives.has('doubleattack') && rand_range(0,100) < caster.passives.doubleattack.effectvalue && skill.type == 'physical' || caster.passives.has('doubleattack5') && rand_range(0,100) <= caster.passives.doubleattack5.effectvalue && skill.type == 'physical':
 		skillcounter += 1
 		text += "[color=yellow]Double attack![/color] "
 	while skillcounter > 0:
@@ -1193,7 +1204,7 @@ func enemyturn():
 	
 	
 	for i in enemygroup:
-		i.stress += 3
+#		i.stress += 3
 		i.actionpoints = 1
 		if i.effects.has('stun'):
 			i.actionpoints = 0
@@ -1212,9 +1223,9 @@ func enemyturn():
 					removebuff(effect.code, i)
 	for i in playergroup:
 		checkforinheritdebuffs(i)
-		i.stress += 3
-		if i.person.traits.has("Coward"):
-			i.stress += 3
+#		i.stress += 3
+#		if i.person.traits.has("Coward"):
+#			i.stress += 3
 		i.actionpoints = 1
 		if i.effects.has("stun"):
 			i.actionpoints = 0
@@ -1222,6 +1233,8 @@ func enemyturn():
 			i.cooldowns[k] -= 1
 			if i.cooldowns[k] <= 0:
 				i.cooldowns.erase(k)
+		if i.effects.has('livingstimul'):
+			i.lust += i.passives.livingunderwear.effectvalue
 		for effect in i.effects.values():
 			if effect.caster.group == 'player':
 				if effect.duration > 0:
@@ -1286,6 +1299,7 @@ func playerescape():
 	for i in playergroup:
 		i.person.stats.energy_cur = i.energy
 		i.person.stats.health_cur = i.hp
+		i.person.lust = i.lust
 	globals.main.get_node("explorationnode").enemyleave()
 	globals.main.popup('You hastily escape from the fight. ')
 	globals.main.get_node("outside").show()
@@ -1320,7 +1334,7 @@ func protection(combatant, value):
 	combatant.protection += value
 
 func lust(combatant, value):
-	combatant.person.lust += 2
+	combatant.lust += 1
 
 func victory():
 	var deads = []
@@ -1348,6 +1362,7 @@ func _on_winconfirm_pressed():
 		i.person.stats.energy_cur = i.energy
 		i.person.stats.health_cur = i.hp
 		i.person.stress = i.stress
+		i.person.lust = i.lust
 	victory()
 
 func _on_autowin_pressed():

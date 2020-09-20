@@ -33,10 +33,7 @@ func selectcategory(button):
 
 func categoryitems():
 	for i in get_node("ScrollContainer/GridContainer/").get_children() + $ScrollContainer2/GridContainer.get_children():
-		if (categories.everything == true && i.get_name() != 'Button' ) || (i.has_meta('category') && i.get_meta("category") != 'dummy' && categories[i.get_meta('category')] == true):
-			i.visible = true
-		else:
-			i.visible = false
+		i.visible = (categories.everything && i.get_name() != 'Button') || (i.has_meta('category') && categories.get(i.get_meta('category'), false))
 
 
 func open(place = 'mansion', part = 'inventory', keepslave = false):

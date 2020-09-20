@@ -49,8 +49,8 @@ func _ready():
 	$minimappanel/map/Control.set_process_input(false)
 	$shoppanel/Panel/exchange.connect("pressed", self, "exchangeitems")
 	$shoppanel/exchange/TradeButton.connect('pressed', self, 'exchangeitemsconfirm')
-	get_node("playergroupdetails/Panel/TabContainer/Items").get_node("_v_scroll").visible = false
-	get_node("playergroupdetails/Panel/TabContainer/Spells").get_node("_v_scroll").visible = false
+	get_node("playergroupdetails/Panel/TabContainer/Items/_v_scroll").visible = false
+	get_node("playergroupdetails/Panel/TabContainer/Spells/_v_scroll").visible = false
 
 
 
@@ -110,7 +110,11 @@ func addbutton(i, target = self):
 	var newbutton = button.duplicate()
 	buttoncontainer.add_child(newbutton)
 	newbutton.set_text(i.name)
-	newbutton.get_node("Label").set_text(str(buttoncontainer.get_children().size()-1))
+	var count = 1
+	for node in buttoncontainer.get_children():
+		if node.visible:
+			count += 1
+	newbutton.get_node("Label").set_text(str(count))
 	newbutton.visible = true
 	if i.has('args'):
 		newbutton.connect('pressed', target, i.function, [i.args])
@@ -351,13 +355,13 @@ func newslaveinguild(number, town = 'wimborn'):
 		var origin
 		var originpool 
 		if town == 'wimborn':
-			racearray = [[globals.getracebygroup("wimborn"),1],['Drow', 1],['Dark Elf', 1.5],['Elf', 2],['Human', 6]]
+			racearray = [[globals.getracebygroup("wimborn"),1],['Dark Elf', 1],['Tribal Elf', 1.5],['Elf', 2],['Human', 6]]
 		elif town == 'gorn':
 			racearray = [[globals.getracebygroup("gorn"),1],['Centaur', 1],['Human', 2],['Goblin', 2],['Orc', 5]]
 		elif town == 'frostford':
 			racearray = [[globals.getracebygroup("frostford"),1],['Human', 1.5],['Halfkin Wolf', 3],['Beastkin Wolf', 5]]
 		elif town == 'umbra':
-			racearray = [[globals.allracesarray[rand_range(0,globals.allracesarray.size())],1]]
+			racearray = [[globals.randomfromarray(globals.allracesarray),1]]
 		elif town == 'wimbornmerc':
 			racearray = [[globals.getracebygroup("wimborn"),1],['Drow', 2],['Dark Elf', 1.5],['Elf', 2],['Human', 6],['Centaur', 1],['Taurus', 2],['Halfkin Fox', 1.5]]
 		elif town == 'gornmerc':
@@ -368,8 +372,8 @@ func newslaveinguild(number, town = 'wimborn'):
 			racearray = [[globals.allracesarray[rand_range(0,globals.allracesarray.size())],1]]
 		if globals.rules.slaverguildallraces == true && globals.state.sandbox == true:
 			originpool = ['slave','poor','commoner','rich','noble']
-			origin = originpool[rand_range(0,originpool.size())]
-			race = globals.allracesarray[rand_range(0,globals.allracesarray.size())]
+			origin = globals.randomfromarray(originpool)
+			race = globals.randomfromarray(globals.allracesarray)
 		else:
 			race = globals.weightedrandom(racearray)
 			if town == 'umbra':
@@ -607,7 +611,7 @@ func slaveguildslaves(location):
 		newbutton.get_node("grade").connect("mouse_exited",globals, 'hidetooltip')
 		var price = max(person.buyprice()*0.8,50)
 		if globals.state.reputation.has(location) && globals.state.reputation[location] <= -10 && location != 'umbra':
-			price *= (abs(globals.state.reputation[location])/20.0)
+			price *= (10 - globals.state.reputation[location]) / 20.0
 		if location == 'slavers':
 			price *= 0.5
 		price = round(price)
@@ -737,7 +741,7 @@ func selectslavesell(person, location):
 	text = 'After some time, you get an offer to sell this servant for [color=yellow]' + str(selectedslaveprice) + ' gold[/color]. '
 	if selectedslave.fromguild == true:
 		text += person.dictionary("\n\n[color=#ff4949]You won't get any upgrade points from selling this person as $he has been registered in the census.[/color]")
-	elif !location in ['wimborn','gorn','frostford'] || (selectedslave.obed >= 90 && selectedslave.fromguild == false && selectedslave.effects.has('captured') == false):
+	elif !location in ['wimborn','gorn','frostford'] || (selectedslave.obed >= 80 && selectedslave.fromguild == false && selectedslave.effects.has('captured') == false):
 		text += person.dictionary("\n\n[color=aqua]You will get upgrade points from selling this person here depending on $his grade.[/color]")
 	else:
 		text += person.dictionary("\n\n[color=#ff4949]You won't get any upgrade points from selling this person currently $he's too rebellious.[/color]")
@@ -794,7 +798,7 @@ func _on_slavesellbutton_pressed():
 	var upgradefromslave = false
 	var text = ''
 	globals.resources.gold += selectedslaveprice
-	if selectedslave.obed >= 90 && selectedslave.fromguild == false && selectedslave.effects.has('captured') == false:
+	if selectedslave.obed >= 80 && selectedslave.fromguild == false && selectedslave.effects.has('captured') == false:
 		upgradefromslave = true
 		globals.resources.upgradepoints += globals.originsarray.find(selectedslave.origins)+1
 	elif guildlocation in ['sebastian','umbra'] && selectedslave.fromguild == false:
@@ -802,7 +806,7 @@ func _on_slavesellbutton_pressed():
 		globals.resources.upgradepoints += globals.originsarray.find(selectedslave.origins)+1
 		if selectedslave.fromguild == false && (selectedslave.obed < 90 || selectedslave.effects.has('captured') == true) || selectedslave.traits.has('Mercenary') == true:
 			var reputationloss = [['wimborn',1],['gorn',1],['frostford',1],['amberguard',1]]
-			if selectedslave.race in ['Elf','Dark Elf','Drow']:
+			if selectedslave.race in ['Elf','Dark Elf','Tribal Elf']:
 				reputationloss[3][1] += 12
 			elif selectedslave.race.find('Beastkin') >= 0 ||  selectedslave.race.find('Halfkin') >= 0:
 				reputationloss[2][1] += 8
@@ -1007,8 +1011,8 @@ func slaveforquestselected(person):
 		var ref = person
 		if i[0].find('.') >= 0:
 			var temp = i[0].split('.')
-			for i in temp:
-				ref = ref[i]
+			for j in temp:
+				ref = ref[j]
 		else:
 			ref = person[i[0]]
 		var ref2 = i[2]
@@ -1064,12 +1068,12 @@ func slaveforquestselected(person):
 
 
 var repeatablesdict = {
-sex = 'Sex',obed = 'Obedience', cour = 'Courage',conf = 'Confidence',wit = 'Wit', charm = 'Charm', 
-'beauty':'Beauty',lewdness = 'Lewdness', asser = 'Role Preference', 
-'sexuals.unlocks' : "Unlocked Sex Categories",
-'sstr' : 'Strength', 'sagi' : 'Agility', 'smaf' : 'Magic Affinity', 'send' : 'Endurance',
-loyal = 'Loyalty', race = 'Race', age = 'Age', hairlength = 'Hair Length', origins = 'Grade',
-bodyshape = 'Type', haircolor = 'Hair Color', 'titssize' : 'Breasts Size', 'penis' : "Penis Size", spec = 'Specialization', level = 'Level', eyecolor = 'Eye Color',
+	sex = 'Sex',obed = 'Obedience', cour = 'Courage',conf = 'Confidence',wit = 'Wit', charm = 'Charm', 
+	'beauty':'Beauty',lewdness = 'Lewdness', asser = 'Role Preference', 
+	'sexuals.unlocks' : "Unlocked Sex Categories",
+	'sstr' : 'Strength', 'sagi' : 'Agility', 'smaf' : 'Magic Affinity', 'send' : 'Endurance',
+	loyal = 'Loyalty', race = 'Race', age = 'Age', hairlength = 'Hair Length', origins = 'Grade',
+	bodyshape = 'Type', haircolor = 'Hair Color', 'titssize' : 'Breasts Size', 'penis' : "Penis Size", spec = 'Specialization', level = 'Level', eyecolor = 'Eye Color',
 }
 
 func slavequesttext(quest):
@@ -1325,69 +1329,69 @@ func specchosen(button):
 		get_node("slaveservicepanel/serviceconfirm").set_disabled(true)
 
 var operationdict = {
-haircut = {
-code = 'haircut',
-name = 'Cut Hair',
-number = 1,
-reqs = "person.hairlength != 'ear'",
-description = "[color=yellow]Simplest procedure to trim your servant's hair. [/color]",
-price = 25,
-confirm = "You leave $name in the custody of guild's barber. Later $he returns with shorter hair."
-},
-abortion = {
-code = 'abortion',
-name = 'Commit Abortion',
-number = 2,
-reqs = "person.preg.duration >= variables.pregduration/6",
-description = "[color=yellow]Stops pregnancy. [/color] ",
-price = 75,
-confirm = "You leave $name in the custody of guild's specialists. As $his pregnancy ends, you can notice how $name looks considerably more stressed."
-},
-sterilize = {
-code = 'sterilize',
-name = 'Sterilize',
-number = 2,
-reqs = "person.preg.has_womb == true && globals.currentslave.preg.duration == 0",
-description = "[color=yellow]Prevents new pregnancies. [/color]\n\n[color=#ff4949]This operation is difficult to reverse![/color]",
-price = 125,
-confirm = "After the operation $name becomes sterile. $He won't be able to carry any more children. "
-},
-nurture = {
-code = 'nurture',
-name = 'Nurture',
-number = 3,
-reqs = "person.traits.find('Regressed') >= 0",
-description = "[color=yellow]This option will neutralize Regressed trait.[/color]",
-price = 150,
-confirm = "You leave $name in the custody of guild trainers, who will train $him among other slaves and prepare for your domain."
-},
-uprise = {
-code = 'uprise',
-name = 'Elevate',
-number = 4,
-reqs = "person.origins != 'noble'",
-description = "[color=yellow]This option will raise servant's grade, but also will make them more demanding. [/color]",
-price = 100,
-confirm = "You leave $name in the custody of guild trainers, who will help $him raising $his self-esteem. ",
-},
-subjugate = {
-code = 'subjugate',
-name = 'Demote',
-number = 5,
-reqs = "person.origins != 'slave'",
-description = "[color=yellow]This option will lower servant's grade. [/color]",
-price = 50,
-confirm = "You leave $name in the custody of guild trainers, who will accustom $him to the less luxurious life. ",
-},
-spec = {
-code = "spec",
-name = "Specialization",
-number = 6,
-reqs = 'true',
-description = "[color=yellow]Teach servant a new specialization. Only one specialization can be learned per servant. [/color]",
-price = 500,
-confirm = "You leave $name in the custody of guild trainers, who will teach $him a new specialization."
-}
+	haircut = {
+		code = 'haircut',
+		name = 'Cut Hair',
+		number = 1,
+		reqs = "person.hairlength != 'ear'",
+		description = "[color=yellow]Simplest procedure to trim your servant's hair. [/color]",
+		price = 25,
+		confirm = "You leave $name in the custody of guild's barber. Later $he returns with shorter hair."
+	},
+	abortion = {
+		code = 'abortion',
+		name = 'Commit Abortion',
+		number = 2,
+		reqs = "person.preg.duration >= variables.pregduration/6",
+		description = "[color=yellow]Stops pregnancy. [/color] ",
+		price = 75,
+		confirm = "You leave $name in the custody of guild's specialists. As $his pregnancy ends, you can notice how $name looks considerably more stressed."
+	},
+	sterilize = {
+		code = 'sterilize',
+		name = 'Sterilize',
+		number = 2,
+		reqs = "person.preg.has_womb == true && globals.currentslave.preg.duration == 0",
+		description = "[color=yellow]Prevents new pregnancies. [/color]\n\n[color=#ff4949]This operation is difficult to reverse![/color]",
+		price = 125,
+		confirm = "After the operation $name becomes sterile. $He won't be able to carry any more children. "
+	},
+	nurture = {
+		code = 'nurture',
+		name = 'Nurture',
+		number = 3,
+		reqs = "person.traits.find('Regressed') >= 0",
+		description = "[color=yellow]This option will neutralize Regressed trait.[/color]",
+		price = 150,
+		confirm = "You leave $name in the custody of guild trainers, who will train $him among other slaves and prepare for your domain."
+	},
+	uprise = {
+		code = 'uprise',
+		name = 'Elevate',
+		number = 4,
+		reqs = "person.origins != 'noble'",
+		description = "[color=yellow]This option will raise servant's grade, but also will make them more demanding. [/color]",
+		price = 100,
+		confirm = "You leave $name in the custody of guild trainers, who will help $him raising $his self-esteem. ",
+	},
+	subjugate = {
+		code = 'subjugate',
+		name = 'Demote',
+		number = 5,
+		reqs = "person.origins != 'slave'",
+		description = "[color=yellow]This option will lower servant's grade. [/color]",
+		price = 50,
+		confirm = "You leave $name in the custody of guild trainers, who will accustom $him to the less luxurious life. ",
+	},
+	spec = {
+		code = "spec",
+		name = "Specialization",
+		number = 6,
+		reqs = 'true',
+		description = "[color=yellow]Teach servant a new specialization. Only one specialization can be learned per servant. [/color]",
+		price = 500,
+		confirm = "You leave $name in the custody of guild trainers, who will teach $him a new specialization."
+	},
 }
 
 ###############MAGE GUILD
@@ -1583,7 +1587,7 @@ func mageorderselect(stage):
 	var reqs
 	
 	if stage == 1:
-		reqs = "person.obed >= 90 && person.race == 'Human' && person.beauty >= 40 && person.sex == 'female'"
+		reqs = "person.obed >= 80 && person.race == 'Human' && person.beauty >= 40 && person.sex == 'female'"
 	elif stage == 2:
 		reqs = 'person.race == "Fairy"'
 	elif stage == 3:
@@ -1760,20 +1764,84 @@ func tishaquest():
 #################### Markets
 
 var shops = {
-wimbornmarket = {code = 'wimbornmarket', sprite = 'merchant', name = "Wimborn's Market", items =  ['teleportwimborn','food','supply','bandage','rope','torch','teleportseal', 'basicsolutioning','hairdye', 'aphrodisiac' ,'beautypot', 'magicessenceing', 'natureessenceing','armorleather','armorchain','weapondagger','weaponsword','clothsundress','clothmaid','clothbutler','underwearlacy','underwearboxers', 'acctravelbag'], selling = true},
-shaliqshop = {code = 'shaliqshop', name = "Village's Trader", items = ['teleportseal','lockpick','torch','hairdye','beautypot','armorleather','clothmiko','clothkimono','armorninja', 'acctravelbag'], selling = true},
-gornmarket = {code = 'gornmarket',  sprite = 'centaur', name = "Gorn's Market", items = ['teleportgorn','food', 'supply','bandage','rope','teleportseal','magicessenceing',"armorleather",'armorchain','weaponclaymore','weaponhammer','clothbedlah','vhelmet','accslavecollar','acchandcuffs'], selling = true},
-frostfordmarket = {code = 'frostfordmarket', sprite = 'frostfordtrader', name = "Frostford's Market", items = ['aydabrandy','teleportfrostford', 'supply','bandage','rope','torch','teleportseal', 'basicsolutioning','bestialessenceing','clothpet', 'weaponsword','accgoldring', 'acctravelbag'], selling = true},
-aydashop = {code = 'aydashop', sprite = 'aydanormal', name = "Ayda's Assortments", items = ['regressionpot', 'energizerpot', 'beautypot', 'hairdye', 'basicsolutioning','bestialessenceing','taintedessenceing','fluidsubstanceing'], selling = false},
-amberguardmarket = {code = 'amberguardmarket', name = "Amberguard's Market", items = ['teleportamberguard','beautypot','bestialessenceing','magicessenceing','fluidsubstanceing','armorelvenchain','armorrobe'], selling = true},
-sebastian = {code = 'sebastian', name = "Sebastian", items = ['teleportumbra'], selling = false},
-#----------------------------------------------------------------------------------------------------------
-outdoor = {code = 'outdoor', name = "Outdoor", items = [], selling = false},
-outdoorwimb = {code = 'outdoorwimb', name = "Wimborn Caravan", items = ['food','supply','basicsolutioning','clothmaid','clothbutler'], selling = false},
-outdoorgorn = {code = 'outdoorgorn', name = "Gorn Caravan", items = ['rope','weaponsword','armorchain','accslavecollar'], selling = false},
-outdoorfrost = {code = 'outdoorfrost', name = "Frostford Caravan", items = ['bandage','armorleather','acctravelbag'], selling = false},
-#----------------------------------------------------------------------------------------------------------
-blackmarket = {code = 'blackmarket', name = 'Black Market', items = ['aydabook','energizerpot','lockpick','accslavecollar','acchandcuffs','armorleather','armorchain','blackjckclub','weaponhammer','bdsmsuit','armortentacle'], selling = true}
+	wimbornmarket = {
+		code = 'wimbornmarket',
+		sprite = 'merchant',
+		name = "Wimborn's Market",
+		items = ['teleportwimborn','food','supply','bandage','rope','torch','teleportseal', 'basicsolutioning','hairdye', 'aphrodisiac' ,'beautypot', 'magicessenceing', 'natureessenceing','armorleather','armorchain','weapondagger','weaponsword','clothsundress','clothmaid','clothbutler','underwearlacy','underwearboxers', 'acctravelbag'],
+		selling = true
+	},
+	shaliqshop = {
+		code = 'shaliqshop',
+		name = "Village's Trader",
+		items = ['teleportseal','lockpick','torch','hairdye','beautypot','armorleather','clothmiko','clothkimono','armorninja', 'acctravelbag'],
+		selling = true
+	},
+	gornmarket = {
+		code = 'gornmarket',
+		sprite = 'centaur',
+		name = "Gorn's Market",
+		items = ['teleportgorn','food', 'supply','bandage','rope','teleportseal','magicessenceing',"armorleather",'armorchain','weaponclaymore','weaponhammer','clothbedlah','vhelmet','accslavecollar','acchandcuffs'],
+		selling = true
+	},
+	frostfordmarket = {
+		code = 'frostfordmarket',
+		sprite = 'frostfordtrader',
+		name = "Frostford's Market",
+		items = ['aydabrandy','teleportfrostford', 'supply','bandage','rope','torch','teleportseal', 'basicsolutioning','bestialessenceing','clothpet', 'weaponsword','accgoldring', 'acctravelbag'],
+		selling = true
+	},
+	aydashop = {
+		code = 'aydashop',
+		sprite = 'aydanormal',
+		name = "Ayda's Assortments",
+		items = ['regressionpot', 'energizerpot', 'beautypot', 'hairdye', 'basicsolutioning','bestialessenceing','taintedessenceing','fluidsubstanceing'],
+		selling = false
+	},
+	amberguardmarket = {
+		code = 'amberguardmarket',
+		name = "Amberguard's Market",
+		items = ['teleportamberguard','beautypot','bestialessenceing','magicessenceing','fluidsubstanceing','armorelvenchain','armorrobe'],
+		selling = true
+	},
+	sebastian = {
+		code = 'sebastian',
+		name = "Sebastian",
+		items = ['teleportumbra'],
+		selling = false
+	},
+	#----------------------------------------------------------------------------------------------------------
+	outdoor = {
+		code = 'outdoor',
+		name = "Outdoor",
+		items = [],
+		selling = false
+	},
+	outdoorwimb = {
+		code = 'outdoorwimb',
+		name = "Wimborn Caravan",
+		items = ['food','supply','basicsolutioning','clothmaid','clothbutler'],
+		selling = false
+	},
+	outdoorgorn = {
+		code = 'outdoorgorn',
+		name = "Gorn Caravan",
+		items = ['rope','weaponsword','armorchain','accslavecollar'],
+		selling = false
+	},
+	outdoorfrost = {
+		code = 'outdoorfrost',
+		name = "Frostford Caravan",
+		items = ['bandage','armorleather','acctravelbag'],
+		selling = false
+	},
+	#----------------------------------------------------------------------------------------------------------
+	blackmarket = {
+		code = 'blackmarket',
+		name = 'Black Market',
+		items = ['aydabook','energizerpot','lockpick','accslavecollar','acchandcuffs','armorleather','armorchain','blackjckclub','weaponsword','weaponhammer','bdsmsuit','armortentacle'],
+		selling = true
+	},
 }
 
 func market():
@@ -1886,12 +1954,13 @@ func calculateexchange():
 	ItemsForExchange = itemarray.duplicate()
 	$shoppanel/exchange/TradeButton.disabled = itemarray.size() % 3 != 0
 
-var treasurepool = [['armorninja',5],['armorplate',1],['armorleather',20],['armorchain',11],['armorelvenchain',3],['armorrobe',4],
-['weapondagger',20], ['weaponsword',9], ['weaponclaymore',3], ['weaponhammer', 4], ['underwearlacy', 3], ['underwearboxers', 3],
-['clothsundress',10], ['clothmaid',10], ['clothkimono',7], ['clothmiko',5], ['clothpet',3], ['clothbutler',10], ['clothbedlah',4],
-['accgoldring',3],['accslavecollar',4],['acchandcuffs',3],['acctravelbag',5],['accamuletemerald', 1], ['accamuletruby', 1], 
-['weaponelvensword',3], ['weaponnaturestaff',2], ['armortentacle', 0.5], ['clothtentacle', 1], 
-['armorrogue', 0.5],['weaponcursedsword', 0.5],['blackjckclub', 4],['bdsmsuit', 3],['vhelmet', 4]
+var treasurepool = [
+	['armorninja',5],['armorplate',1],['armorleather',20],['armorchain',11],['armorelvenchain',3],['armorrobe',4],
+	['weapondagger',20], ['weaponsword',9], ['weaponclaymore',3], ['weaponhammer', 4], ['underwearlacy', 3], ['underwearboxers', 3],
+	['clothsundress',10], ['clothmaid',10], ['clothkimono',7], ['clothmiko',5], ['clothpet',3], ['clothbutler',10], ['clothbedlah',4],
+	['accgoldring',3],['accslavecollar',4],['acchandcuffs',3],['acctravelbag',5],['accamuletemerald', 1], ['accamuletruby', 1], 
+	['weaponelvensword',3], ['weaponnaturestaff',2], ['armortentacle', 0.5], ['clothtentacle', 1], 
+	['armorrogue', 0.5],['weaponcursedsword', 0.5],['blackjckclub', 4],['bdsmsuit', 3],['vhelmet', 4]
 ]
 
 func exchangeitemsconfirm():
@@ -2092,7 +2161,8 @@ func sebastianpay():
 		var dict = {'slave':0.7, 'poor':1,'commoner':1.2,"rich": 2, "noble": 4}
 		effect.duration = round((4 + (person.conf+person.cour)/20) * dict[person.origins])
 		person.add_effect(effect)
-		person.sleep = 'jail'
+		if globals.count_sleepers().jail < globals.state.mansionupgrades.jailcapacity:
+			person.sleep = 'jail'
 		globals.slaves = person
 		globals.resources.gold -= person.buyprice()
 		globals.state.sebastianorder.taken = false
@@ -2112,7 +2182,7 @@ func _on_sebastianconfirm_pressed():
 	globals.state.sebastianorder.duration = round(rand_range(3,5))
 	globals.resources.gold -= 100
 	var caste = ['slave','poor','commoner','rich','noble']
-	globals.state.sebastianslave = globals.newslave(globals.state.sebastianorder.race, 'random', 'random', caste[rand_range(0,caste.size())])
+	globals.state.sebastianslave = globals.newslave( globals.state.sebastianorder.race, 'random', 'random', globals.randomfromarray(caste))
 	mansion.maintext = "— "+race+", huh? Got ya! Come see me in "+ str(globals.state.sebastianorder.duration)+ " days and don't forget the coins! Those are not cheap after all. "
 	get_node("sebastiannode").visible = false
 	var array = [{name = 'Leave', function = 'market'}]
@@ -2203,13 +2273,9 @@ func brothel(person = null):
 	setcharacter('brothelhost')
 	
 	var text = "Doorman greets you and shows you the way around brothel until you meet with the Madam.\n\n— Greetings, what would you like?  "
-	get_parent().slavearray.clear()
-	var counter = 0
 	for person in globals.slaves:
-		if person.work == 'whorewimborn' || person.work == 'escortwimborn' || person.work == 'fucktoywimborn':
-			text = text + person.dictionary('\nYou can see [url=person' + str(counter) + '][color=yellow]$name[/color][/url]  waiting for clients here.')
-			get_parent().slavearray.append(person)
-			counter += 1
+		if person.away.duration == 0 && (person.work == 'whorewimborn' || person.work == 'escortwimborn' || person.work == 'fucktoywimborn'):
+			text = text + person.dictionary('\nYou can see [url=id' + str(person.id) + '][color=yellow]$name[/color][/url] waiting for clients here.')
 	mansion.maintext = text
 	var array = [{name = 'Return', function = 'backstreets'}]
 	if globals.state.sidequests.brothel == 0:
@@ -2218,7 +2284,7 @@ func brothel(person = null):
 		if person == null:
 			array.insert(0,{name = 'Offer slave for quest', function = 'selectslavebrothelquest'})
 		else:
-			if person.race in ['Elf','Dark Elf','Drow'] && person.sex != 'male':
+			if person.race in ['Elf','Tribal Elf','Dark Elf'] && person.sex != 'male':
 				mansion.maintext = "— An elf, indeed. So, do you wanna trade?"
 				array = [{name = 'Give away ' + person.name,function = 'brothelquest'}, {name = 'Choose another person', function = 'selectslavebrothelquest'}, {name = 'Leave', function = 'backstreets'}]
 				questgiveawayslave = person
@@ -2229,7 +2295,7 @@ func brothel(person = null):
 	buildbuttons(array)
 
 func selectslavebrothelquest():
-	main.selectslavelist(true, 'brothel', self, 'person.race in ["Elf","Dark Elf","Drow"]')
+	main.selectslavelist(true, 'brothel', self, 'person.race in ["Elf","Dark Elf","Tribal Elf"]')
 
 func brothelquest():
 	var array = []
@@ -2495,7 +2561,9 @@ func freetrue():
 	get_node("playergroupdetails/capturedslave").visible = false
 	globals.state.capturedgroup.erase(partyselectedslave)
 	get_parent().infotext('You have released '+ partyselectedslave.name, 'yellow')
+	globals.state.backpack.stackables.rope = globals.state.backpack.stackables.get('rope', 0) + globals.state.calcRecoverRope(1)
 	_on_details_pressed()
+	playergrouppanel()
 
 func _on_capturedmindread_pressed():
 	get_node("playergroupdetails/capturedslave").visible = false
@@ -2507,15 +2575,15 @@ func _on_capturedmindread_pressed():
 func _on_quicksell_pressed():
 	var text = ''
 	var gold = 0
-	var array = []
-	for i in globals.state.capturedgroup:
-		array.append(i)
+	var array = globals.state.capturedgroup
+	globals.state.capturedgroup = []
 	for i in array:
 		gold += i.sellprice()/2
-		globals.state.capturedgroup.erase(i)
 	main.popup('You furtively delivered your captives to the local slaver guild. This earned you [color=yellow]' + str(gold) + '[/color] gold. ')
+	globals.state.backpack.stackables.rope = globals.state.backpack.stackables.get('rope', 0) + globals.state.calcRecoverRope(array.size())
 	globals.resources.gold += gold
 	_on_details_pressed()
+	playergrouppanel()
 
 func _on_return_pressed():
 	globals.resources.gold -= 25

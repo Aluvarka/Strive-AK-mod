@@ -97,6 +97,20 @@ size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "Create Thumbnails"
 
+[node name="errorLogging" type="CheckBox" parent="TabContainer/Settings"]
+margin_left = 20.0
+margin_top = 205.0
+margin_right = 264.0
+margin_bottom = 232.0
+hint_tooltip = "The game will create a log folder and file in the application data folder (near the saves, portraits,
+and mods), which will record all text that would be printed to the terminal while the game runs.
+This is especially useful for sudden crashes or any OS that does not automatically open a
+terminal when the game starts.
+This option will only go into effect after the game restarts."
+size_flags_horizontal = 2
+size_flags_vertical = 2
+text = "Use file error logging"
+
 [node name="Label2" type="Label" parent="TabContainer/Settings"]
 margin_left = 482.0
 margin_top = 61.0
@@ -168,7 +182,7 @@ margin_left = 20.0
 margin_top = 124.0
 margin_right = 264.0
 margin_bottom = 151.0
-hint_tooltip = "Show custom character sprites during dialogues?"
+hint_tooltip = "Speed up combat by making attack animations nearly instantaneous"
 size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "Skip combat animation"
@@ -466,6 +480,7 @@ margin_right = -228.0
 margin_bottom = -171.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
+popup_exclusive = true
 
 [node name="Panel" type="Panel" parent="screenpopup"]
 anchor_left = 1.0
@@ -706,6 +721,7 @@ step = 100.0
 value = 100.0
 rounded = true
 
+[connection signal="toggled" from="TabContainer/Settings/errorLogging" to="." method="_on_errorLogging_toggled"]
 [connection signal="pressed" from="TabContainer/Settings/fullscreen" to="." method="_on_fullscreen_pressed"]
 [connection signal="value_changed" from="TabContainer/Settings/fontsize" to="." method="_on_fontsize_value_changed"]
 [connection signal="value_changed" from="TabContainer/Game/malesslider" to="." method="_on_malesslider_value_changed"]

@@ -18,9 +18,9 @@ func getage(age):
 	if globals.rules.noadults == false:
 		agearray.append('adult')
 	if age == 'random' || agearray.find(age) < 0:
-		age = agearray[rand_range(0,agearray.size())]
+		age = globals.randomfromarray(agearray)
 	if (age == 'child' && globals.rules.children == false) || (age == 'adult' && globals.rules.noadults == true):
-		age = agearray[rand_range(0,agearray.size())]
+		age = globals.randomfromarray(agearray)
 	return age
 
 
@@ -31,7 +31,7 @@ func newslave(race, age, sex, origins = 'slave'):
 	if race == 'randomcommon':
 		race = globals.getracebygroup("starting")
 	elif race == 'randomany':
-		race = globals.allracesarray[rand_range(0,globals.allracesarray.size())]
+		race = globals.randomfromarray(globals.allracesarray)
 	person.race = race
 	person.age = getage(age)
 	person.mindage = person.age
@@ -96,7 +96,7 @@ func changerace(person, race = null):
 		if i in ['description', 'details']:
 			continue
 		if typeof(races[personrace][i]) == TYPE_ARRAY:
-			person[i] = races[personrace][i][rand_range(0,races[personrace][i].size())]
+			person[i] = globals.randomfromarray(races[personrace][i])
 		elif typeof(races[personrace][i]) == TYPE_DICTIONARY:
 			if person.get(i) == null:
 				continue
@@ -165,13 +165,11 @@ func get_caste(person, caste):
 		if rand_range(0,100) >= 95:
 			person.beautybase += rand_range(0,30)
 	
-
-	person.skillpoints += (person.level-1)*variables.skillpointsperlevel	
-
+	person.skillpoints += (person.level-1)*variables.skillpointsperlevel
 	spin = person.skillpoints
 	array = ['sstr','sagi','smaf','send']
 	while spin > 0:
-		var temp = array[rand_range(0, array.size())]
+		var temp = globals.randomfromarray(array)
 		if rand_range(0,100) < 50 && person.stats[globals.basestatdict[temp]] < person.stats[globals.maxstatdict[temp]]:
 			person.stats[globals.basestatdict[temp]] += 1
 			person.skillpoints -= 1
@@ -302,9 +300,41 @@ func tohalfkin(person):
 	person.skincov = 'none'
 	person.bodyshape = 'humanoid'
 
-func randomportrait(person):
-	if randomportraits == null:
-		randomportraits = load(globals.modfolder + "/randomportraits/randomportraits.gd").new()
-	randomportraits.setrandom(person)
+var portraits_by_race = {}
 
-var randomportraits = null
+func _fill_portraits_by_race():
+	for full_race in globals.allracesarray:
+		for raceWord in full_race.split(" "):
+			portraits_by_race[raceWord] = []
+
+	var extensions = globals.imageExtensions
+	for path in globals.dir_contents(globals.setfolders.portraits):
+		if !path.get_extension() in extensions:
+			continue
+		for raceWord in portraits_by_race:
+			if path.findn(raceWord) >= 0:
+				portraits_by_race[raceWord].append(path)
+
+func randomportrait(person):
+	if portraits_by_race.empty():
+		_fill_portraits_by_race()
+
+	var count = 0
+	var raceWords = person.race.split(" ")
+	for raceWord in raceWords:
+		count += portraits_by_race[raceWord].size()
+	if count == 0:
+		return
+	count = randi() % count
+	
+	for raceWord in raceWords:
+		var newCount = count - portraits_by_race[raceWord].size()
+		if newCount < 0:
+			var path = portraits_by_race[raceWord][count]
+			person.imageportait = path
+			path = path.replace(globals.setfolders.portraits, globals.setfolders.fullbody)
+			if globals.loadimage(path) != null:
+				person.imagefull = path
+			return
+		else:
+			count = newCount

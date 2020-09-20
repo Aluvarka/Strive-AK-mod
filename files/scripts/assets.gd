@@ -109,7 +109,7 @@ func gethair(person):
 			person.hairstyle = 'straight'
 
 func getrandomfromarray(array):
-	return array[rand_range(0,array.size())]
+	return array[randi() % array.size()]
 
 
 func getrandomeyecolor():

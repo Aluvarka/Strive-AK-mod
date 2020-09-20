@@ -295,7 +295,7 @@ var guardRaces = {
 	'wimborn' : [['Human', 12],['Demon', 2],['Taurus', 2],['Cat', 1]],
 	'frostford' : [['Halfkin Wolf', 6],['Beastkin Wolf', 6],['Human', 5],['Halfkin Cat', 2],['Beastkin Cat', 2],['Halfkin Fox', 1],['Beastkin Fox', 1]],
 	'gorn' : [['Orc', 4],['Goblin', 2],['Centaur', 1],['Taurus', 1]],
-	'amberguard' : [['Elf', 12],['Dark Elf', 1],['Drow', 1]]
+	'amberguard' : [['Elf', 12],['Tribal Elf', 1],['Dark Elf', 1]]
 }
 
 func buildslave(i):
@@ -311,13 +311,12 @@ func buildslave(i):
 			race = globals.weightedrandom(currentzone.races)
 
 		'any':
-			race = globals.allracesarray[rand_range(0,globals.allracesarray.size())]
+			race = globals.randomfromarray(globals.allracesarray)
 
 		'bandits':
 			if rand_range(0,100) <= variables.banditishumanchance:
 				race = 'Human'
 			else:
-
 				race = globals.getracebygroup('bandits') #globals.banditraces[rand_range(0,globals.banditraces.size())]
 
 		'amberguard', 'wimborn', 'frostford', 'gorn':
@@ -345,7 +344,7 @@ func buildslave(i):
 	if i.has('gear'):
 
 		for k in ['armor','weapon','costume','underwear','accessory']:
-			if k == 'armor' && globals.player.level < 2:
+			if k == 'armor' && rand_range(1, 4) < globals.player.level:
 				continue
 			if !combatdata.enemyequips[i.gear].has(k):
 				continue
@@ -791,7 +790,7 @@ func merchantencounter(stage = 0):
 	elif stage == 2:
 		globals.main.close_dialogue()
 		return
-	globals.main.dialogue(state, self, text, buttons, sprites)	
+	globals.main.dialogue(state, self, text, buttons, sprites)
 	
 func merchantencwimb(stage = 0):
 	var state = false
@@ -931,15 +930,40 @@ func mindreadcapturee(state = 'encounter'):
 func enemyleave():
 	progress += 1.0
 	var text = ''
-	globals.player.energy -= max(5-floor((globals.player.sagi+globals.player.send)/2),2)
-	for i in globals.state.playergroup:
-		var person = globals.state.findslave(i)
-		person.energy -= max(5-floor((person.sagi+person.send)/2),2)
+	if variables.advancedrules == 1:
+		if globals.player.energy >= 1:
+			globals.player.energy -= max(5-floor((globals.player.sagi+globals.player.send)/2),2)
+		else: 
+			if globals.player.health >= 1:
+				globals.player.health -= max(5-floor((globals.player.sagi+globals.player.send)/3),1)			
+		for i in globals.state.playergroup:
+			var person = globals.state.findslave(i)
+			if person.energy >= 1:
+				person.energy -= max(5-floor((person.sagi+person.send)/2),2)
+			elif person.health >= 1:
+				person.health -= max(5-floor((person.sagi+person.send)/3),1)
+			else:
+				if person.health <= 0:
+					globals.state.playergroup.erase(person.id)
+					for i in globals.state.playergroup:
+						globals.state.findslave(i).stress += rand_range(25,40)
+					person.death()
+	else:
+		globals.player.energy -= max(5-floor((globals.player.sagi+globals.player.send)/2),2)
+		for i in globals.state.playergroup:
+			var person = globals.state.findslave(i)
+			person.energy -= max(5-floor((person.sagi+person.send)/2),2)
 	zoneenter(currentzone.code)
 	if text != '':
 		mansion.maintext = mansion.maintext +'\n[color=yellow]'+text+'[/color]'
 
 func enemyfight(soundkeep = false):
+	for i in globals.state.playergroup:
+		var person = globals.state.findslave(i)
+		var temp = round(rand_range(8,12)/(person.cour/65+person.mood/100))
+		if person.traits.has("Coward"):
+			temp = temp*2
+		person.stress += temp
 	mansion.maintext = ''
 	outside.clearbuttons()
 	main.get_node("combat").currentenemies = enemygroup.units
@@ -1069,12 +1093,15 @@ func enemydefeated():
 	winpanel.visible = true
 	winpanel.get_node("wintext").set_bbcode(text)
 	for i in range(0, defeated.units.size()):
-		defeated.units[i].stress += rand_range(20, 50)
-		defeated.units[i].obed += rand_range(10, 20)
-		defeated.units[i].health -= rand_range(40,70)
+		var person = defeated.units[i]
+		if globals.races[person.race.replace("Halfkin", "Beastkin")].uncivilized && person.spec != 'tamer':
+			person.add_trait('Uncivilized')
+		person.stress += rand_range(20, 50)
+		person.obed += rand_range(10, 20)
+		person.health -= rand_range(40,70)
 		if defeated.names[i] == 'Captured':
-			defeated.units[i].obed += rand_range(10,20)
-			defeated.units[i].loyal += rand_range(5,15)
+			person.obed += rand_range(10,20)
+			person.loyal += rand_range(5,15)
 	buildcapturelist()
 	builditemlists()
 	
@@ -1085,29 +1112,34 @@ func enemydefeated():
 func buildcapturelist():
 	var winpanel = get_node("winningpanel")
 	var text = "Defeated and Captured | Free ropes left: "
-	text += str(globals.state.backpack.stackables.rope) if globals.state.backpack.stackables.has('rope') else '0'
+	text += str(globals.state.backpack.stackables.get('rope', 0))
 	winpanel.get_node("Panel/Label").set_text(text)
 	for i in get_node("winningpanel/ScrollContainer/VBoxContainer").get_children():
 		if i.get_name() != 'Button':
 			i.visible = false
 			i.queue_free()
 	for i in range(0, defeated.units.size()):
+		var person = defeated.units[i]
 		var newbutton = winpanel.get_node("ScrollContainer/VBoxContainer/Button").duplicate()
 		winpanel.get_node("ScrollContainer/VBoxContainer").add_child(newbutton)
 		newbutton.visible = true
-		newbutton.get_node("capture").connect("pressed",self,'captureslave', [defeated.units[i]])
-		if !globals.state.backpack.stackables.has('rope') || globals.state.backpack.stackables.rope < 1:
+		newbutton.get_node("capture").connect("pressed",self,'captureslave', [person])
+		if globals.state.backpack.stackables.get('rope', 0) < variables.consumerope:
 			newbutton.get_node('capture').set_disabled(true)
-		newbutton.get_node("Label").set_text(defeated.names[i] + ' ' + defeated.units[i].sex+ ' ' + defeated.units[i].race)
-		newbutton.connect("pressed", self, 'defeatedselected', [defeated.units[i]])
-		newbutton.connect("mouse_entered", globals, 'slavetooltip', [defeated.units[i]])
+		newbutton.get_node("Label").set_text(defeated.names[i] + ' ' + person.sex+ ' ' + person.race)
+		if defeated.names[i] == 'Captured':
+			newbutton.get_node("Label").set('custom_colors/font_color', Color(0.25,0.3,0.75))
+		else:
+			newbutton.get_node("Label").set('custom_colors/font_color', Color(0.8,0.2,0.2))
+		newbutton.connect("pressed", self, 'defeatedselected', [person])
+		newbutton.connect("mouse_entered", globals, 'slavetooltip', [person])
 		newbutton.connect("mouse_exited", globals, 'slavetooltiphide')
-		newbutton.get_node("choice").set_meta('person', defeated.units[i])
-		newbutton.get_node("mindread").connect("pressed",self,'mindreadslave', [defeated.units[i]])
+		newbutton.get_node("choice").set_meta('person', person)
+		newbutton.get_node("mindread").connect("pressed",self,'mindreadslave', [person])
 		if globals.resources.mana < globals.spells.spellcost(globals.spelldict.mindread) || !globals.spelldict.mindread.learned:
 			newbutton.get_node('mindread').set_disabled(true)
 		newbutton.get_node("choice").add_to_group('winoption')
-		newbutton.get_node("choice").connect("item_selected",self, 'defeatedchoice', [defeated.units[i], newbutton.get_node("choice")])
+		newbutton.get_node("choice").connect("item_selected",self, 'defeatedchoice', [person, newbutton.get_node("choice")])
 
 func mindreadslave(person):
 	globals.spells.person = person
@@ -1116,27 +1148,18 @@ func mindreadslave(person):
 
 func captureslave(person):
 	var location
-	if variables.consumerope != 0:
+	if variables.consumerope > 0:
 		globals.state.backpack.stackables.rope -= variables.consumerope
 	for i in person.gear:
 		i = null
-	if globals.races[person.race.replace("Halfkin", "Beastkin")].uncivilized == true:
-		person.add_trait('Uncivilized')
-		if person.spec == 'tamer':
-			person.spec = null
 	captureeffect(person)
 	if person.health < person.stats.health_max/3 && randf() <= 0.67:
 		person.add_trait(globals.origins.traits('injury').name)
 	var index = defeated.units.find(person)
 	if defeated.names[index] == 'Captured' || defeated.faction[index] in ['stranger','elf']:
-		if currentzone.tags.find("wimborn") >= 0:
-			location = 'wimborn'
-		elif currentzone.tags.find("frostford") >= 0:
-			location = 'frostford'
-		elif currentzone.tags.find("gorn") >= 0:
-			location = 'gorn'
-		elif currentzone.tags.find("amberguard") >= 0:
-			location = 'amberguard'
+		for place in ['wimborn','frostford','gorn','amberguard']:
+			if currentzone.tags.has(place):
+				location = place
 		if location != null:
 			globals.state.reputation[location] -= 1
 	defeated.names.remove(defeated.units.find(person))
@@ -1309,6 +1332,8 @@ func defeatedchoice(ID, person, node):
 
 var secondarywin = false
 
+var rewardslave2
+
 func _on_confirmwinning_pressed(): #0 leave, 1 capture, 2 rape, 3 kill
 	var text = ''
 	var selling = false
@@ -1335,6 +1360,7 @@ func _on_confirmwinning_pressed(): #0 leave, 1 capture, 2 rape, 3 kill
 			if defeated.names[i] != 'Captured':
 				text += defeated.units[i].dictionary("You have left the $race $child alone.\n")
 			else:
+				
 				text += defeated.units[i].dictionary("You have released the $race $child and set $him free.\n")
 				globals.state.reputation[location] += rand_range(1,2)
 				if randf() < 0.25 + globals.state.reputation[location]/20 && reward == false:
@@ -1754,7 +1780,7 @@ func shuriyaslaves(first = true):
 	if slave1 != null:
 		text += slave1.dictionary("\n$name will be given away as an Elf.")
 	if slave2 != null:
-		text += slave2.dictionary("\n$name will be given away as a Drow.")
+		text += slave2.dictionary("\n$name will be given away as a Dark Elf.")
 	
 	if cancontinue == true:
 		buttons.append({text = "Confirm", function = 'shuriyaslavesgive', args = null})
@@ -1762,14 +1788,14 @@ func shuriyaslaves(first = true):
 		if slave1 == null:
 			buttons.append({text = 'Select an Elf', function = 'shuriyaslaveselect', args = 1})
 		if slave2 == null:
-			buttons.append({text = 'Select a Drow', function = 'shuriyaslaveselect', args = 2})
+			buttons.append({text = 'Select a Dark Elf', function = 'shuriyaslaveselect', args = 2})
 	main.dialogue(state, self, text, buttons)
 
 func shuriyaslaveselect(stage):
 	if stage == 1:
 		main.selectslavelist(true, 'shuriyaelfselect', self, 'person.race == "Elf"')
 	else:
-		main.selectslavelist(true, 'shuriyadrowselect', self, 'person.race == "Drow"')
+		main.selectslavelist(true, 'shuriyadrowselect', self, 'person.race == "Dark Elf"')
 
 func shuriyaslavesgive(none):
 	globals.state.mainquest = 24
@@ -1865,6 +1891,7 @@ func frostford():
 		var text = globals.questtext.MainQuestFrostfordCityhallZoe
 		var buttons = []
 		var sprite = [['zoeneutral','pos1','opac']]
+		globals.charactergallery.zoe.unlocked = true
 		buttons.append({text = 'Accept', function = "frostfordzoe", args = 1})
 		buttons.append({text = 'Refuse', function = "frostfordzoe", args = 2})
 		main.dialogue(false, self, text, buttons, sprite)
