@@ -64,6 +64,7 @@ func _ready():
 	for i in ['fadinganimation','spritesindialogues','randomcustomportraits','instantcombatanimation','thumbnails']:
 		get_node("TabContainer/Settings/" + i).pressed = globals.rules[i]
 		get_node("TabContainer/Settings/" + i).connect("pressed", self, 'ruletoggle', [i])
+	get_node("TabContainer/Settings/errorLogging").set_pressed( ProjectSettings.get_setting("logging/file_logging/enable_file_logging"))
 	get_node("TabContainer/Game/aliseoption").select(globals.rules.enddayalise)
 	get_node("TabContainer/Settings/fullscreen").set_pressed(OS.is_window_fullscreen())
 	get_node("TabContainer/Supporter section/cheatpassword").set_text('')
@@ -99,7 +100,10 @@ func _on_futaslider_value_changed( value ):
 	get_node("TabContainer/Game/futasliderlabel").set_text('Random futa occurrence: ' + str(globals.rules['futa_chance']) + '% of females, '
 		+ str(round((100-globals.rules['male_chance'])*globals.rules['futa_chance']/10)/10) + '% of people are futa')
 
-
+func _on_errorLogging_toggled(value):
+	ProjectSettings.set_setting("logging/file_logging/max_log_files", 1)
+	ProjectSettings.set_setting("logging/file_logging/enable_file_logging", value)
+	ProjectSettings.save()
 
 func _on_fullscreen_pressed():
 	OS.set_window_fullscreen(get_node("TabContainer/Settings/fullscreen").is_pressed())
@@ -268,6 +272,8 @@ func _on_fontsize_value_changed( value ):
 
 	if get_tree().get_current_scene().find_node('MainScreen') != null:
 		get_tree().get_current_scene().get_node('MainScreen').get_font('font').set_size(value)
+		if globals.main != null:
+			globals.main.on_resize_screen()
 	elif get_tree().get_current_scene().find_node('changelog') != null:
 		get_tree().get_current_scene().get_node('TextureFrame/changelog').get_font('font').set_size(value)
 	globals.rules.fontsize = value
