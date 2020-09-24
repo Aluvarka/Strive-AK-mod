@@ -107,6 +107,7 @@ func resort():
 
 func setslaveimage(path):
 	var assignnude = false
+	var nudeinpm = path.replace(globals.setfolders.fullbody, globals.setfolders.fullnaked)
 	if mode == 'portrait':
 		person.imageportait = path
 		path = path.replace(globals.setfolders.portraits, globals.setfolders.fullbody)
@@ -123,8 +124,8 @@ func setslaveimage(path):
 		person.nakedimgfull = path
 		path = path.replace(globals.setfolders.fullnaked, globals.setfolders.fullbody)
 		path = path.replace(globals.setfolders.fullnaked, globals.setfolders.portraits)
-	elif assignnude == true && globals.loadimage(path.replace(globals.setfolders.fullbody, globals.setfolders.fullnaked)) != null:	
-		person.nakedimgfull = path
+	if assignnude == true && File.new().file_exists(nudeinpm):
+		person.nakedimgfull = nudeinpm
 	self.visible = false
 	updatepage()
 
@@ -226,14 +227,11 @@ func _on_folderdialogue_dir_selected( path ):
 	elif get_node("folderdialogue").get_meta("meta") == 'body':
 		globals.setfolders.fullbody = path
 		bodypath = path
+	elif get_node("folderdialogue").get_meta("meta") == 'naked':
+		globals.setfolders.fullnaked = path
+		nakedpath = path
 	buildimagelist()
 	_on_selectfolder_pressed()
-	elif get_node("folderdialogue").get_meta("meta") == 'naked':
-		globals.setfolders.fullnaked = dir
-		nakedpath = dir
-		buildimagelist()
-		_on_selectfolder_pressed()
-
 
 func _on_closefolderselect_pressed():
 	get_node("selectfolders").visible = false

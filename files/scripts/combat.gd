@@ -508,6 +508,10 @@ class combatant:
 					if k.effect == 'livingunderwear':
 						print('livingstimul')
 						scene.getbuff(scene.makebuff('livingstimul', self, self), self)
+					if k.effect == 'combatstress':
+						print('combatstress')
+						print(person.passives.combatstress.effectvalue)
+						stress += person.passives.combatstress.effectvalue
 		scene.rebuildbuffs(self)
 	
 	func selectcombatant():
@@ -835,6 +839,8 @@ func calculatehit(caster,target,skill):
 		hitchance = hitchance*skill.accuracy
 	if target.person != null && target.person.race.findn("cat") >= 0:
 		hitchance = hitchance*0.9
+	if caster.person.stress >= 66:
+		hitchance = hitchance*0.8
 	if rand_range(0,100) > hitchance:
 		return 'miss'
 	else:

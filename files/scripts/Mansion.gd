@@ -1588,32 +1588,32 @@ func nextdayevents():
 			return
 	if globals.state.sandbox == false && globals.state.mainquest < 42 && !$scene.is_visible_in_tree() && !$dialogue.is_visible_in_tree():
 		
-		if globals.state.mainquest >= 16 && !globals.state.plotsceneseen.has('garthorscene'):
+		if globals.state.mainquest >= 16 && !globals.state.plotsceneseen.has('garthorscene') &&!$scene.is_visible_in_tree() && !$dialogue.is_visible_in_tree():
 			globals.events.garthorscene()
 			globals.state.plotsceneseen.append('garthorscene')
 			checkforevents = true
 			return
-		elif globals.state.mainquest >= 18 && !globals.state.plotsceneseen.has('hade1'):
+		elif globals.state.mainquest >= 18 && !globals.state.plotsceneseen.has('hade1') &&!$scene.is_visible_in_tree() && !$dialogue.is_visible_in_tree():
 			globals.events.hadescene1()
 			globals.state.plotsceneseen.append('hade1')
 			checkforevents = true
 			return
-		elif globals.state.mainquest >= 24 && !globals.state.plotsceneseen.has('hade2'):
+		elif globals.state.mainquest >= 24 && !globals.state.plotsceneseen.has('hade2') &&!$scene.is_visible_in_tree() && !$dialogue.is_visible_in_tree():
 			globals.events.hadescene2()
 			globals.state.plotsceneseen.append('hade2')
 			checkforevents = true
 			return
-		elif globals.state.mainquest >= 27 && !globals.state.plotsceneseen.has('slaverguild'):
+		elif globals.state.mainquest >= 27 && !globals.state.plotsceneseen.has('slaverguild') &&!$scene.is_visible_in_tree() && !$dialogue.is_visible_in_tree():
 			globals.events.slaverguild()
 			globals.state.plotsceneseen.append('slaverguild')
 			checkforevents = true
 			return
-		elif globals.state.mainquest >= 36 && !globals.state.plotsceneseen.has('frostfordscene'):
+		elif globals.state.mainquest >= 36 && !globals.state.plotsceneseen.has('frostfordscene') &&!$scene.is_visible_in_tree() && !$dialogue.is_visible_in_tree():
 			globals.events.frostfordscene()
 			globals.state.plotsceneseen.append('frostfordscene')
 			checkforevents = true
 			return
-		elif globals.state.mainquest >= 40 && !globals.state.plotsceneseen.has('hademelissa'):
+		elif globals.state.mainquest >= 40 && !globals.state.plotsceneseen.has('hademelissa') &&!$scene.is_visible_in_tree() && !$dialogue.is_visible_in_tree():
 			globals.events.hademelissa()
 			globals.state.plotsceneseen.append('hademelissa')
 			checkforevents = true
