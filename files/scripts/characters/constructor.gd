@@ -170,7 +170,7 @@ func get_caste(person, caste):
 	array = ['sstr','sagi','smaf','send']
 	while spin > 0:
 		var temp = globals.randomfromarray(array)
-		if rand_range(0,100) < 50 && person.stats[globals.basestatdict[temp]] < person.stats[globals.maxstatdict[temp]]:
+		if rand_range(0,100) < 90 && person.stats[globals.basestatdict[temp]] < person.stats[globals.maxstatdict[temp]]:
 			person.stats[globals.basestatdict[temp]] += 1
 			person.skillpoints -= 1
 		spin -= 1
@@ -186,6 +186,8 @@ func get_caste(person, caste):
 	while spin > 0:
 		person.add_trait(globals.origins.traits('any').name)
 		spin -= 1
+	if person.traits.find("Fickle") >= 0:
+		person.sexuals.unlocks.append("swing")
 	if rand_range(0,10) > 7:
 		person.add_trait(globals.origins.traits('third').name)
 
@@ -207,7 +209,7 @@ func get_caste(person, caste):
 		elif genes == 4:
 			person.stats.end_max += 1
 			spin -= 1
-		if spin == 0:
+		if spin <= 0:
 			break
 	if person.traits.find("Love childs") >= 0: 
 		if person.sex == 'male' || person.age == 'child':
@@ -219,8 +221,6 @@ func get_caste(person, caste):
 			person.lactation = true
 			if person.titssize != 'huge':
 				person.titssize = globals.sizearray[globals.sizearray.find(person.titssize)+1]
-	if person.traits.find("Fickle") >= 0:
-		person.sexuals.unlocks.append("swing")
 	if person.traits.find("Thick skinned") >= 0:
 		person.stats.armor_cur += 2
 	if person.traits.find("Obese") >= 0: 
@@ -333,7 +333,7 @@ func randomportrait(person):
 			var path = portraits_by_race[raceWord][count]
 			person.imageportait = path
 			path = path.replace(globals.setfolders.portraits, globals.setfolders.fullbody)
-			if globals.loadimage(path) != null:
+			if globals.canloadimage(path):
 				person.imagefull = path
 			return
 		else:

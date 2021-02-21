@@ -53,7 +53,7 @@ var tattooshow = {chest = true, face = true, ass = true, arms = true, legs = tru
 var mods = {}
 var customdesc = ''
 
-var consent = false
+var consent = false setget consent_set
 var vagvirgin = true
 var mouthvirgin = true
 var assvirgin = true
@@ -114,7 +114,7 @@ var metrics = {ownership = 0, jail = 0, mods = 0, brothel = 0, sex = 0, partners
 
 var beauty = 0 setget ,beauty_get
 var beautybase = 0 setget beautybase_set
-var beautytemp = 0 
+var beautytemp = 0
 
 var fear_mod = 1
 
@@ -125,7 +125,7 @@ var stats = {
 	str_max = 0,
 	str_mod = 0,
 	str_base = 0,
-	agi_max = 0, 
+	agi_max = 0,
 	agi_mod = 0,
 	agi_base = 0,
 	maf_max = 0,
@@ -136,12 +136,16 @@ var stats = {
 	end_max = 0,
 	cour_max = 100,
 	cour_base = 0,
+	cour_racial = 0,
 	conf_max = 100,
 	conf_base = 0,
+	conf_racial = 0,
 	wit_max = 100,
 	wit_base = 0,
+	wit_racial = 0,
 	charm_max = 100,
 	charm_base = 0,
+	charm_racial = 0,
 	obed_cur = 0.0,
 	obed_max = 100,
 	obed_min = 0,
@@ -209,7 +213,7 @@ var loyal setget loyal_set,loyal_get
 var lust setget lust_set,lust_get
 var toxicity setget tox_set,tox_get
 
-var mood setget mood_set,mood_get
+var persmood setget moodset,moodget
 var personweight setget weight_set,weight_get
 
 func fear_raw(value):
@@ -224,25 +228,20 @@ func get_traits():
 
 #warning-ignore:unused_argument
 func add_trait(trait, remove = false):
-	trait = globals.origins.trait(trait)
-	var conflictexists = false
-	var text = ""
-	var traitexists = false
+	var traitEntry = globals.origins.trait(trait)
+	if traitEntry == null:
+		globals.printErrorCode("adding non-existant trait " + str(trait))
+		return false
 	for i in get_traits():
-		if i.name == trait.name:
-			traitexists = true
-		for ii in i.conflict:
-			if trait.name == ii:
-				conflictexists = true
-	if traitexists || conflictexists:
-		return
-	else:
-		traits.append(trait.name)
-		if globals.get_tree().get_current_scene().has_node("infotext") && globals.slaves.find(self) >= 0 && away.at != 'hidden':
-			text += self.dictionary("$name acquired new trait: " + trait.name)
-			globals.get_tree().get_current_scene().infotext(text,'yellow')
-		if trait['effect'].empty() != true:
-			add_effect(trait['effect'])
+		if i.name == traitEntry.name || traitEntry.name in i.conflict:
+			return false
+	traits.append(traitEntry.name)
+	if globals.get_tree().get_current_scene().has_node("infotext") && globals.slaves.has(self) && away.at != 'hidden':
+		var text = self.dictionary("$name acquired new trait: " + traitEntry.name)
+		globals.get_tree().get_current_scene().infotext(text, 'yellow')
+	if !traitEntry.effect.empty():
+		add_effect(traitEntry.effect)
+	return true
 
 func trait_remove(trait):
 	var text = ''
@@ -275,7 +274,7 @@ func fear_set(value):
 	var difference = value - fear
 	if difference > 0:
 		difference = difference - difference*self.cour/200
-	
+
 	fear += round(difference*fear_mod)
 	fear = clamp(fear, 0, 100+self.wit/2)
 
@@ -293,7 +292,7 @@ func levelup():
 		add_trait(globals.origins.traits('lvlup').name)
 	realxp = 0
 	if int(level) % 2 == 0:
-		self.health += 5
+		self.health += 10
 	self.loyal += rand_range(5,10)
 	if self != globals.player:
 		globals.get_tree().get_current_scene().infotext(dictionary("$name has advanced to Level " + str(level)),'green')
@@ -419,7 +418,7 @@ func obed_set(value):
 		text = self.dictionary("$name's obedience has grown " + string)
 		color = 'green'
 		stats.obed_cur += difference*stats.obed_mod
-	
+
 	stats.obed_cur = clamp(stats.obed_cur, stats.obed_min, stats.obed_max)
 	if stats.obed_cur < 50 && spec == 'executor':
 		stats.obed_cur = 50
@@ -453,15 +452,15 @@ func loyal_set(value):
 		text = self.dictionary("$name's loyalty grown " + string)
 		color = 'green'
 		stats.loyal_cur += difference*stats.loyal_mod
-	
-	
+
+
 	stats.loyal_cur = max(min(stats.loyal_cur, stats.loyal_max),stats.loyal_min)
 #		if globals.get_tree().get_current_scene().has_node("infotext") && globals.slaves.find(self) >= 0 && away.at != 'hidden':
 #			globals.get_tree().get_current_scene().infotext(text,color)
 
 func stress_set(value):
-	
-	var difference = value - stats.stress_cur 
+
+	var difference = value - stats.stress_cur
 	difference = difference*stats.stress_mod
 	var endvalue = stats.stress_cur + difference
 	var text = ""
@@ -478,7 +477,7 @@ func stress_set(value):
 	elif stats.stress_cur >= 33 && endvalue < 33:
 		text += "$name is no longer stressed. "
 		color = 'green'
-	
+
 	stats.stress_cur = clamp(endvalue, stats.stress_min, stats.stress_max)
 	if text != '' && globals.get_tree().get_current_scene().has_node("infotext") && globals.slaves.has(self) && away.at != 'hidden':
 		globals.get_tree().get_current_scene().infotext(self.dictionary(text),color)
@@ -497,7 +496,7 @@ func mentalbreakdown():
 	self.stress -= 30
 
 func learningpoints_set(value):
-	
+
 	var difference = learningpoints - value
 	var string = ""
 	var text = ""
@@ -507,7 +506,7 @@ func learningpoints_set(value):
 		string = difference
 		text = self.dictionary("$name has acquired " + str(string) + " learning points. " )
 		color = 'green'
-	
+
 	if globals.get_tree().get_current_scene().has_node("infotext") && globals.slaves.find(self) >= 0 && away.at != 'hidden':
 		globals.get_tree().get_current_scene().infotext(text,color)
 	learningpoints = value
@@ -550,7 +549,7 @@ func lust_set(value):
 	else:
 		stats.lust_cur = clamp(stats.lust_cur + difference,stats.lust_min,stats.lust_max)
 
-func mood_set(value):
+func moodset(value):
 	var difference = value - stats.mood_cur
 	if difference > 0:
 		stats.mood_cur = clamp(stats.mood_cur + difference*(1 + stats.mood_mod/100.0),stats.mood_min,stats.mood_max)
@@ -622,16 +621,16 @@ func stress_get():
 	return stats.stress_cur
 
 func cour_get():
-	return floor(stats.cour_base)
+	return floor(stats.cour_base + stats.cour_racial)
 
 func conf_get():
-	return floor(stats.conf_base)
+	return floor(stats.conf_base + stats.conf_racial)
 
 func wit_get():
-	return floor(stats.wit_base)
+	return floor(stats.wit_base + stats.wit_racial)
 
 func charm_get():
-	return floor(stats.charm_base)
+	return floor(stats.charm_base + stats.charm_racial)
 
 func lust_get():
 	return stats.lust_cur
@@ -655,7 +654,7 @@ func maf_get():
 func end_get():
 	return stats.end_base + stats.end_mod
 
-func mood_get():
+func moodget():
 	return stats.mood_cur
 	
 func weight_get():
@@ -685,7 +684,7 @@ func awareness(hunt = false):
 
 func health_icon():
 	var health
-	if float(stats.health_cur)/stats.health_max > 0.75: 
+	if float(stats.health_cur)/stats.health_max > 0.75:
 		health = load("res://files/buttons/icons/health/2.png")
 	elif float(stats.health_cur)/stats.health_max > 0.4:
 		health = load("res://files/buttons/icons/health/1.png")
@@ -705,7 +704,7 @@ func obed_icon():
 
 func stress_icon():
 	var icon
-	if stats.stress_cur >= 66: 
+	if stats.stress_cur >= 66:
 		icon = load("res://files/buttons/icons/stress/3.png")
 	elif stats.stress_cur >= 33:
 		icon = load("res://files/buttons/icons/stress/1.png")
@@ -721,15 +720,22 @@ func name_long():
 	else:
 		text = '"' + nickname + '" ' + name
 	if surname != "":
-		text += " " + surname
-	
+		text += " " + str(surname)
+
 	return text
 
 func name_short():
-	if nickname == '':
-		return name
+	if globals.expansion.settings.minortweaknicknames == true:
+		## CHANGED - 25/5/19 - changed name_short() and similar to include first name too, to better handle non-unique nicknames
+		if nickname == '':
+			return name
+		else:
+			return str("\""+nickname+"\" "+name).substr(0,20) ## return nickname
 	else:
-		return nickname
+		if nickname == '':
+			return name
+		else:
+			return nickname
 
 func race_short():
 	if race.find("Beastkin") >= 0:
@@ -870,8 +876,7 @@ func countluxury():
 			nosupply = true
 	if traits.find("Greedy") >= 1:
 		templuxury -= 5
-		
-	
+
 	var luxurydict = {luxury = templuxury, goldspent = goldspent, foodspent = foodspent, nosupply = nosupply}
 	return luxurydict
 
@@ -912,13 +917,13 @@ func calculateprice():
 			price += 25
 	if self.toxicity >= 60 && traits.has('Mercenary') != true:
 		bonus -= variables.pricebonustoxicity
-	
+
 	if variables.gradepricemod.has(origins):
 		bonus += variables.gradepricemod[origins]
 	if variables.agepricemods.has(age):
 		bonus += variables.agepricemods[age]
-	
-	
+
+
 	if traits.has('Vigorous') == true:
 		price += 50
 	if traits.has('Uncivilized'):
@@ -932,10 +937,11 @@ func calculateprice():
 	if traits.has('Mercenary') == true:
 		price += 155*(level)
 		price *= 2
+
 	
 	
 	price = price*bonus
-	
+
 	if price < 0:
 		price = variables.priceminimum
 	return round(price)
@@ -945,7 +951,7 @@ func buyprice():
 
 func sellprice(alternative = false):
 	var price = calculateprice()*0.6
-	
+
 	if effects.has('captured') == true && alternative == false:
 		price = price/2
 	var influential = false
@@ -990,12 +996,12 @@ func abortion():
 func checksex():
 	var male = false
 	var female = false
-	
+
 	if penis != 'none':
 		male = true
 	if vagina != 'none':
 		female = true
-	
+
 	if male && female:
 		sex = 'futanari'
 	elif male:
@@ -1012,3 +1018,12 @@ func fetch(dict):
 			set(key, get(key) + dict[key])
 		else:
 			set(key, dict[key])
+
+
+func consent_set(value):
+	if value and !consent && levelupreqs.get('code','') == 'relationship':
+		if globals.get_tree().get_current_scene().has_node("date") && !globals.get_tree().get_current_scene().get_node("date").visible && globals.get_tree().get_current_scene().has_node("infotext") && globals.slaves.has(self):
+			var text =  self.dictionary("After getting closer with $name, you felt like $he unlocked new potential.")
+			globals.get_tree().get_current_scene().infotext(text, 'green')
+		levelup()		
+	consent = value

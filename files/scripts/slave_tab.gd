@@ -6,6 +6,14 @@ var tab
 var jobdict = globals.jobs.jobdict
 var showfullbody = true
 
+func _process(delta):
+	var panel = $stats/basics/bodypanel
+	if panel.is_visible_in_tree():
+		var pos = panel.get_local_mouse_position()
+		var area = panel.rect_size
+		var val = -0.05 if (0 <= pos.x && 0 <= pos.y && pos.x <= area.x && pos.y <= area.y) else 0.05
+		panel.modulate.a = clamp(panel.modulate.a + val, 0.25, 1.0)
+		
 func _ready():
 	# Random Portrait button start
 	var randPortrait = $stats/customization/portrait.duplicate()
@@ -27,7 +35,6 @@ func _ready():
 	naked.margin_left += 0
 	# Random Portrait button end
 	$stats/customization.add_child(naked)
-	
 	for i in $stats/customization/tattoopanel/VBoxContainer.get_children():
 		i.connect('pressed',self,'choosetattooarea',[i])
 	set_process_input(true)
@@ -49,6 +56,8 @@ func _ready():
 	for i in ['cour','conf','wit','charm']:
 		get_node("stats/trainingabilspanel/" +i + '/Button').connect("pressed", self, 'mentalup',[i])
 		get_node("stats/trainingabilspanel/" +i + '/Button2').connect("pressed", self, 'mentalup5',[i])
+	$stats/basics/fullbodycheck.pressed = globals.rules.showfullbody
+
 
 func _input(event):
 	if (globals.main != null && globals.main.get_node("screenchange").visible) || $stats/customization/nicknamepanel.is_visible():
@@ -110,7 +119,7 @@ func slavetabopen():
 	$stats/basics/slavedescript.set_bbcode(text)
 	text = person.status()
 	$stats/statustext.set_bbcode(text)
-	if showfullbody == true:
+	if globals.rules.showfullbody:
 		$stats/basics/bodypanel/fullbody.set_texture(null)
 		if person.imagefull != null && globals.loadimage(person.imagefull) != null:
 			$stats/basics/bodypanel/fullbody.set_texture(globals.loadimage(person.imagefull))
@@ -179,8 +188,6 @@ func slavetabopen():
 		globals.state.tutorial.person = true
 		get_tree().get_current_scene().get_node("tutorialnode").slaveinitiate()
 	
-	$stats/basics/fullbodycheck.pressed = showfullbody
-	
 	if person.work == 'jailer':
 		get_node("stats/workbutton").set_text('Jailer')
 	elif person.work == 'headgirl':
@@ -201,10 +208,18 @@ func _on_statistics_pressed():
 func _on_statsclose_pressed():
 	$stats/statisticpanel.visible = false
 
+# be sure to add a space before the noun
+func textForCountNoun(count, noun, plurEnd = 's', singEnd = ''):
+	if count == 1:
+		return str(count) + noun + singEnd
+	else:
+		return str(count) + noun + plurEnd
+
 func buildmetrics():
 	var text = ""
 	$stats/statisticpanel.visible = true
-	text += "[center]Personal achievments[/center]\n"
+	text += "[color=#d1b970][center]Personal Achievements[/center][/color]\n"
+
 	text += "In your possession: " + str(person.metrics.ownership) + " day"+globals.fastif(person.metrics.ownership == 1, '','s')+"\n"
 	text += "Spent in jail: " + str(person.metrics.jail) + " day"+globals.fastif(person.metrics.jail == 1, '','s')+"\n"
 	text += "Worked in brothel: " + str(person.metrics.brothel) + " day"+globals.fastif(person.metrics.brothel == 1, '','s')+"\n"
@@ -217,7 +232,7 @@ func buildmetrics():
 	text += "Affected by spells: " + str(person.metrics.spell) + " time"+globals.fastif(person.metrics.spell == 1, '','s')+"\n"
 	text += "Modified in lab: " + str(person.metrics.mods) + " time"+globals.fastif(person.metrics.mods == 1, '','s')+"\n"
 	$stats/statisticpanel/statstext.set_bbcode(text)
-	text = "[center]Sexual achievments[/center]\n"
+	text = "[color=#d1b970][center]Sexual achievments[/center][/color]\n"
 	text += "Had intimacy: " + str(person.metrics.sex) + " time"+globals.fastif(person.metrics.sex == 1, '','s')+"\n"
 	text += "Orgasms: " + str(person.metrics.orgasm) + " time"+globals.fastif(person.metrics.orgasm == 1, '','s')+"\n"
 	if person.vagina != 'none':
@@ -408,7 +423,7 @@ func _on_brandbutton_pressed():
 				confirm.visible = false
 	elif person.brand == 'basic' && globals.state.branding == 2:
 		find_node('enhbrandingtext').visible = true
-		if globals.resources.mana >= 15 && globals.player.energy >= 20:
+		if globals.resources.mana >= 20 && globals.player.energy >= 10:
 			confirm.visible = true
 			confirm.set_meta('value', 2)
 
@@ -429,14 +444,17 @@ func _on_confirm_pressed():
 			person.stress += 15 + person.conf/5 - person.loyal/10
 		get_tree().get_current_scene().popup(person.dictionary('You perform a Ritual of Branding on $name. As symbols are engraved onto $his neck, $he yelps in pain. \n\nWith this you put serious claim on $his future life: $He will be unable to raise a hand against you and will be far less tempted to escape. '))
 		person.brand = 'basic'
+		###---Added by Expansion---### Ank BugFix v4
+		person.dailytalk.append('justbranded')
 		person.stress += 15 + person.conf/5 - person.loyal/10
 		get_tree().get_current_scene().popup(person.dictionary('You perform a Ritual of Branding on $name. As symbols are engraved onto $his neck, $he yelps in pain. \n\nWith this you put serious claim on $his future life: $He will be unable to raise a hand against you and will be far less tempted to escape. '))
 		globals.resources.mana -= 10
-		globals.player.energy -= 20
+		globals.player.energy -= 10
 	elif confirm.get_meta('value') == 2:
 		person.brand = 'advanced'
-		globals.player.energy -= 20
-		globals.resources.mana -= 15
+		globals.player.energy -= 10
+		globals.resources.mana -= 20
+
 	slavetabopen()
 
 
@@ -532,7 +550,7 @@ func _on_relativesbutton_pressed():
 			if entry2.state == 'fetus':
 				continue
 			if entry2.sex == 'male':
-				text += "Son: " 
+				text += "Son: "
 			else:
 				text += "Daughter: "
 			text += getentrytext(entry2) + "\n"
@@ -559,10 +577,10 @@ func relativesselected(meta):
 	$stats/customization/relativespanel.visible = false
 	globals.slavetooltiphide()
 	globals.openslave(tempslave)
-	if tempslave != globals.player:
-		globals.main.get_node('MainScreen/slave_tab')._on_relativesbutton_pressed()
-	else:
-		globals.main._on_selfrelatives_pressed()
+	# if tempslave != globals.player:
+	globals.main.get_node('MainScreen/slave_tab')._on_relativesbutton_pressed()
+	# else:
+		# globals.main._on_selfrelatives_pressed()
 
 func _on_relativesclose_pressed():
 	$stats/customization/relativespanel.visible = false
@@ -793,7 +811,7 @@ func _on_piercing_pressed():
 	if person.consent == true || person == globals.player:
 		$stats/customization/piercingpanel/piercestate.set_text(person.dictionary('$name does not seems to mind you pierce $his private places.'))
 	else:
-		$stats/customization/piercingpanel/piercestate.set_text(person.dictionary('$name refuses to let you pierice $his private places'))
+		$stats/customization/piercingpanel/piercestate.set_text(person.dictionary('$name refuses to let you pierce $his private places'))
 	$stats/customization/piercingpanel/piercestate.visible = person != globals.player
 	for i in piercingdict:
 		if person.piercing.has(i) == false:
@@ -1002,13 +1020,15 @@ func _on_customize_pressed():
 
 
 func _on_fullbodycheck_pressed():
-	showfullbody = $stats/basics/fullbodycheck.pressed
+	globals.rules.showfullbody = $stats/basics/fullbodycheck.pressed
+	globals.overwritesettings()
 	slavetabopen()
 
 
 func naked():
 	get_tree().get_current_scene().imageselect("naked", person)
-	
+
+
 func regenerateportrait():
 	globals.constructor.randomportrait(person)
 	# Force redraw of player/slave and list.
@@ -1017,4 +1037,3 @@ func regenerateportrait():
 	else:
 		get_tree().get_current_scene().get_node("MainScreen/slave_tab").slavetabopen()
 		get_tree().get_current_scene().rebuild_slave_list()
-	

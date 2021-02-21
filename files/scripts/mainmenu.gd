@@ -16,8 +16,8 @@ enum StageName {
 #QMod - Dictionaries
 var locationDict = {
 	wimborn = {code = 'wimborn', name = 'Wimborn', descript = "Wimborn is the biggest local human city, its rich infrastructure and dense population allows even beginners to make out their living, as long as they are diligent.\n\n[color=aqua][center]Default Start — Recommended.[/center][/color]"},
-	gorn = {code = 'gorn', name = 'Gorn', descript = "Gorn is the central Orcish city with hot climate and strict ruleship. There's no Mage's Order, but local slave market is never empty."},
-	frostford = {code = 'frostford', name = 'Frostford', descript = "Frostford, located in cold, northern regions, mostly populated by Beastkin. Despite serene attitude of locals, it's covered in snow most of the time and limiting food sources makes it difficult to survive without reasonable preparations and trustworthy people."},
+	gorn = {code = 'gorn', name = 'Gorn', descript = "Gorn is the central Orcish city with hot climate and strict ruleship. There's no Mage's Order, but local slave market is never empty.\n\n\n[color=yellow][center]Not recommended for inexperienced players.[/center][/color]"},
+	frostford = {code = 'frostford', name = 'Frostford', descript = "Frostford, located in cold, northern regions, mostly populated by Beastkin. Despite serene attitude of locals, it's covered in snow most of the time and limiting food sources makes it difficult to survive without reasonable preparations and trustworthy people.\n[color=yellow][center]Not recommended for inexperienced players.[/center][/color]"},
 }
 
 var racebonusdict = {
@@ -122,6 +122,7 @@ var introText02 = "Although you have managed to dodge any sort of terrible fate,
 #QMod - Refactored
 func _ready():
 	var constantsloader = load("res://files/constmodinstal.gd").new()
+	load(globals.modfolder + "/Constants/constantsmod.gd").new()
 	constantsloader.run()
 	#System/OS + global checks and settings	
 	_ready_system_check()
@@ -370,7 +371,7 @@ func _display_savegame_info(node):
 			
 	var text
 	if globals.savelist.has(filesname): #Load savegame info box - portrait, player name, gold, current day, slave count
-		if globals.savelist[filesname].has('portrait') && globals.loadimage(globals.savelist[filesname].portrait):
+		if globals.savelist[filesname].has('portrait') && globals.canloadimage(globals.savelist[filesname].portrait):
 			$TextureFrame/SavePanel/loadimage.set_texture(globals.loadimage(globals.savelist[filesname].portrait))
 		else:
 			$TextureFrame/SavePanel/loadimage.set_texture(null)
@@ -656,6 +657,14 @@ func _on_quickstart_pressed():
 	startSlave = globals.newslave(slaveDefaults.race, slaveDefaults.age, slaveDefaults.sex, 'poor')	
 	player.imageportait = playerPortraits[randi()%playerPortraits.size()]
 	startSlave.cleartraits()
+
+	var traitpool = []
+	for i in globals.origins.traitlist.values():
+		if i.tags.has("secondary") || forbiddentraits.has(i):
+			continue
+		traitpool.append(i.name)
+	slaveTrait = globals.randomfromarray(traitpool)
+	startSlaveHobby = globals.randomfromarray(slaveHobbies)
 	_on_slaveconfirm_pressed()
 
 	
@@ -932,6 +941,7 @@ func _process_stage6_sex_options():
 			get_node("TextureFrame/newgame/stage6/penis").add_item(i)
 			if makeoverPerson.penis == i:
 				get_node("TextureFrame/newgame/stage6/penis").select(get_node("TextureFrame/newgame/stage6/penis").get_item_count()-1)
+		for i in ['none', 'small', 'average', 'big']:
 			get_node("TextureFrame/newgame/stage6/balls").add_item(i)
 			if makeoverPerson.balls == i:
 				get_node("TextureFrame/newgame/stage6/balls").select(get_node("TextureFrame/newgame/stage6/balls").get_item_count()-1)
@@ -1018,12 +1028,12 @@ func _process_stage6_locked_options():
 	get_node("TextureFrame/newgame/stage6/penistype").set_disabled(true)	
 	
 func _option_select(item, button):
-	if button.get_name() == 'tits':
-		makeoverPerson.titssize = button.get_item_text(item)
-	elif button.get_name() in ['penis','skin']:
-		makeoverPerson[button.get_name()] = button.get_item_text(item)
-	else:
+	if !button.get_name() in ['penis','tits']:
 		makeoverPerson[button.get_name()] = button.get_item_text(item).replace(" ", "_")
+	elif button.get_name() == 'tits':
+		makeoverPerson.titssize = button.get_item_text(item)
+	elif button.get_name() == 'penis':
+		makeoverPerson.penis = button.get_item_text(item)
 	_update_stage6()
 	
 func _update_stage6():

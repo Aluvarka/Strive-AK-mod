@@ -36,14 +36,10 @@ static func randhaircolor():
 	return text
 
 static func randanyhaircolor():
-	var text
-	text = ['red', 'auburn', 'brown', 'black', 'white', 'green', 'purple', 'blue', 'blond', 'red']
-	text = text[randi()%text.size()]
-	return text
+	return globals.randomfromarray(globals.allhaircolors)
 
 static func randanyeyecolor():
-	var text = ['blue', 'green', 'brown', 'hazel', 'black', 'gray', 'purple', 'blue', 'blond', 'red', 'auburn']
-	return text[randi()%text.size()]
+	return globals.randomfromarray(globals.alleyecolors)
 
 static func randskincolor():
 	var text = ['pale', 'fair', 'olive', 'tan', 'brown', 'dark', 'blue', 'purple', 'pale blue', 'green','teal']
@@ -76,13 +72,13 @@ func randcombspec():
 
 func randsexspec():
 	var text
-	text = ['nympho', 'geisha','housekeeper']
+	text = ['nympho', 'geisha', 'housekeeper']
 	return text[randi()%text.size()]
 
 #Leonais and Rendrassa's Quests func start
 static func randbeastkin():
 	var text
-	text = ['Beastkin Wolf', 'Beastking Cat', 'Beastkin Fox', 'Beastkin Bunny', 'Beastkin Tanuki']
+	text = ['Beastkin Wolf','Beastking Cat','Beastkin Fox','Beastkin Bunny','Beastkin Tanuki']
 	text = text[randi()%text.size()]
 	return text
 #Leonais and Rendrassa's Quests func end
@@ -405,7 +401,7 @@ func questarray():
 		quest028 = {
 			code = '028',
 			shortdescription = "A local slaver look for fresh meat.",
-			description = "A member of local slaveguild try to find person who suit him. He is looking for $sex $age",
+			description = "A member of local slaveguild try to find person who suit him.",
 			reqs = [['conf','lte', round(rand_range(20,50))],['wit','gte', round(rand_range(40,60))]],
 			reqstemp = [['age','eq',randage()],['sex', 'eq', randsex()],['race','eq',commonrace()]],
 			reqsfunc = [],
@@ -417,7 +413,7 @@ func questarray():
 		quest029 = {
 			code = '029',
 			shortdescription = "A local looking for young innocent slave",
-			description = "A member of local pervert club try to find innocent $child of $age age",
+			description = "A member of local pervert club try to find innocent of young age.",
 			reqs = [['obed','gte', 80],['beauty','gte', 35]],
 			reqstemp = [['age','neq','adult'],['sex', 'eq', randsex()]],
 			reqsfunc = ['virgin'],
@@ -429,20 +425,67 @@ func questarray():
 		quest030 = {
 			code = '030',
 			shortdescription = "Rich man looking for good, cute and obedient pet",
-			description = "A member of local pervert club try to find suitabe pet. $he must be $age age and totally submissive",
+			description = "A member of local pervert club try to find suitabe pet. $he must be $sex and totally submissive",
 			reqs = [['obed','gte', 100],['asser','lte',40],['conf','lte',30],['beauty','gte', round(rand_range(50,70))]],
-			reqstemp = [['age','eq', randage()],['sex', 'eq', randsex()]],
+			reqstemp = [['sex', 'eq', randsex()]],
 			reqsfunc = [],
 			time = round(rand_range(7,14)),
 			reward = round(rand_range(50,82))*10,
 			location = ['any'],
 			difficulty = 'easy',
 		},
+		quest031 = {
+			code = '031',
+			shortdescription = 'Looking for a suitable mate. ',
+			description = "A member of the $race desires a worthy mate for reproductive purposes. The slave must be at least average in appearance and open to commands. ",
+			reqs = [['obed','gte', 80],['beauty','gte',50]],
+			reqstemp = [['sex', 'eq', randsex()], ['race','eq',rarerace()]],
+			reqsfunc = ['nobadtraits'],
+			time = round(rand_range(6,10)),
+			reward = round(rand_range(80,110))*10,
+			location = ['any'],
+			difficulty = 'medium',
+		},
+		quest032 = {
+			code = '032',
+			shortdescription = "A local slaver look for fresh meat.",
+			description = "A member of local slaveguild try to find person who suit him.",
+			reqs = [['beauty','gte',40],['origins','neq','slave']],
+			reqstemp = [['race','eq',commonrace()]],
+			time = round(rand_range(5,10)),
+			reward = round(rand_range(55,85))*10,
+			location = ['any'],
+			difficulty = 'easy',
+		},
+		quest033= {
+			code = '033',
+			shortdescription = "A local slaver look for fresh meat.",
+			description = "A member of local slaveguild try to find person who suit him.",
+			reqs = [['beauty','gte',50],['origins','gte','poor']],
+			reqstemp = [['race','eq',commonrace()]],
+			reqsfunc = ['goodhealth'],
+			time = round(rand_range(5,10)),
+			reward = round(rand_range(85,115))*10,
+			location = ['any'],
+			difficulty = 'medium',
+		},
+		quest034 = {
+			code = '030',
+			shortdescription = "A local slaver look for fresh meat.",
+			description = "A member of local slaveguild try to find person who suit him.",
+			reqs = [['beauty','gte',60],['origins','gte','commoner']],
+			reqstemp = [['race','eq',rarerace()]],
+			reqsfunc = ['nobadtraits','goodhealth'],
+			time = round(rand_range(5,10)),
+			reward = round(rand_range(115,145))*10,
+			location = ['any'],
+			difficulty = 'hard',
+		},
 		####   Rendrassa's Quests
 		quest124 = {
 			code = '124',
 			questreq = globals.rules.furry == true,
-			shortdescription = 'An anti slavery advocate is rescuing his fellow beastkin. ',
+			shortdescription = 'An anti slavery advocate is rescuing his fellow Beastkin. ',
 			description = 'A local beastkin is doing his part to buy enslaved beastkin of any type to restore them to freedom. His only requirement is they be pure breastkin. Taming is not required. ',
 			reqs = [['race','eq', randbeastkin()]],
 			reqstemp = [['sex', 'eq', randsex()]],
@@ -490,18 +533,6 @@ func questarray():
 			location = ['any'],
 			difficulty = 'medium',
 		},
-		quest128 = {
-			code = '128',
-			shortdescription = 'Looking for a suitable mate. ',
-			description = "A member of the $race desires a worthy mate for reproductive purposes. The slave must be at least average in appearance and open to commands. ",
-			reqs = [['obed','gte', 80],['beauty','gte',50]],
-			reqstemp = [['sex', 'eq', randsex()], ['race','eq',rarerace()]],
-			reqsfunc = [],
-			time = round(rand_range(6,10)),
-			reward = round(rand_range(80,110))*10,
-			location = ['any'],
-			difficulty = 'medium',
-		},
 		####   Leo's Quest
 		quest201 = {
 			code = '201',
@@ -519,7 +550,18 @@ func questarray():
 	return questsarray
 
 #warning-ignore:unused_class_variable
-var reqsfuncdescript = {nobadtraits = 'No Negative Physical Traits.', virgin = 'Intake virgin.'}
+var reqsfuncdescript = {nobadtraits = 'No Negative Physical Traits. ', virgin = 'Intake virgin. ', goodhealth = 'In good health. '}
+
+
+
+
+
+func goodhealth(person):
+	var result = true
+	if person.stats.health_max*0.74 >= person.stats.health_cur:
+		result = false
+		
+# func 
 
 func nobadtraits(person):
 	var result = true

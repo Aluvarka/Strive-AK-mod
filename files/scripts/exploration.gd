@@ -366,26 +366,6 @@ func buildslave(i):
 		slavetemp.health = slavetemp.stats.health_max
 	return slavetemp
 
-func enemyinfo():
-	var text = ''
-	if enemygroup.units.size() <= 3:
-		text = "Number: " + str(enemygroup.units.size())
-	else:
-		text = "Estimate number: " + str(max(round(enemygroup.units.size() + rand_range(-2,2)),3))
-	var total = 0
-	for i in enemygroup.units:
-		if i.capture != null:
-			total += i.capture.level
-		elif deeperregion:
-			total += ceil(i.level * 1.3)
-		else:
-			total += i.level
-	text += "\nEstimated level: " + str(max(1,round(total/enemygroup.units.size()) + round(rand_range(-1,1))))
-	text += '\nGroup: ' + enemygroup.units[0].faction
-	if enemygroup.captured != null && enemygroup.captured.size() >= 1:
-		text += "\n\nHave other persons involved. "
-	outside.get_node("textpanelexplore/enemyportrait").set_texture(enemygroup.units[0].icon)
-	outside.get_node("textpanelexplore/enemyinfo").set_bbcode(text)
 
 func enemyinfoclear():
 	outside.get_node("textpanelexplore/enemyportrait").set_texture(null)
@@ -393,6 +373,39 @@ func enemyinfoclear():
 
 func enemylevelup(person, levelarray):
 	var level = round(rand_range(levelarray[0], levelarray[1]))
+	#----------------------------------------------------------
+	var localzone	
+	if currentzone.tags.find("wimbornoutskirts") >= 0:
+		localzone = 'wimbornoutskirts'
+	elif currentzone.tags.find("prairie") >= 0 || currentzone.tags.find("forest") >= 0 || currentzone.tags.find("gornoutskirts") >= 0:
+		localzone = 'prairie'
+	elif currentzone.tags.find("elvenforest") >= 0 || currentzone.tags.find("grove") >= 0 || currentzone.tags.find("frostfordoutskirts") >= 0:
+		localzone = 'elvenforest'
+	elif currentzone.tags.find("amberguardforest") >= 0 || currentzone.tags.find("mountains") >= 0 || currentzone.tags.find("sea") >= 0:
+		localzone = 'amberguardforest'
+	elif currentzone.tags.find("marsh") >= 0 || currentzone.tags.find("mountaincave") >= 0 || currentzone.tags.find("undercitytunnels") >= 0:
+		localzone = 'marsh'
+	elif currentzone.tags.find("undercityruins") >= 0 || currentzone.tags.find("dragonnests") >= 0 || currentzone.tags.find("redcave") >= 0 || currentzone.tags.find("culthideout") >= 0 || currentzone.tags.find("cavelake") >= 0 || currentzone.tags.find("darkness") >= 0:
+		localzone = 'undercityruins'
+	else:
+		localzone = 'marsh'
+	if level <= globals.state.averagegrouplvl:
+		if localzone == 'wimbornoutskirts':
+			level = 1+round(globals.state.averagegrouplvl/3-2)
+		elif localzone == 'prairie':
+			level = round(globals.state.averagegrouplvl/3+rand_range(1,3))
+		elif localzone == 'elvenforest':
+			level = round(globals.state.averagegrouplvl/2+rand_range(2,4))
+		elif localzone =='amberguardforest':
+			level = round(globals.state.averagegrouplvl/2+rand_range(4,5))
+		elif localzone in 'marsh':
+			level = round(globals.state.averagegrouplvl+rand_range(2,3))
+		elif localzone in 'undercityruins':
+			level = round(globals.state.averagegrouplvl+rand_range(-1,3))
+	print(level)
+	if enemygroup.captured != null && enemygroup.captured != ['thugvictim']:
+		level = round((min(max(level, 1),50))/2)
+	#----------------------------------------------------------
 	var statdict = ['sstr','sagi','smaf','send']
 	var skillpoints = abs(level-person.level)*variables.skillpointsperlevel
 	while skillpoints > 0 && statdict.size() > 0:
@@ -419,6 +432,27 @@ func enemylevelup(person, levelarray):
 			person.skillpoints = max(person.skillpoints - skillpoints, 0)
 	person.level = level
 	person.health = person.stats.health_max
+	
+func enemyinfo():
+	var text = ''
+	if enemygroup.units.size() <= 3:
+		text = "Number: " + str(enemygroup.units.size())
+	else:
+		text = "Estimate number: " + str(max(round(enemygroup.units.size() + rand_range(-2,2)),3))
+	var total = 0
+	for i in enemygroup.units:
+		if i.capture != null:
+			total += i.capture.level
+		elif deeperregion:
+			total += ceil(i.level * 1.3)
+		else:
+			total += i.level
+	text += "\nEstimated level: " + str(max(1,round(total/enemygroup.units.size()) + round(rand_range(-1,1))))
+	text += '\nGroup: ' + enemygroup.units[0].faction
+	if enemygroup.captured != null && enemygroup.captured.size() >= 1:
+		text += "\n\nHave other persons involved. "
+	outside.get_node("textpanelexplore/enemyportrait").set_texture(enemygroup.units[0].icon)
+	outside.get_node("textpanelexplore/enemyinfo").set_bbcode(text)
 
 func buildenemies(enemyname = null):
 	if enemyname == null:
@@ -448,7 +482,7 @@ func buildenemies(enemyname = null):
 			count -= 1
 	for i in enemygroup.units:
 		if i.capture == true:
-			buildslave(i)
+			buildslave(i,true)
 
 
 func encounterbuttons(state = null):
@@ -615,7 +649,7 @@ func chestbash(person):
 		unlock = true
 		text = "$name easily smashes the chest's lock mechanism."
 	else:
-		if 60 - (chest.agility - person.sagi) * 10 >= rand_range(0,100):
+		if 60 - (chest.strength - person.sstr) * 10 >= rand_range(0,100):
 			text = "With some luck, $name manages to crack the chest open. "
 			unlock = true
 		else:
@@ -942,11 +976,12 @@ func enemyleave():
 				person.energy -= max(5-floor((person.sagi+person.send)/2),2)
 			elif person.health >= 1:
 				person.health -= max(5-floor((person.sagi+person.send)/3),1)
+				person.stress += max(5-floor((person.send)/3),4)
 			else:
-				if person.health <= 0:
+				if person.health <= 1:
 					globals.state.playergroup.erase(person.id)
-					for i in globals.state.playergroup:
-						globals.state.findslave(i).stress += rand_range(25,40)
+					for ii in globals.state.playergroup:
+						globals.state.findslave(ii).stress += rand_range(25,40)
 					person.death()
 	else:
 		globals.player.energy -= max(5-floor((globals.player.sagi+globals.player.send)/2),2)
@@ -960,7 +995,7 @@ func enemyleave():
 func enemyfight(soundkeep = false):
 	for i in globals.state.playergroup:
 		var person = globals.state.findslave(i)
-		var temp = round(rand_range(8,12)/(person.cour/65+person.mood/100))
+		var temp = round(rand_range(8,12)/(person.cour/65+person.persmood/100))
 		if person.traits.has("Coward"):
 			temp = temp*2
 		person.stress += temp
@@ -1017,12 +1052,13 @@ func enemydefeated():
 					globals.items.unequipitemraw(enemygear[i],unit.capture)
 					if randf() * 100 <= variables.geardropchance:
 						enemyloot.unstackables.append(enemygear[i])
-		
+		var rewards = unit.rewardpool
 		if int(globals.state.sidequests.ayda) == 14 && currentzone.code == 'gornoutskirts' && questitem == false && globals.itemdict.aydajewel.amount == 0:
-			unit.rewardpool.aydajewel = 5
+			rewards = rewards.duplicate(true)
+			rewards.aydajewel = 5
 			questitem = true
-		for i in unit.rewardpool:
-			var chance = unit.rewardpool[i]
+		for i in rewards:
+			var chance = rewards[i]
 			var bonus = 1
 			if ranger == true:
 				bonus += 0.4
@@ -1070,7 +1106,7 @@ func enemydefeated():
 		person.xp += round(expearned/(globals.state.playergroup.size()+1))
 		if person.levelupreqs.has('code') && person.levelupreqs.code == 'wincombat':
 			person.levelup()
-			text += person.dictionary("[color=green]Your decisive win inspired $name, and made $him unlock new potential. \n")
+			text += person.dictionary("[color=green]Your decisive win inspired $name, and made $him unlock new potential.[/color] \n")
 		if person.health > person.stats.health_max/1.3:
 			person.cour += rand_range(1,3)
 		if person.health < person.stats.health_max/4 && randf() >= 0.67:
@@ -1152,6 +1188,10 @@ func captureslave(person):
 		globals.state.backpack.stackables.rope -= variables.consumerope
 	for i in person.gear:
 		i = null
+	if globals.races[person.race.replace("Halfkin", "Beastkin")].uncivilized == true:
+		person.add_trait('Uncivilized')
+		if person.spec == 'tamer':
+			person.spec = null
 	captureeffect(person)
 	if person.health < person.stats.health_max/3 && randf() <= 0.67:
 		person.add_trait(globals.origins.traits('injury').name)
@@ -1332,8 +1372,6 @@ func defeatedchoice(ID, person, node):
 
 var secondarywin = false
 
-var rewardslave2
-
 func _on_confirmwinning_pressed(): #0 leave, 1 capture, 2 rape, 3 kill
 	var text = ''
 	var selling = false
@@ -1360,7 +1398,6 @@ func _on_confirmwinning_pressed(): #0 leave, 1 capture, 2 rape, 3 kill
 			if defeated.names[i] != 'Captured':
 				text += defeated.units[i].dictionary("You have left the $race $child alone.\n")
 			else:
-				
 				text += defeated.units[i].dictionary("You have released the $race $child and set $him free.\n")
 				globals.state.reputation[location] += rand_range(1,2)
 				if randf() < 0.25 + globals.state.reputation[location]/20 && reward == false:
@@ -1429,11 +1466,12 @@ func _on_confirmwinning_pressed(): #0 leave, 1 capture, 2 rape, 3 kill
 		main.popup(text)
 
 var rewardslave
+var rewardslavename
 
 func capturereward():
 	var text = ""
 	var buttons = [['Take no reward','capturedecide',1],['Ask for material reward','capturedecide',2],['Ask for sex','capturedecide',3],['Ask to join you','capturedecide',4]]
-	text = "As you are about to move on, the $race $child that you have rescued appeals to you. $His name is $name and $he's very thankful for your help. $name wishes to repay you somehow. "
+	text = "As you are about to move on, " + rewardslavename + " person, that you have rescued, appeals to you. $His name is $name and $he's very thankful for your help. $race $child wishes to repay you somehow.  "
 	
 	
 	main.dialogue(false,self,rewardslave.dictionary(text),buttons)
@@ -1514,6 +1552,8 @@ func gorn():
 	if ((globals.state.sidequests.ivran in ['tobetaken','tobealtered','potionreceived','notaltered'] || globals.state.mainquest >= 16) && !globals.state.decisions.has("mainquestslavers")) || globals.state.sandbox == true:
 		array.append({name = "Visit Alchemist", function = 'gornayda'})
 	array.append({name = "Gorn's Market (shop)", function = 'gornmarket'})
+	if globals.state.mainquest >= 3:
+		array.insert(2, {name = 'Visit Mercenary Guild', function = 'mercguildslaves', args = 'gornmerc'})
 	array.append({name = "Outskirts", function = 'zoneenter', args = 'gornoutskirts'})
 	if globals.state.location == 'gorn':
 		array.append({name = "Return to Mansion",function = 'mansion'})
@@ -1571,6 +1611,8 @@ func gornyris():
 			buttons.append({text = "Accept (200 Gold)", function = "gornyrisaccept", args = 2})
 			if globals.state.getCountStackableItem('deterrentpot','backpack') >= 1:
 				buttons.append({text = "Accept and use Deterrent potion (200 Gold)", function = "gornyrisaccept", args = 3})
+			else:
+				buttons.append({text = "Accept and use potion (200 Gold)", function = "gornyrisaccept", args = 3, disabled = true, tooltip = "You did not bring the appropriate potion."})
 		else:
 			buttons.append({text = "Accept (200 Gold)", function = "gornyrisaccept", args = 2, disabled = true})
 	elif globals.state.sidequests.yris == 3:
@@ -1582,6 +1624,10 @@ func gornyris():
 			text += "\n\n[color=yellow]You decide, that you should prepare before putting your money on the table.[/color] "
 			if globals.state.sidequests.yris < 5:
 				text += "\n\nPerhaps, somebody skilled in alchemy might shine some light upon your previous finding. "
+				if globals.state.getCountStackableItem('deterrentpot','backpack') < 1:
+					text += "\n\nYou will need another Deterrent potion for a fair fight. "
+			elif globals.state.getCountStackableItem('deterrentpot','backpack') < 1:
+				text += "\n\nYou will need another Deterrent potion to ensure your win. "
 			buttons.append({text = "Accept (1000 Gold)", function = "gornyrisaccept", args = 4, disabled = true})
 		else:
 			buttons.append({text = "Accept (1000 Gold)", function = "gornyrisaccept", args = 4})
@@ -1855,6 +1901,7 @@ func undercitylibraryfight():
 	enemyfight()
 
 func undercitylibrarywin():
+	winscreenclear()
 	generateloot(['zoebook', 1], globals.questtext.undercitybookafterabttle)
 	showlootscreen()
 	zoneenter("undercityruins")
@@ -1881,6 +1928,10 @@ func gornayda():
 	main.animationfade()
 	yield(main, 'animfinished')
 	scriptedareas.aydashop.gornayda()
+	
+
+func mercguildslaves(location):
+	outside.mercguildslaves(location)
 
 func frostford():
 	main.music_set('frostford')
@@ -1899,6 +1950,8 @@ func frostford():
 		array.append({name = "Invite Zoe to your mansion", function = 'frostfordzoe', args = 3})
 	array.append({name = "Visit local Slaver Guild", function = 'frostfordslaveguild'})
 	array.append({name = "Frostford's Market (shop)", function = 'frostfordmarket'})
+	if globals.state.mainquest >= 3:
+		array.insert(2, {name = 'Visit Mercenary Guild', function = 'mercguildslaves', args = 'frostfordmerc'})
 	array.append({name = "Outskirts", function = 'zoneenter', args = 'frostfordoutskirts'})
 	if globals.state.location == 'frostford':
 		array.append({name = "Return to Mansion",function = 'mansion'})
@@ -1977,6 +2030,7 @@ func umbra():
 	array.append({name = "Black Market (shop)", function = 'umbrashop'})
 	array.append({name = "Buy Slaves", function = 'umbrabuyslaves'})
 	array.append({name = "Sell Servants", function = 'umbrasellslaves'})
+	array.append({name = 'Visit Mercenary Guild', function = 'mercguildslaves', args = 'umbramerc'})
 	array.append({name = "Return to Mansion", function = 'mansionreturn'})
 	outside.buildbuttons(array,self)
 

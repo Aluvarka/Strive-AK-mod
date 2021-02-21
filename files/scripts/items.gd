@@ -66,7 +66,7 @@ var itemlist = {
 		code = 'teleportseal',
 		name = 'Teleportation Seal',
 		icon = load("res://files/images/items/teleportseal.png"),
-		description = "Magical divice allowing a single person to teleport to specified personal location. \n\n[color=yellow]Allows to send captured people to your mansion without going with them.[/color]",
+		description = "Magical device allowing a single person to teleport to specified personal location. \n\n[color=yellow]Allows to send captured people to your mansion without going with them.[/color]",
 		effect = "teleportsealeffect",
 		recipe = '',
 		cost = 60,
@@ -79,7 +79,7 @@ var itemlist = {
 		code = 'bandage',
 		name = 'Bandages',
 		icon = load("res://files/images/items/bandage.png"),
-		description = "A portable way to patch up an injured person. Restores 33% of health (20% if used recently).",
+		description = "A portable way to patch up an injured person. \n[color=green]Restores 33% of health (20% if used recently).[/color]",
 		effect = "bandageeffect",
 		recipe = '',
 		cost = 30,
@@ -224,7 +224,7 @@ var itemlist = {
 		code = 'youthingpot',
 		name = 'Youthing Elixir',
 		icon = load("res://files/images/items/youthingpot.png"),
-		description = "Causes a regression of users's physical growth. 'Cause the smaller, the cuter. ",
+		description = "Causes a regression of user's physical growth. 'Cause the smaller, the cuter. ",
 		effect = 'youthingpot',
 		recipe = 'recipeyouthingpot',
 		cost = 200,
@@ -484,7 +484,7 @@ var itemlist = {
 		code = 'gem',
 		name = 'Precious Gem',
 		icon = load("res://files/images/items/gemstone.png"),
-		description = "An unusually big precious gem. Traders will likely pay a huge sum for it. ",
+		description = "An unusually big precious gem. [color=green]Traders will likely pay a huge sum for it. [/color]",
 		effect = '',
 		recipe = '',
 		cost = 2500,
@@ -497,7 +497,7 @@ var itemlist = {
 		code = 'wolfhideg',
 		name = 'Wolf hide',
 		icon = load("res://mods/wolfhide.png"),
-		description = "Beautiful wolf hide. Good quality. Traders will likely pay a huge sum for it. ",
+		description = "Beautiful wolf hide. Good quality. [color=green]Traders will likely pay a huge sum for it. [/color]",
 		effect = '',
 		recipe = '',
 		cost = 125,
@@ -510,7 +510,7 @@ var itemlist = {
 		code = 'wolfhideb',
 		name = 'Wolf hide',
 		icon = load("res://mods/wolfhide.png"),
-		description = "Worn out wolf hide. Bad quality. Traders will likely pay a huge sum for it. ",
+		description = "Worn out wolf hide. Bad quality. [color=green]Traders will likely pay a huge sum for it. [/color]",
 		effect = '',
 		recipe = '',
 		cost = 50,
@@ -536,7 +536,7 @@ var itemlist = {
 		code = 'bearhide',
 		name = 'Bear hide',
 		icon = load("res://mods/bearhide.png"),
-		description = "Beautiful bear hide. Good quality. Traders will likely pay a huge sum for it. ",
+		description = "Beautiful bear hide. Good quality. [color=green]Traders will likely pay a huge sum for it. [/color]",
 		effect = '',
 		recipe = '',
 		cost = 250,
@@ -549,7 +549,7 @@ var itemlist = {
 		code = 'cougarhideg',
 		name = 'Good cougar hide',
 		icon = load("res://mods/cougarhide.png"),
-		description = "Beautiful cougar hide. Good quality. Traders will likely pay a huge sum for it. ",
+		description = "Beautiful cougar hide. Good quality. [color=green]Traders will likely pay a huge sum for it. [/color]",
 		effect = '',
 		recipe = '',
 		cost = 150,
@@ -562,7 +562,7 @@ var itemlist = {
 		code = 'cougarhideb',
 		name = 'Bad cougar hide',
 		icon = load("res://mods/cougarhide.png"),
-		description = "Worn out cougar hide. Bad quality. Traders will likely pay a huge sum for it. ",
+		description = "Worn out cougar hide. Bad quality. [color=green]Traders will likely pay a huge sum for it. [/color]",
 		effect = '',
 		recipe = '',
 		cost = 25,
@@ -577,7 +577,7 @@ var itemlist = {
 		icon = load("res://files/images/items/claritypot.png"),
 		description = "A strong mixture allowing recipient spend day at most active.",
 		effect = 'energeticeffect',
-		recipe = 'recipeclaritypot',
+		recipe = 'recipestrongenergetic',
 		cost = 1500,
 		type = 'potion',
 		toxicity = 15,
@@ -846,7 +846,7 @@ var itemlist = {
 		code = 'armorrobe',
 		name = "Wizard's Robe",
 		icon = "res://files/images/items/armorrobe.png",
-		description = "Despite what might appear as a clunky piece of clothing, combat robes allow the wearer to hold and hide various items and potions for quick and unexpected use and don't restrict movement. Outer fabric is easily torn to prevent grabbing and tuckling and can be quickly repaired with magic later. ",
+		description = "Despite what might appear as a clunky piece of clothing, combat robes allow the wearer to hold and hide various items and potions for quick and unexpected use and don't restrict movement. Outer fabric is easily torn to prevent grabbing and tackling and can be quickly repaired with magic later. ",
 		effect = [{type = 'incombat', effect = 'protection', effectvalue = 35, descript = "35% Protection"},{type = 'incombat', effect = 'armor', effectvalue = 4, descript = "+4 Armor"},{type = 'onequip', id = 'armormaf', effect = 'maf', effectvalue = 1, descript = "+1 Magic Affinity"}],
 		recipe = '',
 		reqs = null,
@@ -945,7 +945,7 @@ var itemlist = {
 		code = 'accslavecollar',
 		name = 'A Leather Slave Collar',
 		icon = "res://files/images/items/collar.png",
-		description = "This leather collar is designed to fit tightly around the neck. It has rings to which bindings can be attached.\n",
+		description = "This leather collar is designed to fit tightly around the neck. It has rings to which bindings can be attached.",
 		effect = [{type = 'onendday', effect = 'slavecollareffect', descript = "Increases Obedience by the end of a day. "}],
 		recipe = '',
 		reqs = null,
@@ -959,7 +959,7 @@ var itemlist = {
 		code = 'acchandcuffs',
 		name = 'A Pair Of Handcuffs',
 		icon = "res://files/images/items/handcuffs.png",
-		description = "These handcuffs are lightly padded but robust enough to secure even the most troublesome person.\n",
+		description = "These handcuffs are lightly padded but robust enough to secure even the most troublesome person.",
 		effect = [{type = 'onendday', effect = 'handcuffeffect', descript = "Increases Obedience by the end of a day and prevents escapes. "},{type = 'incombat', effect = 'restriction', effectvalue = '20', descript = ""}],
 		recipe = '',
 		reqs = null,
@@ -973,7 +973,7 @@ var itemlist = {
 		code = 'acctravelbag',
 		name = 'Travelling Bag',
 		icon = "res://files/images/items/bag.png",
-		description = "A great partner of any experienced adventurer. Despite minor wear, it looks really sturdy. \nIncreases party's total carry weight by 20. ",
+		description = "A great partner of any experienced adventurer. Despite minor wear, it looks really sturdy. \n[color=green]Increases party's total carry weight by 20. [/color]",
 		effect = [],
 		recipe = '',
 		reqs = null,
@@ -1003,7 +1003,7 @@ var itemlist = {
 		name = 'Ruby Amulet',
 		icon = "res://files/images/items/amuletruby.png",
 		description = "A luxury piece of jewelry with a trace of magic. ",
-		effect = [{type = 'incombat', effect = 'damage', effectvalue = 2, descript = "+2 Damage"}],
+		effect = [{type = 'incombat', effect = 'damage', effectvalue = 4, descript = "+4 Damage"}],
 		recipe = '',
 		reqs = null,
 		cost = 800,
@@ -1030,7 +1030,7 @@ var itemlist = {
 		code = 'weaponnaturestaff',
 		name = 'Staff of Nature',
 		icon = "res://files/images/items/naturestaff.png",
-		description = "A twisted branch infused with Nature's power. Strengthens weilder but is not a very effective weapon.\n[color=yellow]Requirements: 1 Magic Affinity[/color]",
+		description = "A twisted branch infused with Nature's power. Strengthens wielder but is not a very effective weapon.\n[color=yellow]Requirements: 1 Magic Affinity[/color]",
 		effect = [{type = 'incombat', effect = 'damage', effectvalue = 4, descript = "+4 Damage"},{type = 'onequip', effect = 'health', effectvalue = 0.15, descript = "+15% Health"},{type = 'onequip', effect = 'maf', effectvalue = 1, descript = "+1 Magic Affinity"}],
 		recipe = '',
 		reqs =  [{reqstat = 'smaf', oper = 'gte', reqvalue = 1}],
@@ -1254,7 +1254,7 @@ var itemlist = {
 		code = 'bdsmsuit',
 		name = "BDSM Suit",
 		icon = "res://mods/clothbdsm.png",
-		description = "Made of durable and flexible material, this suit limits the owner’s movement and leave their places exposed for torture. Ideal for training your slaves. ",
+		description = "Made of durable and flexible material, this suit limits the owner’s movement. Ideal for submissive training. ",
 		effect = [{type = 'incombat', effect = 'protection', effectvalue = -10, descript = "-10% Protection"},{type = 'onendday', effect = 'bdsmsuiteffect', descript = "Increases Obedience by the end of a day and prevents escapes. \n Increase submission by the end of the day. \n Lust grows by the end of the day. "},{type = 'incombat', effect = 'restriction', effectvalue = '30', descript = ""}],
 		recipe = '',
 		reqs = [],
@@ -1268,13 +1268,69 @@ var itemlist = {
 		code = 'vhelmet',
 		name = "Helm",
 		icon = "res://mods/vikinghelm.png",
-		description = "Good helm with mail to protect your little head and neck.  ",
+		description = "Good helm with mail to protect your little head and neck. ",
 		effect = [{type = 'incombat', effect = 'protection', effectvalue = 5, descript = "5% Protection"},{type = 'incombat', effect = 'armor', effectvalue = 3, descript = "+3 Armor"}],
 		recipe = '',
 		reqs = [],
 		cost = 300,
 		type = 'gear',
 		subtype = 'accessory',
+		weight = 5,
+		amount = 0,
+	},
+	shortbow = {
+		code = 'shortbow',
+		name = "Bow",
+		icon = "res://mods/bow1.png",
+		description = "This fine shortbow has been expertly constructed of extraordinary firewood.\n[color=yellow]Requirements: 1 Strength, 2 Agility[/color] ",
+		effect = [{type = 'incombat', effect = 'damage', effectvalue = 6, descript = "+6 Damage"}, {type = 'passive', effect = 'ranged', effectvalue = null, descript = "It's ranged weapon"}],
+		recipe = '',
+		reqs = [{reqstat = 'sstr', oper = 'gte', reqvalue = 1},{reqstat = 'sagi', oper = 'gte', reqvalue = 2}],
+		cost = 800,
+		type = 'gear',
+		subtype = 'weapon',
+		weight = 5,
+		amount = 0,
+	},
+	hunterbow = {
+		code = 'hunterbow',
+		name = "Hunter Bow",
+		icon = "res://mods/bow2.png",
+		description = "This fine shortbow has been expertly constructed of extraordinary firewood. Its string is made from favorable bear sinew.\n[color=yellow]Requirements: 2 Strength, 3 Agility[/color] ",
+		effect = [{type = 'incombat', effect = 'damage', effectvalue = 8, descript = "+8 Damage"}, {type = 'passive', effect = 'ranged', effectvalue = null, descript = "It's ranged weapon"}, {type = 'incombat', effect = 'speed', effectvalue = 5, descript = "+5 speed"}],
+		recipe = '',
+		reqs = [{reqstat = 'sstr', oper = 'gte', reqvalue = 2},{reqstat = 'sagi', oper = 'gte', reqvalue = 3}],
+		cost = 1000,
+		type = 'gear',
+		subtype = 'weapon',
+		weight = 5,
+		amount = 0,
+	},
+	elvenbow = {
+		code = 'elvenbow',
+		name = "Elven Bow",
+		icon = "res://mods/bow3.png",
+		description = "This intricate compound bow has been skillfully constructed of powerful ipe wood.\n[color=yellow]Requirements: 2 Strength, 4 Agility[/color] ",
+		effect = [{type = 'incombat', effect = 'damage', effectvalue = 10, descript = "+10 Damage"}, {type = 'passive', effect = 'ranged', effectvalue = null, descript = "It's ranged weapon"}, {type = 'passive', effect = 'armorbreaker', descript = "Bypass 8 Armor"}],
+		recipe = '',
+		reqs = [{reqstat = 'sstr', oper = 'gte', reqvalue = 2},{reqstat = 'sagi', oper = 'gte', reqvalue = 4}],
+		cost = 1500,
+		type = 'gear',
+		subtype = 'weapon',
+		weight = 5,
+		amount = 0,
+	},
+	crossbow = {
+		code = 'crossbow',
+		name = "Dwarven Bow",
+		icon = "res://mods/bow4.png",
+		description = "Don't aim at people.\n[color=yellow]Requirements: 4 Strength, 2 Agility[/color] ",
+		effect = [{type = 'incombat', effect = 'damage', effectvalue = 10, descript = "+10 Damage"}, {type = 'passive', effect = 'ranged', effectvalue = null, descript = "It's ranged weapon. "}, {type = 'incombatphyattack', effect = 'protpenetration', effectvalue = 1, descript = 'Ignores protection'}],
+		recipe = '',
+		reqs = [{reqstat = 'sstr', oper = 'gte', reqvalue = 4},{reqstat = 'sagi', oper = 'gte', reqvalue = 2}],
+		cost = 1500,
+		type = 'gear',
+		subtype = 'weapon',
 		weight = 5,
 		amount = 0,
 	},
@@ -1369,6 +1425,11 @@ var recipeclaritypot = {
 	oblivionpot = 1,
 	regressionpot = 1,
 }
+var recipestrongenergetic = {
+	gem = 1,
+	remains = 3,
+	basicsolutioning = 2,
+}
 
 
 
@@ -1390,15 +1451,19 @@ func end(value):
 
 func cour(value):
 	person.stats.cour_base += value
+	return ''
 
 func conf(value):
 	person.stats.conf_base += value
+	return ''
 
 func wit(value):
 	person.stats.wit_base += value
+	return ''
 
 func charm(value):
 	person.stats.charm_base += value
+	return ''
 
 func health(value):
 	person.stats.health_bonus += value
@@ -1415,6 +1480,14 @@ func healthperc(value):
 func energy(value):
 	person.stats.energy_max += value
 
+func energy_cur(value):
+	person.energy += value
+	return ''
+
+func toxicity(value):
+	person.energy -= value
+	return ''
+
 func beauty(value):
 	person.beautytemp += value
 
@@ -1427,19 +1500,16 @@ func luxury(value):
 
 
 func fear(value):
-	var text = ''
 	person.fear_raw(value)
-	return text 
+	return ''
 
 func stress(value):
-	var text = ''
 	person.stress -= value
-	return text
+	return ''
 
 func obedmod(value):
-	var text = ''
 	person.stats.obed_mod += value
-	return text
+	return ''
 
 #caution: abilities gained from items should not be acquirable by other means
 func abil(value):
@@ -1610,7 +1680,7 @@ func createunstackable(itemcode):
 func aphrodisiaceffect():
 	if person == globals.player:
 		return('You decide this potion is not going to benefit you at all.')
-	person.lust += 35
+	person.lust += 70
 	var text = person.dictionary("After ingesting an aphrodisiac, $name begins showing signs of growing excitement.")
 	return text
 
@@ -1638,7 +1708,7 @@ func hairgrowtheffect():
 		person.hairlength = list[list.find(person.hairlength)+1]
 		text = "Applying the elixir to $his hair, $name shows almost instant growth as $his hair gains new length."
 	else:
-		text = "The Hairgrowth Elixir isn't effective as $name applies it, as $his hair is already overly long."
+		text = "The Hair Growth Elixir isn't effective as $name applies it, as $his hair is already overly long."
 	if person == globals.player:
 		text = text.replace("$name's", 'your')
 		text = text.replace("$name", 'you')
@@ -1918,6 +1988,7 @@ func unequipitemraw(item, person = person):
 				call(i.effect, toggleStrNeg(i.effectvalue))
 			else:
 				call(i.effect, -i.effectvalue)
+	person.health += 0
 	item.owner = null
 
 func unequipall(person):
@@ -1969,6 +2040,7 @@ func teleportunlock(item):
 	else:
 		globals.get_tree().get_current_scene().get_node("outside").sebastianquest(4)
 		globals.get_tree().get_current_scene().get_node("outside").shopclose()
+		globals.get_tree().get_current_scene().get_node("outside/shoppanel/inventory")._on_inventoryclose_pressed()
 
 func aydabrandy(item):
 	globals.resources.gold -= item.cost

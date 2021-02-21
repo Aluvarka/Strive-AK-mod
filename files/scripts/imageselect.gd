@@ -83,11 +83,11 @@ func createimagethumbnail(originpath, newpath):
 func resort():
 	var strictsearch = get_node("racelock").is_pressed()
 	var gender = person.sex
-	var race = person.race
-	var counter = 0
 	if gender == 'futanari':
 		gender = 'female'
-	race = race.replace("Beastkin ", "").replace("Halfkin ", "")
+	var race = person.race.replace("Beastkin ", "").replace("Halfkin ", "").replace(" ","")
+	var searchText = get_node("search").get_text()
+	var noImages = true
 	
 	for i in get_node("ScrollContainer/GridContainer").get_children():
 		i.hide()
@@ -96,29 +96,26 @@ func resort():
 		if strictsearch == true:
 			if i.get_meta('type').findn(race) < 0:
 				continue 
-		if strictsearch == false && get_node("search").get_text() != '' && i.get_node("Label").get_text().findn(get_node("search").get_text()) < 0:
+		elif !searchText.empty() && i.get_meta('type').findn(searchText) < 0:
 			continue
 		i.show()
-		counter += 1
-	if counter < 1:
-		get_node("noimagestext").visible = true
-	else:
-		get_node("noimagestext").visible = false
+		noImages = false
+	get_node("noimagestext").visible = noImages
 
 func setslaveimage(path):
 	var assignnude = false
 	var nudeinpm = path.replace(globals.setfolders.fullbody, globals.setfolders.fullnaked)
 	if mode == 'portrait':
 		person.imageportait = path
-		path = path.replace(globals.setfolders.portraits, globals.setfolders.fullbody)
-		if $assignboth.pressed && globals.loadimage(path) != null:
-			person.imagefull = path
+		if $assignboth.pressed && globals.canloadimage(path.replace("portraits", 'bodies')) != null:
+			person.imagefull = path.replace("portraits",'bodies')
+			globals.expansion.updateBodyImage(person)
 			assignnude = true
 	elif mode == 'body':
 		person.imagefull = path
-		path = path.replace(globals.setfolders.fullbody, globals.setfolders.portraits)
-		if $assignboth.pressed && globals.loadimage(path) != null:
-			person.imageportait = path
+		globals.expansion.updateBodyImage(person)
+		if $assignboth.pressed && globals.canloadimage(path.replace("bodies","portraits")) != null:
+			person.imageportait = path.replace('bodies',"portraits")
 			assignnude = true
 	elif mode == 'naked':
 		person.nakedimgfull = path
@@ -185,6 +182,7 @@ func _on_addcustom_pressed():
 
 func _on_FileDialog_file_selected( path ):
 	var dir = Directory.new()
+	var path2 = path.substr(path.find_last('/'), path.length()-path.find_last('/'))
 	dir.copy(path, path.replace(path.get_base_dir() + "/", portraitspath))
 	buildimagelist()
 

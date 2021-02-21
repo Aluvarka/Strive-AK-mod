@@ -75,7 +75,8 @@ func _on_trainingabils_pressed():
 func chooseability(ability):
 	var text = ''
 	var confirmbutton = get_node("trainingabilspanel/abilityconfirm")
-	var dict = {'sstr': 'Strength', 'sagi' : 'Agility', 'smaf': 'Magic', 'level': 'Level'}
+	var dict = {'sstr': 'Strength', 'sagi' : 'Agility', 'smaf': 'Magic', 'level': 'Level', 'race': 'Primary Race'}
+
 	for i in get_node("trainingabilspanel/ScrollContainer/VBoxContainer").get_children():
 		if i.get_text() != ability.name:
 			i.set_pressed(false)
@@ -101,7 +102,14 @@ func chooseability(ability):
 				ref = ref[ii]
 		else:
 			ref = person[i]
-		if ref < ability.reqs[i]:
+		###---Added by Expansion---### Racial Abilities
+		if i == 'race':
+			if ref != ability.reqs[i]:
+				confirmbutton.set_disabled(true)
+				text += '[color=#ff4949]'+dict[i] + ': ' + str(ability.reqs[i]) + '[/color], '
+			else:
+				text += '[color=green]'+dict[i] + ': ' + str(ability.reqs[i]) + '[/color], '
+		elif ref < ability.reqs[i]:
 			confirmbutton.set_disabled(true)
 			text += '[color=#ff4949]'+dict[i] + ': ' + str(ability.reqs[i]) + '[/color], '
 		else:
@@ -251,7 +259,7 @@ func _on_talk_pressed(mode = 'talk'):
 	elif person.unique == 'Ayda' && globals.state.sidequests.ayda in [9,12,15]:
 		globals.events.aydapersonaltalk()
 		return
-	if nakedspritesdict.has(person.unique):
+	if nakedspritesdict.has(person.unique) && person.imagetype != 'naked':
 		if person.obed >= 50 || person.stress < 10:
 			sprite = [[nakedspritesdict[person.unique].clothcons, 'pos1', 'opac']]
 		else:
@@ -367,7 +375,7 @@ func zoequest():
 
 func _on_callconfirm_pressed():
 	get_node("callorder").visible = false
-	var text = "You have ordered $name to call $master from this moment. "
+	var text = "You have ordered $name to call you $master from this moment. "
 	if person.traits.has('Mute'): text += "However $he only returned you a guilty look. "
 	person.masternoun = get_node("callorder/LineEdit").get_text()
 	get_tree().get_current_scene().close_dialogue()

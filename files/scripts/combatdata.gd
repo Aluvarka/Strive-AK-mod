@@ -1229,6 +1229,9 @@ var enemypool = {
 		gear = 'guard',
 		skills = [],
 	},
+
+
+
 	ivran = {
 		name = 'An Elf Leader',
 		code = 'ivran',
@@ -1488,19 +1491,19 @@ var enemyequips = {
 	},
 	medbandits = {
 		armor = [['armorleather+',3], ['armorchain', 3], ['armorchain+', 1], ['armorninja', 0.5], ['armorrogue', 0.1]],
-		weapon = [['weaponsword', 4], ['weaponsword+', 1], ['weapondagger+', 2], ['weaponhammer', 0.1], ['blackjckclub', 0.3]],
+		weapon = [['weaponsword', 4], ['weaponsword+', 1], ['weapondagger+', 2], ['weaponhammer', 0.1], ['blackjckclub', 0.3], ['shortbow', 0.2]],
 		accessory = [['accamuletruby', 1], ['accslavecollar', 1], ['accslavecollar+', 0.3], ['vhelmet', 1], ['nothing',10]],
 		abilities = [],
 	},
 	strongbandits = {
 		armor = [['armorchain', 8], ['armorchain+', 2], ['armorninja', 1], ['armorninja+', 0.1], ['armorrogue', 0.2], ['armorplate', 0.5], ['armorplate+', 0.1]],
-		weapon = [['weaponsword', 4], ['weaponsword+', 1], ['weaponclaymore', 2], ['weaponclaymore+', 0.3], ['weaponhammer', 1], ['weaponhammer+', 0.2], ['blackjckclub', 1], ['blackjckclub+', 0.2]],
+		weapon = [['weaponsword', 4], ['weaponsword+', 1], ['weaponclaymore', 2], ['weaponclaymore+', 0.3], ['weaponhammer', 1], ['weaponhammer+', 0.2], ['blackjckclub', 1], ['blackjckclub+', 0.2], ['shortbow', 1], ['shortbow+', 0.3]],
 		accessory = [['accamuletruby', 1], ['accamuletemerald',1], ['accslavecollar', 2], ['accslavecollar+', 0.5], ['accamuletruby+', 0.3], ['accamuletemerald+',0.3], ['vhelmet', 1], ['vhelmet+', 0.3]],
 		abilities = [],
 	},
 	elfs = {
 		armor = [['armorchain', 3], ['armorchain+', 1], ['armorelvenchain', 10], ['armorelvenchain+', 2]],
-		weapon = [['weaponelvensword', 4], ['weaponelvensword+', 1], ['weapondagger+', 2]],
+		weapon = [['weaponelvensword', 4], ['weaponelvensword+', 1], ['weapondagger+', 2], ['elvenbow', 1], ['elvenbow+', 0.5]],
 		accessory = [['accamuletemerald', 1], ['accamuletemerald+', 1], ['vhelmet', 1], ['vhelmet+', 1],['nothing',10]],
 		abilities = [],
 	},
@@ -1511,25 +1514,25 @@ var enemyequips = {
 	},
 	forest = {
 		armor = [['armorleather',10], ['armorleather+', 3]],
-		weapon = [['nothing', 5],['weapondagger+', 3],['weaponnaturestaff', 2],['weaponnaturestaff+', 0.5]],
+		weapon = [['nothing', 5],['weapondagger+', 3],['weaponnaturestaff', 2],['weaponnaturestaff+', 0.5], ['shortbow', 1]],
 		accessory = [['accamuletemerald', 1], ['accamuletemerald+', 0.2],['nothing',3]],
 		abilities = [],
 	},
 	guard = {
 		armor = [ ['armorchain', 10], ['armorchain+', 3], ['armorplate',1], ['armorplate+', 0.3]],
-		weapon = [['weaponsword', 5], ['weaponsword+', 1],  ['weaponhammer', 1], ['weaponhammer+', 0.2]],
+		weapon = [['weaponsword', 5], ['weaponsword+', 1],  ['weaponhammer', 1.5], ['shortbow', 1], ['crossbow', 0.2], ['weaponhammer+', 0.2]],
 		accessory = [['accgoldring', 1], ['vhelmet', 1], ['nothing',10]],
 		abilities = [],
 	},
 	advent = {
 		armor = [['armorchain', 10], ['armorchain+', 3], ['armorplate',1], ['armorplate+', 0.3], ['armorcarapace',0.8], ['armorleather+', 15], ['armorelvenchain', 10], ['armorelvenchain+', 2], ['armorninja', 5], ['armorninja+', 1], ['armorrogue', 0.5]],
-		weapon = [['weaponsword', 10], ['weaponsword+', 1],  ['weaponhammer', 2], ['weaponhammer+', 0.2], ['blackjckclub', 2], ['blackjckclub+', 0.5],['weaponelvensword', 4], ['weaponelvensword+', 1], ['weapondagger+', 2],['weaponnaturestaff', 2],['weaponnaturestaff+', 0.5]],
+		weapon = [['weaponsword', 10], ['weaponsword+', 1],  ['weaponhammer', 2], ['weaponhammer+', 0.2], ['blackjckclub', 2], ['blackjckclub+', 0.5],['weaponelvensword', 4], ['weaponelvensword+', 1], ['weapondagger+', 2],['weaponnaturestaff', 2],['weaponnaturestaff+', 0.5], ['shortbow', 1], ['crossbow', 0.2], ['hunterbow', 0.5], ['weaponclaymore', 2], ['weaponclaymore+', 0.5]],
 		accessory = [['accamuletruby', 2], ['accamuletemerald',2], ['accamuletruby+', 0.3], ['accamuletemerald+',0.3], ['accgoldring', 2], ['acctravelbag', 3], ['acctravelbag+', 1], ['vhelmet', 2], ['vhelmet+', 0.5]],
 		abilities = [],
 	},
 	caravan = {
 		armor = [ ['armorchain', 10], ['armorchain+', 2], ['armorleather',10], ['armorleather+', 3]],
-		weapon = [['weaponsword', 5], ['weapondagger+', 5], ['weaponsword+', 2],  ['weaponhammer', 1], ['weaponclaymore', 2]],
+		weapon = [['weaponsword', 5], ['weapondagger+', 5], ['weaponsword+', 2],  ['weaponhammer', 1], ['weaponclaymore', 2], ['shortbow', 1]],
 		accessory = [['accgoldring', 1], ['accamuletruby', 1], ['accamuletemerald', 1], ['acctravelbag', 3], ['vhelmet', 2], ['vhelmet+', 0.5]],
 		abilities = [],
 	},

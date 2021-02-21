@@ -549,7 +549,7 @@ func _on_hairconfirm_pressed():
 		globals.itemdict.hairdye.amount -= 1
 	elif state == 'backpack':
 		globals.state.backpack.stackables.hairdye -= 1
-	selectedslave.haircolor = get_node("hairchange/TextEdit").get_text()
+	selectedslave.haircolor = get_node("hairchange/TextEdit").get_text().to_lower()
 	updateitems()
 	get_node("hairchange").visible = false
 

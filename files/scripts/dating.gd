@@ -401,9 +401,8 @@ func initiate(tempperson):
 		$textfield/masterportrait/TextureRect.visible = false
 	else:
 		$textfield/masterportrait/TextureRect.visible = true
-	
-	
-	
+
+
 	if jail == true:
 		get_parent().background = 'jail'
 		location = 'dungeon'
@@ -421,11 +420,10 @@ func initiate(tempperson):
 			self.mood += 4
 			text += "[he2] obediently agrees to your order and tries [his2] best to please you. "
 		else:
-			
 			text += "Without great joy [he2] obeys your order and reluctantly joins you. "
 		if person.lust >= 30:
 			mood += 6
-		elif person.traits.has("Devoted"):
+		if person.traits.has("Devoted"):
 			mood += 10
 	
 	$panel/consent.visible = person.consent
@@ -515,7 +513,7 @@ func moveto(newloc):
 	self.showntext = 'You lead [name2] to the [color=yellow]' + locationdicts[location].name + '[/color]. '
 	if date == false && !newloc in ['bedroom','dungeon']:
 		date = true
-		self.showntext += "\n[color=green][name2] seems to be quite happy to be taken out of the usual place and ready to spend with you some additional time. [/color]"
+		self.showntext += "\n[color=green][name2] seems to be quite happy to be taken out of the usual place and ready to spend some time with you. [/color]"
 	
 	updatelist()
 
@@ -711,7 +709,7 @@ func pushdown(person, counter):
 			difficulty += 100
 		if person.effects.has('drunk'):
 			difficulty /= 2
-		difficulty -= person.obed*3 + person.loyal*2 + person.lust - person.lewdness/3
+		difficulty -= person.obed*3 + person.loyal*2 + person.lust + person.lewdness/3
 		if person.traits.has("Likes it rough"):
 			difficulty -= 60
 
@@ -758,7 +756,7 @@ func propose(person, counter):
 			text += "\n\n[color=green]Unlocked sexual actions with [name2].[/color]"
 			if person.levelupreqs.has('code') && person.levelupreqs.code == 'relationship':
 				text += "\n\n[color=green]After getting closer with [name2], you felt like [he2] unlocked new potential. [/color]"
-				person.levelup()
+				#person.levelup()
 			globals.state.sexactions += 1
 			showsexswitch(text, mode)
 			text = ''
@@ -791,7 +789,7 @@ func showsexswitch(text, mode):
 
 func praise(person, counter):
 	var text = ''
-	text += "You praise [name2] for [his2] recent behavoir. "
+	text += "You praise [name2] for [his2] recent behavior. "
 	
 	if person.obed >= 85 && counter < 2:
 		self.mood += 3
@@ -980,7 +978,7 @@ func sweets(person, counter):
 	if person.obed >= 55:
 		self.mood += 6
 		person.loyal += 3
-		text = text + "[he2] joyfull accepts them and enjoys the sweet taste.  "
+		text = text + "[he2] joyfully accepts them and enjoys the sweet taste.  "
 		if person.effects.has('joyful') == true:
 			person.effects.joyful.duration += 1
 		elif person.effects.has('joyful') == false && randf() >= 0.4:
@@ -997,7 +995,7 @@ func sweets(person, counter):
 
 func tea(person, counter):
 	var text = ''
-	text += "You serve tea for you and [name2]. While drinking, you both chatand get a bit closer.  "
+	text += "You serve tea for you and [name2]. While drinking, you both chat and get a bit closer.  "
 	
 	if counter <= 3 || randf() >= 0.5:
 		self.mood += 5
@@ -1127,6 +1125,8 @@ func _on_finishbutton_pressed():
 
 func _on_cancelsex_pressed():
 	$sexswitch.visible = false
+	if turns == 0:
+		endencounter()
 
 func _on_confirmsex_pressed():
 	if $sexswitch/cancelsex.visible == true:

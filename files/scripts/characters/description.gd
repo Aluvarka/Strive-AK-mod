@@ -13,7 +13,7 @@ func getslavedescription(tempperson, mode = 'default'):
 		text = person.dictionaryplayerplus(person.dictionaryplayer(text))
 	else:
 		text = person.dictionary(text)
-	
+
 	if text.find('[furcolor]'):
 		text = text.replace('[furcolor]', getdescription('furcolor'))
 	
@@ -209,7 +209,7 @@ func entry():
 		else:
 			text += person.name + ' "'+person.nickname+'" ' + person.surname + '. '
 	else:
-		
+
 		text = 'A tied and bound [color=yellow]$sex[/color] looks at you with fear and hatred. '
 	text = text.replace(" .", ".")
 	return text
@@ -226,11 +226,11 @@ func getdescription(value):
 	return text
 
 func getbeauty(justtext = false):
-	var calculate 
+	var calculate
 	var text = ''
 	var appeal = person.beauty
 	var tempappeal = person.beautytemp
-	
+
 	if appeal <= 15:
 		calculate = 'ugly'
 	elif appeal <= 30:
@@ -243,14 +243,14 @@ func getbeauty(justtext = false):
 		calculate = 'pretty'
 	else:
 		calculate = 'beautiful'
-	
+
 	text = descriptions['beauty'][calculate]
 	if justtext == false:
-		text += "(" 
+		text += "("
 		if tempappeal != 0:
 			text += '[color=aqua]'+str(floor(appeal))+'[/color]'
 		else:
-			text += str(floor(appeal)) 
+			text += str(floor(appeal))
 		text += ")"
 	if justtext == false:
 		return text
@@ -398,16 +398,16 @@ var tattoooptions = {
 
 var descriptions = { #Store descriptions for various body parts. Separate alternative with | sign to make description pick one at random
 	bodyshape = {
-		humanoid = '$His body is quite [color=yellow]normal[/color]. ', 
+		humanoid = '$His body is quite [color=yellow]normal[/color]. ',
 		bestial = "$His body resembles a human's, except for some [color=yellow]bestial features[/color] in $his face and body structure. ",
 		shortstack = '$His body is rather [color=yellow]petite[/color], about half the size of the average person. ',
 		jelly = '$His body is [color=yellow]jelly-like[/color] and partly transparent. ',
 		halfbird = '$His body has [color=yellow]wings for arms and avian legs[/color] making everyday tasks difficult. ',
-		halfsnake = 'The lower portion of $his body consists of a long-winding [color=yellow]snake’s tail[/color]. ', 
+		halfsnake = 'The lower portion of $his body consists of a long-winding [color=yellow]snake’s tail[/color]. ',
 		halffish = '$His body is [color=yellow]scaly and sleek[/color], possessing fins and webbed digits. ',
 		halfspider = "The lower portion of $his body consists of a [color=yellow]spider's legs and abdomen[/color]. ",
 		halfhorse = 'While $his upper body is human, $his lower body is [color=yellow]equine[/color] in nature. ',
-		halfsquid = 'The lower portion of $his body consists of a [color=yellow]number of tentacular appendages[/color], similar to those of an octopus. ', 
+		halfsquid = 'The lower portion of $his body consists of a [color=yellow]number of tentacular appendages[/color], similar to those of an octopus. ',
 	},
 	age = { 
 		child = '$He looks like a [color=aqua]child[/color] that has barely hit puberty. ',
@@ -420,7 +420,8 @@ var descriptions = { #Store descriptions for various body parts. Separate altern
 		normal = '$He appears to be pretty [color=yellow]average[/color] looking. ',
 		cute = '$His looks are quite [color=yellow]cute[/color] and appealing. ',
 		pretty = '$He looks unusually [color=yellow]pretty[/color] and attracts some attention. ',
-		beautiful = '$He looks exceptionally [color=yellow]beautiful[/color], having no visible flaws and easily evoking envy. ', 
+		beautiful = '$He looks exceptionally [color=yellow]beautiful[/color], having no visible flaws and easily evoking envy. ',
+
 	},
 	hairlength = {
 		ear = '$His [color=aqua][haircolor][/color] hair is cut [color=aqua]short[/color]. ',
@@ -463,11 +464,11 @@ var descriptions = { #Store descriptions for various body parts. Separate altern
 	skin = {
 		pale = '$His skin is a [color=aqua]pale[/color] white. ',
 		fair = '$His skin is healthy and [color=aqua]fair[/color] color. ',
-		olive = '$His skin is of an unusual [color=aqua]olive[/color] tone. ', 
+		olive = '$His skin is of an unusual [color=aqua]olive[/color] tone. ',
 		'tan' : '$His skin is a [color=aqua]tanned[/color] bronze color. ',
 		brown = '$His skin is a mixed [color=aqua]brown[/color] color. ',
 		dark = '$His skin is deep [color=aqua]dark[/color]. ',
-		jelly = '$His skin is [color=aqua]semi-transparent and jelly-like[/color]. ', 
+		jelly = '$His skin is [color=aqua]semi-transparent and jelly-like[/color]. ',
 		blue = '$His skin is dark [color=aqua]blue[/color]. ',
 		"pale blue" : '$His skin is [color=aqua]light pale blue[/color]. ',
 		green = '$His skin is [color=aqua]green[/color]. ',
@@ -518,8 +519,8 @@ var descriptions = { #Store descriptions for various body parts. Separate altern
 		scruffy = 'Behind $his back you notice a long tail covered in a thin layer of fur which ends in a [color=aqua]scruffy brush[/color]. ',
 		demon = '$He has a long, thin, [color=aqua]demonic tail[/color] ending in a pointed tip. ',
 		dragon = 'Trailing somewhat behind $his back is a [color=aqua]scaled tail[/color]. ',
-		bird = '$He has a [color=aqua]feathery bird tail[/color] on $his rear. ', 
-		fish = '$His rear ends in long, sleek [color=aqua]fish tail[/color]. ', 
+		bird = '$He has a [color=aqua]feathery bird tail[/color] on $his rear. ',
+		fish = '$His rear ends in long, sleek [color=aqua]fish tail[/color]. ',
 		"snake tail" : '',
 		tentacles = '',
 		horse = '',
@@ -555,4 +556,3 @@ var descriptions = { #Store descriptions for various body parts. Separate altern
 		big = '$He has a [color=yellow]huge[/color] pair of balls weighing down $his scrotum. ',
 	},
 }
-

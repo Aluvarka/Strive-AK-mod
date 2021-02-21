@@ -102,7 +102,7 @@ Fix autobuying supply system, if market seller exist and box checked then buy su
 
 Fix lamias legs.(?) *Idk what wrong.
 
-Event for EVERY new char, what happened during first(two?) week(s), where they can recieve 23% - good 44% neutral 23% - bad trait, ===
+Event for EVERY new char, what happened during first(two?) week(s), where they can recieve 23% - good 44% neutral 23% - bad trait, ++=
 
 Allow check to go outside.(?) === *On hiatus.
 
@@ -114,7 +114,72 @@ Also maybe "low obedience" partners dont make impossible requests(eg. they want 
 
 Provide more racial features in all ways. === *On hiatus
 
+
+Cleptomania ++=
+
+gifts and "exited" trait\ changed to Happy-go-lucky ++=
+
+add +random mental points per lvl up(ready?) +++ REVERSED
+
+Allow child to be born without sexual traits +++
+
+
+Invigorate can be casted only once and refill 100% for person and (5)0% for u +++
+
+Work profit divide/multiply by worker left energy, also -energy for physical works +++
+
+Guild quests with more randomized requests.
+Adventure mode module. Like went to wild for long journey, really long, need to change and create lot of things.
+Randomly generate number from 1 to X on which base Persons personality with own dialogue styles and backgrounds(little stories about). ===
+
+Rendrassa1
+Another suggestion to do with male virility. Right now, there is no way to make a male sterile (incapable of impregnating a female) and still have a penis, and currently you can move the testes into the body, but still have them breed. I propose changing the current system to three states instead of two.
+Currently it's: Removed (but really inside the body) and normal scrotum.
+What I'm proposing: Removed (actually removed), Internal (the previous version of removed), and normal scrotum.
+
+
+I ask because the new Internal would be good for Lamia, Scylla, Nereid and dragonkin to have males with internal testes. (I have to remove the balls for all but the dragonkin because think about it... a snake with balls. An octopus with balls. A fish with balls.)
+
+crychance = 100-(currentmood+fastif(depressia))
+stress += 50*(crychance/100)
+
+weight: = child/1.4 young/1.2 adult, height = towering*1.4 tall*1.2 average*1 short*0.75 smoll/tiny*0.5 + plump*1.2 obese*1.5 man*1.2
+
+Hunter guild.
+Contract office: sign contract for various deals like make obedient or train in to sometnihg. quests rng and after completing set to 0. 
+Variables for moar challenge like increase all cost by 1.5(?) every 30 days from start. so in 61 day cost gonna be 500*2=1000 for raising baby/change proffesion.
+Martial expertise stat.
+milch cow - через модификацию или перк. Надо подумать.
+
+Add new quality related enchants. Probably add new arrays/rolls. bad-2,low-1,normal,good+1,masterwork+2, alluring+10b,slutty+5b,reserved-10b, scalled+1a+5%d,light+3s-10%d,heavy-5s+2a+10%, tainted+10m,plugged+10l,
+Add ranged^ when hit - check for ranged effect&defending - if false -50% attack&speed for 1 turn.
+Change magick system: separate persons and players: persons manamax = 10+25*stats.mag+racial bonus/minus. everyday restore to max. Replace persons stress tab in battle to mana. If combatant not in player.group&not player then if mana-spell.cost >= 0 then cast, else fail(50%+)
+
 Add "mutate" related traits which can be obtained only through suffering. === *On hiatus
 
 Add molesting punishment. With orgasms for lust >=80. === *On hiatus
+
+ABC book\consumations which grant 50(?) exp and chance to remove illiterate.
+
+Talk with Headgirl: Make girl send to adventure(?) with difficulties(level+summ of attributes)= 80/difficulties-differences
+Easy(10) medium(20) hard(30) insane(60) Around 2 days long.
+
+Add simple quests: Race(common) and beauty, Race(uncommon) and beauty, Race(rare) and beauty. Commuinity Servant(human(common race?) agi(2-4) end(2-4). House servant(any race) +prof Housekeeper, obed 80. +==
+
+Add new enchant: Quality. Mb add new arrays&rols.
+
+Add ranged. When hit - check for ranged effect&not defending: if false -50% attack&speed for 1 turn. ++=
+
+Idea about separating magic. If not player - (person mana = 20+(person.magic*20)). Also make changes in aftersex outcome. Or - from pool then divide pool beetwen partners or - individually. def amount 3 + 1 for magic + 1 for drow,nimf,etc.
+
+Add farm buying big boosted+lactating gls.
+
+
+
+
+
+
+
+
+
 
