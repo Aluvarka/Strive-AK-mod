@@ -2,19 +2,19 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://mods/inluck.PNG-5ea02fbf032776cffd206c4eb113daea.stex"
+path="res://mods/clothbdsm.png-e0eea7003d36d07d69b92f2d093c10f8.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://mods/inluck.PNG"
-dest_files=[ "res://mods/inluck.PNG-5ea02fbf032776cffd206c4eb113daea.stex" ]
+source_file="res://mods/clothbdsm.png"
+dest_files=[ "res://mods/clothbdsm.png-e0eea7003d36d07d69b92f2d093c10f8.stex" ]
 
 [params]
 
-compress/mode=0
+compress/mode=3
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
@@ -30,5 +30,5 @@ process/HDR_as_SRGB=false
 process/invert_color=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0
