@@ -997,8 +997,12 @@ func impregnation(mother, father = null, anyfather = false):
 	print(spin)
 	if spin <= 0 && len(final) > 0:
 		for i in final:
+			if rand_range(0,100) <= variables.traitinheritchance:
+				baby.add_trait(i)
+			else:
+				final.remove(i)
+				continue
 			print('1')
-			baby.add_trait(i)
 	if rand_range(0,100) <= variables.babynewtraitchance:
 		print('2')
 		var value = rand_range(0,100)
