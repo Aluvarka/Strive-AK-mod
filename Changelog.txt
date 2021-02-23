@@ -1,3 +1,197 @@
+Update from 0.441f to 0.472c
+
+Full merged with 1.0d game version.
+
+Enchantments:
+
+•	Double attack: Has chance for attack again.
+
+•	Stun: Has chance to stun enemy for 1 turn.
+
+•	Negative Lust: Lust grow in battle
+
+•	Negative Stress: Stress grew per battle
+
+Items:
+
+•	New weapon: Blackjack.
+
+•	New accesory: Helmet
+
+•	Carapace now provide 12 armor.
+
+•	New clothing: Restricting suit.
+
+•	New weapon: Bow
+
+•	New weapon: Hunter Bow
+
+•	New weapon: Elven Bow
+
+•	New weapon: Dwarven Bow
+
+•	New trash item for selling: Trinket, which u can loot from everything(?)
+
+•	Toxity for most of potions incrased
+
+•	Basic solution can be crafted. You can use Basic solution for toxity removal.
+
+
+Jobs&Specs
+
+•	Little changes in description of “days” shift. For Wimborntoy and Wimbornwhore it is night.
+
+•	New profit formula, require ARS. 
+
+Mansion
+
+•	Stress, Obedience, Energy and Loyalty now add only once, after all daily calculations.
+
+•	Pliable system changed to allow gain Slutty and Devoted by base 
+
+•	Changes in many conditions to work better.
+
+•	Update for Merc system.
+
+•	New daily event caller for mercenaries.
+
+•	New system: Which posible allow to change random daily events frequency.
+
+•	New system: Average group level - player level+in group lvl / person count.
+
+•	New condition for learning abilities: Race.
+
+Repetable_quests
+
+•	4 new quests.
+
+•	2 new requisitions.
+
+Traits
+
+•	Description of most traits updated to show in numbers what they do.
+
+•	New trait: Curious: Moar xp gaining.
+
+•	New trait: Observant: Higher awareness, has benefits when head working.
+
+•	New trait: Valiant: Minimal Courage 55, Courage +20, Fear gaining/losing -25%.
+
+•	New trait: Dimwitted: Poor fella. Maximum Witness -25, Witness -35.
+
+•	New trait: Closed: Like lone wolf, but avoid social interactions. Maximum Witness +10, Witness +15.
+
+•	New trait: Proud: Maximum Confidence +20, Confidence +15, Loyalty gain/losing -30%.
+
+•	New trait: Mercenary: Confidence minimal 40, Courage minimal 40, Loyalty maximum 0.
+
+•	New trait: Good genetics: Garanted random attribute bonus +1.
+
+•	New trait: Retarded: Stupid, poor fella. Maximum Witness -60, Witness -35.
+
+•	New trait: Greedy: Demands: Pocket money *lvl, luxury-5
+
+•	New trait: Illiterate: Can't read books.
+
+Person
+
+•	Part of future dialog system, hissing, growling and nyaing for few races.
+
+•	New lines for mood, weight, stats minimal.
+
+Globals
+
+•	New baby traits inherit system.
+
+•	New place to visit: Mercenary guilds.
+
+Abilities
+
+•	New Ability: Restricting: Hidden. For various scripts. Decrease speed and attack in battle.
+
+•	New Ability: Livingstimul: Lust grow during battle.
+
+•	New weapon ability: Ranged, chance to hit +25%, but when get hit protection/2
+
+Combat
+
+•	Display enemy portrait in battle, requre ARS.
+
+•	Restricted system. Decrease speed and attack.
+
+•	Vanila stress system changed.
+
+•	Fixed vanila lust gaining.
+
+Combatdata
+
+•	New encounter with caravans.
+
+•	Changes in enemy equipment to use new items.
+
+Effects
+
+•	Few additions for future mood system.
+
+Exploration
+
+•	Energy cost formula for traveling changed, require ARS. When no energy left - spend health.
+
+Origins
+
+•	Trait rewarding system updated to understand new tags.
+
+Imageselect
+
+•	If Replace both checked and nudes pics exist then replace path.
+
+Outside
+
+•	Changes in traders assortment.
+
+•	Implemented Mercenary guild.
+
+Slave tab
+
+•	Changes to support Advanced rules system.
+
+•	New "brand" state: Free will.
+
+Variables
+
+•	advancedrules: Or Advanced Rules System(ARS), if you wanna to make game harder, change some of core mechanics.
+
+•	attperstatspoints: Change exchange from mansion upgrade points to person learning points.
+
+•	traitperlvlup: Gain new trait every N levels, start from first.
+
+•	attperstatspoints: Amount of stats point to exchange for 1 attribute point, requre ARS on, replace gaining mansion points for attribute points. 
+
+•	dailyeventsamount: In Theory, its amount of daily events.
+
+•	dailyeventstime: Time to go for new bunch of daily events.
+
+•	merccontractlength: Lenght of Mercenary contract, after N day you decide to pay again or break up with person.
+
+Constructor
+
+•	New body weight system, complete with gaining\losing weight. Stay fit =3
+
+Description
+
+•	Annoying . now get proper coloration.(No need to thank me, perfectionists)
+
+Dailyevents
+
+•	Added mood impact for most of events.
+
+•	New Mercenary related event.
+
+•	New Event for discover what Hidden trait do.
+
+
+
+
 Update from 0.441b to 0.441f
 
 Full merge with Ankmairdor Bugfix V2b.
